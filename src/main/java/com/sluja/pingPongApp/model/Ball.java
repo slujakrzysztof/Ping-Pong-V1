@@ -6,6 +6,7 @@ public class Ball {
 	protected int speed;
 	protected boolean movingForward, movingForwardVertical;
 
+	
 	public int getX() {
 		return x;
 	}
