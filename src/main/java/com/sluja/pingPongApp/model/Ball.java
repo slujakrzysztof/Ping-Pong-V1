@@ -2,41 +2,40 @@ package com.sluja.pingPongApp.model;
 
 public class Ball {
 
-	protected int x, y, dx, dy;
+	protected int positionX, positionY, speedX, speedY;
 	protected int speed;
 	protected boolean movingForward, movingForwardVertical;
 
-	
-	public int getX() {
-		return x;
+	public int getPositionX() {
+		return positionX;
 	}
 
-	public void setX(int x) {
-		this.x = x;
+	public void setPositionX(int positionX) {
+		this.positionX = positionX;
 	}
 
-	public int getY() {
-		return y;
+	public int getPositionY() {
+		return positionY;
 	}
 
-	public void setY(int y) {
-		this.y = y;
+	public void setPositionY(int positionY) {
+		this.positionY = positionY;
 	}
 
-	public int getDx() {
-		return dx;
+	public int getSpeedX() {
+		return speedX;
 	}
 
-	public void setDx(int dx) {
-		this.dx = dx;
+	public void setSpeedX(int speedX) {
+		this.speedX = speedX;
 	}
 
-	public int getDy() {
-		return dy;
+	public int getSpeedY() {
+		return speedY;
 	}
 
-	public void setDy(int dy) {
-		this.dy = dy;
+	public void setSpeedY(int speedY) {
+		this.speedY = speedY;
 	}
 
 	public int getSpeed() {

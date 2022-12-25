@@ -9,9 +9,9 @@ import com.sluja.pingPongApp.properties.PropertyReader;
 
 public class GameFrame extends JFrame {
 
-	private final String TITLE = "Ping Pong V1";
-	private final int WINDOW_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("windowWidth"));
-	private final int WINDOW_HEIGTH = Integer.parseInt(PropertyReader.getInstance().getProperty("windowHeigth"));
+	private final String TITLE = PropertyReader.getInstance().getProperty("title");
+	private final int WINDOW_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.width"));
+	private final int WINDOW_HEIGTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.heigth"));
 	private final int POSITION_X = (Toolkit.getDefaultToolkit().getScreenSize().width / 2) - (this.WINDOW_WIDTH / 2);
 	private final int POSITION_Y = (Toolkit.getDefaultToolkit().getScreenSize().height / 2) - (this.WINDOW_HEIGTH / 2);
 
