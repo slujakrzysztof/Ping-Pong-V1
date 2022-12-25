@@ -1,5 +1,6 @@
 package com.sluja.pingPongApp.frame;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -24,6 +25,7 @@ public class GameFrame extends JFrame {
 		//this.setSize((int)WINDOW_SIZE.getWidth(), (int)WINDOW_SIZE.getHeight());
 		//this.setExtendedState(JFrame.); 
 		//this.setUndecorated(true);
+		
 		this.setVisible(true);
 		this.setResizable(false);
 		this.setBounds(POSITION_X, POSITION_Y, WINDOW_WIDTH, WINDOW_HEIGTH);

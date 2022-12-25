@@ -1,6 +1,10 @@
 package com.sluja.pingPongApp.model;
 
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+import com.sluja.pingPongApp.enums.GameForm;
 
 public class Player {
 
@@ -8,9 +12,10 @@ public class Player {
 	private int score;
 	private int positionX;
 	private int scorePositionX;
+	private int id;
 
-	public Player() {
-
+	public Player(int id) {
+		this.id = id;
 	}
 
 	public Player(int score, int positionX, int scorePositionX) {
@@ -50,4 +55,9 @@ public class Player {
 	public void setScorePositionX(int scorePositionX) {
 		this.scorePositionX = scorePositionX;
 	}
+	
+	public int getId() {
+		return this.id;
+	}
+
 }

@@ -3,7 +3,10 @@ package com.sluja.pingPongApp.model.paddle;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
+import com.sluja.pingPongApp.enums.GameForm;
 import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.model.Player;
 import com.sluja.pingPongApp.properties.PropertyReader;
@@ -81,20 +84,33 @@ public class Paddle {
 		return this.realPositionX;
 	}
 
-	public void move() {
-		this.checkPosition();
-
-		if (isMovingUp())
-			positionY -= speed;
-		else
-			positionY += speed;
+	public Player getPlayer() {
+		return this.player;
 	}
 
-	protected void checkPosition() {
-		if (positionY <= 0)
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public void move() {
+		if (!this.checkPosition()) {
+			if (isMovingUp())
+				positionY -= speed;
+			else
+				positionY += speed;
+		}
+	}
+
+	protected boolean checkPosition() {
+		if (positionY <= 0) {
 			positionY = 0;
-		if ((positionY + HEIGTH) >= SCREEN_HEIGTH)
+			return true;
+		}
+		if ((positionY + HEIGTH) >= SCREEN_HEIGTH) {
 			positionY = SCREEN_HEIGTH - HEIGTH;
+			return true;
+		}
+		return false;
 	}
 
 	public boolean pickup() {
@@ -113,7 +129,8 @@ public class Paddle {
 				&& (this.getBall().getPositionY() < this.getPositionY() + this.HEIGTH);
 
 		if (conditionX && conditionY) {
-			if (increasedSpeedConditionFirst || increasedSpeedConditionSecond)	this.getBall().increaseSpeed();
+			if (increasedSpeedConditionFirst || increasedSpeedConditionSecond)
+				this.getBall().increaseSpeed();
 			return true;
 		}
 		return false;
