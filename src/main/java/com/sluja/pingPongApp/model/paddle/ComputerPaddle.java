@@ -1,7 +1,7 @@
 package com.sluja.pingPongApp.model.paddle;
 
 import com.sluja.pingPongApp.enums.GameLevel;
-import com.sluja.pingPongApp.model.Ball;
+import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.model.Player;
 import com.sluja.pingPongApp.properties.PropertyReader;
 
@@ -13,7 +13,7 @@ public class ComputerPaddle extends Paddle {
 	private int homePosition;
 	private int border;
 	private int lowerBorder, upperBorder;
-	private Ball ball;
+
 
 	public ComputerPaddle(Player player, GameLevel gameLevel, Ball ball) {
 		super(player);
@@ -21,6 +21,7 @@ public class ComputerPaddle extends Paddle {
 		this.ball = ball;
 		this.homePosition = this.SCREEN_WIDTH / 2;
 		this.border = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.border"));
+		this.realPositionY = this.getPositionY() + this.HEIGTH;
 		this.lowerBorder = this.homePosition + this.border;
 		this.upperBorder = this.homePosition - this.border;
 		this.setSpeed();
@@ -42,7 +43,7 @@ public class ComputerPaddle extends Paddle {
 
 	private void checkHomePosition() {
 
-		int realPositionY = this.getPositionY() + this.HEIGTH;
+
 		if ((this.ball.getPositionX() < this.homePosition)
 				&& !((realPositionY / 2) < this.lowerBorder && (realPositionY / 2) > this.upperBorder)) {
 			if ((realPositionY / 2) > this.homePosition)

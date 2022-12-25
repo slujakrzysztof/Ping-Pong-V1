@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
+import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.model.Player;
 import com.sluja.pingPongApp.properties.PropertyReader;
 
@@ -19,12 +20,16 @@ public class Paddle {
 	protected boolean movingUp;
 	protected Color playerColor;
 	protected Player player;
+	protected Ball ball;
+	protected int realPositionY;
+	protected int realPositionX;
 
-	public Paddle(Player player) {
+	public Paddle(Player player, Ball ball) {
 		this.player = player;
 		this.positionY = 80;
 		this.playerColor = player.getPlayerColor();
 		this.positionX = player.getPositionX();
+		this.ball = ball;
 	}
 
 	public void draw(Graphics g) {
@@ -40,6 +45,10 @@ public class Paddle {
 		int scorePositionX = this.player.getScorePositionX();
 		int scorePositionY = Integer.parseInt(PropertyReader.getInstance().getProperty("score.PositionY"));
 		g.drawString(score, scorePositionX, scorePositionY);
+	}
+
+	public Ball getBall() {
+		return this.ball;
 	}
 
 	public int getPositionY() {
@@ -66,6 +75,10 @@ public class Paddle {
 		this.movingUp = movingUp;
 	}
 
+	public int getRealPositionX() {
+		return this.realPositionX;
+	}
+
 	public void move() {
 		this.checkPosition();
 
@@ -80,6 +93,19 @@ public class Paddle {
 			positionY = 0;
 		if ((positionY + HEIGTH) >= SCREEN_HEIGTH)
 			positionY = SCREEN_HEIGTH - HEIGTH;
+	}
+
+	public void pickup() {
+		
+		boolean conditionX = (this.getRealPositionX() > this.getBall().getPositionX())
+				|| (this.getPositionX() < (this.getBall().getPositionX() + this.getBall().getSizeX()));
+		
+		boolean firstConditionY = ((this.getBall().getPositionY() > this.getPositionY()) && ((this.getBall().getPositionY() + this.getBall().getSizeY()) < (this.getPositionY() + this.HEIGTH)));
+
+		if () {
+			
+		}
+			
 	}
 
 }
