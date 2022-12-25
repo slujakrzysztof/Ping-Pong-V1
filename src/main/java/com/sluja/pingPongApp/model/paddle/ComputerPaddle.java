@@ -16,7 +16,7 @@ public class ComputerPaddle extends Paddle {
 
 
 	public ComputerPaddle(Player player, GameLevel gameLevel, Ball ball) {
-		super(player);
+		super(player,ball);
 		this.gameLevel = gameLevel;
 		this.ball = ball;
 		this.homePosition = this.SCREEN_WIDTH / 2;

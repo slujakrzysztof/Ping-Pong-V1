@@ -16,15 +16,16 @@ public class RoundedBall implements Ball {
 	private int increasedSpeedX;
 	private int increasedSpeedY;
 	private boolean movingForward;
+	private boolean pickedUp;
 	private final int SCREEN_HEIGHT = Integer.parseInt(PropertyReader.getInstance().getProperty("window.heigth"));
-	
+
 	public RoundedBall(GameLevel gameLevel) {
 		this.size = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.size"));
 		this.speedX = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.dX"));
 		this.speedY = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.dY"));
 		this.gameLevel = gameLevel;
 	}
-	
+
 	@Override
 	public int getPositionX() {
 		return this.positionX;
@@ -44,7 +45,7 @@ public class RoundedBall implements Ball {
 	public int getSpeedY() {
 		return this.speedY;
 	}
-	
+
 	@Override
 	public int getSizeX() {
 		return this.size;
@@ -54,7 +55,7 @@ public class RoundedBall implements Ball {
 	public int getSizeY() {
 		return this.size;
 	}
-	
+
 	@Override
 	public void setPositionX(int positionX) {
 		this.positionX = positionX;
@@ -74,7 +75,7 @@ public class RoundedBall implements Ball {
 	public void setSpeedY(int speedY) {
 		this.speedY = speedY;
 	}
-	
+
 	@Override
 	public boolean isMovingForward() {
 		return this.movingForward;
@@ -84,20 +85,33 @@ public class RoundedBall implements Ball {
 	public void setMovingForward(boolean movingForward) {
 		this.movingForward = movingForward;
 	}
-	
+
+	@Override
+	public boolean isPickedUp() {
+		return pickedUp;
+	}
+
+	@Override
+	public void setPickedUp(boolean pickedUp) {
+		this.pickedUp = pickedUp;
+	}
+
 	@Override
 	public void move() {
-		if(checkBorders()) 	this.setSpeedY(this.changeDirection());
+		if(checkBorders()) 	this.setSpeedY(this.changeDirection(this.getSpeedY()));
 		
+		if(isPickedUp()) this.setSpeedX(this.changeDirection(this.getSpeedX()));
+		
+		this.setPositionX(this.getPositionX() + this.getSpeedX());
+		this.setPositionY(this.getPositionY() + this.getSpeedY());
 	}
 
 	@Override
 	public boolean checkBorders() {
-		if(this.getPositionY() < 0) {
+		if (this.getPositionY() < 0) {
 			this.setPositionY(0);
 			return true;
-		}
-		else if(this.getPositionY() + this.size > this.SCREEN_HEIGHT){
+		} else if (this.getPositionY() + this.size > this.SCREEN_HEIGHT) {
 			this.setPositionY(this.SCREEN_HEIGHT - this.size);
 			return true;
 		}
@@ -111,7 +125,7 @@ public class RoundedBall implements Ball {
 		this.setSpeedX(increasedSpeedX);
 		this.setSpeedY(increasedSpeedY);
 	}
-	
+
 	@Override
 	public void restoreSpeed() {
 		this.setSpeedX(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.dX")));
@@ -119,14 +133,8 @@ public class RoundedBall implements Ball {
 	}
 
 	@Override
-	public int changeDirection() {
-		return this.getSpeedY() * (-1);
+	public int changeDirection(int speed) {
+		return speed * (-1);
 	}
-
-
-	
-	
-
-
 
 }

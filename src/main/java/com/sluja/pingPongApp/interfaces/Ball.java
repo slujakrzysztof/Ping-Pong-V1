@@ -13,7 +13,11 @@ public interface Ball {
 	public int getSizeX();
 	
 	public int getSizeY();
+	
+	public void setPickedUp(boolean pickedUp);
 
+	public boolean isPickedUp();
+	
 	public void setPositionX(int positionX);
 
 	public void setPositionY(int positionY);
@@ -34,6 +38,6 @@ public interface Ball {
 	
 	public void restoreSpeed();
 	
-	public int changeDirection();
+	public int changeDirection(int speed);
 
 }

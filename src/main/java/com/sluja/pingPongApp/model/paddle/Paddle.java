@@ -14,6 +14,8 @@ public class Paddle {
 	public final int HEIGTH = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.height"));
 	public final int SCREEN_HEIGTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.heigth"));
 	public final int SCREEN_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.width"));
+	public final int PADDLE_BORDER = Integer
+			.parseInt(PropertyReader.getInstance().getProperty("paddle.increasedBorder"));
 	protected int positionY;
 	protected int positionX;
 	protected int speed = 20;
@@ -95,17 +97,26 @@ public class Paddle {
 			positionY = SCREEN_HEIGTH - HEIGTH;
 	}
 
-	public void pickup() {
-		
-		boolean conditionX = (this.getRealPositionX() > this.getBall().getPositionX())
-				|| (this.getPositionX() < (this.getBall().getPositionX() + this.getBall().getSizeX()));
-		
-		boolean firstConditionY = ((this.getBall().getPositionY() > this.getPositionY()) && ((this.getBall().getPositionY() + this.getBall().getSizeY()) < (this.getPositionY() + this.HEIGTH)));
+	public boolean pickup() {
 
-		if () {
-			
+		boolean conditionX = (this.getRealPositionX() < this.getBall().getPositionX())
+				|| (this.getPositionX() > (this.getBall().getPositionX() + this.getBall().getSizeX()));
+
+		boolean conditionY = ((this.getBall().getPositionY() > this.getPositionY())
+				&& ((this.getBall().getPositionY() + this.getBall().getSizeY()) < (this.getPositionY() + this.HEIGTH)));
+
+		boolean increasedSpeedConditionFirst = (this.getBall().getPositionY() > this.getPositionY())
+				&& (this.getBall().getPositionY() < this.getPositionY() + this.PADDLE_BORDER);
+
+		boolean increasedSpeedConditionSecond = (this.getBall()
+				.getPositionY() > (this.getPositionY() + this.HEIGTH - this.PADDLE_BORDER))
+				&& (this.getBall().getPositionY() < this.getPositionY() + this.HEIGTH);
+
+		if (conditionX && conditionY) {
+			if (increasedSpeedConditionFirst || increasedSpeedConditionSecond)	this.getBall().increaseSpeed();
+			return true;
 		}
-			
+		return false;
 	}
 
 }
