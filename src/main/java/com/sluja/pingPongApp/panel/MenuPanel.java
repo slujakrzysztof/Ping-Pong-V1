@@ -1,5 +1,6 @@
 package com.sluja.pingPongApp.panel;
 
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -7,26 +8,28 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
 
+import com.sluja.pingPongApp.button.PanelButton;
 import com.sluja.pingPongApp.enums.GameForm;
 import com.sluja.pingPongApp.frame.GameFrame;
 import com.sluja.pingPongApp.properties.PropertyReader;
 
-public class MenuPanel implements ActionListener {
+public class MenuPanel extends JPanel implements ActionListener {
 
 	private final int BUTTON_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("button.width"));
 	private final int BUTTON_HEIGTH = Integer.parseInt(PropertyReader.getInstance().getProperty("button.heigth"));
 	private GameFrame gameFrame;
-	private JButton exitButton;
-	private JButton singlePlayerButton;
-	private JButton multiPlayerButton;
+	private PanelButton exitButton;
+	private PanelButton singlePlayerButton;
+	private PanelButton multiPlayerButton;
 	private Map<JButton, Integer> buttonArray = new LinkedHashMap<JButton, Integer>();
 
 	public MenuPanel(GameFrame gameFrame) {
 		this.gameFrame = gameFrame;
-		this.exitButton = new JButton("EXIT");
-		this.singlePlayerButton = new JButton(GameForm.SINGLE_PLAYER.name());
-		this.multiPlayerButton = new JButton(GameForm.MULTIPLAYER.name());
+		this.exitButton = new PanelButton("EXIT", this);
+		this.singlePlayerButton = new PanelButton(GameForm.SINGLE_PLAYER.name(), this);
+		this.multiPlayerButton = new PanelButton(GameForm.MULTIPLAYER.name(), this);
 		this.buttonArray.put(exitButton,2);
 		this.buttonArray.put(singlePlayerButton,1);
 		this.buttonArray.put(multiPlayerButton,3);
