@@ -42,7 +42,7 @@ public class Paddle {
 		g.fillRect(positionX, positionY, WIDTH, HEIGTH);
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
-		//this.drawScore(g);
+		// this.drawScore(g);
 	}
 
 	protected void drawScore(Graphics g) {
@@ -93,24 +93,22 @@ public class Paddle {
 	}
 
 	public void move() {
-		if (!this.checkPosition()) {
-			if (isMovingUp())
-				positionY -= speed;
-			else
-				positionY += speed;
-		}
+		if (isMovingUp())
+			positionY -= speed;
+		else
+			positionY += speed;
+		this.checkPosition();
 	}
 
-	protected boolean checkPosition() {
+	protected void checkPosition() {
+		int lowerBorder = SCREEN_HEIGTH - HEIGTH - speed;
+
 		if (positionY <= 0) {
 			positionY = 0;
-			return true;
 		}
-		if ((positionY + HEIGTH) >= SCREEN_HEIGTH) {
-			positionY = SCREEN_HEIGTH - HEIGTH;
-			return true;
+		if (positionY >= lowerBorder) {
+			positionY = lowerBorder;
 		}
-		return false;
 	}
 
 	public boolean pickup() {

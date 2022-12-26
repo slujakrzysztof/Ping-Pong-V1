@@ -38,6 +38,7 @@ public class GameFrame extends JFrame {
 		//this.setExtendedState(JFrame.); 
 		//this.setUndecorated(true);
 		gamePanel = new GamePanel(this, GameForm.SINGLE_PLAYER, GameLevel.BEGINNER);
+		players.clear();
 		this.ball = new RoundedBall(GameLevel.BEGINNER);
 		players.add(new Player(1));
 		paddles.add(new Paddle(players.get(0), this.ball));
