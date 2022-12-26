@@ -12,7 +12,12 @@ import javax.swing.JPanel;
 
 import com.sluja.pingPongApp.button.PanelButton;
 import com.sluja.pingPongApp.enums.GameForm;
+import com.sluja.pingPongApp.enums.GameLevel;
 import com.sluja.pingPongApp.frame.GameFrame;
+import com.sluja.pingPongApp.interfaces.Ball;
+import com.sluja.pingPongApp.model.Player;
+import com.sluja.pingPongApp.model.ball.RoundedBall;
+import com.sluja.pingPongApp.model.paddle.Paddle;
 import com.sluja.pingPongApp.properties.PropertyReader;
 
 public class MenuPanel extends JPanel implements ActionListener {
@@ -24,6 +29,9 @@ public class MenuPanel extends JPanel implements ActionListener {
 	private PanelButton singlePlayerButton;
 	private PanelButton multiPlayerButton;
 	private ArrayList<PanelButton> buttonArray = new ArrayList<PanelButton>();
+	ArrayList<Player> players = new ArrayList<Player>();
+	ArrayList<Paddle> paddles = new ArrayList<Paddle>();
+	Ball ball;
 
 	public MenuPanel(GameFrame gameFrame) {
 		this.gameFrame = gameFrame;
@@ -33,6 +41,10 @@ public class MenuPanel extends JPanel implements ActionListener {
 		this.buttonArray.add(exitButton);
 		this.buttonArray.add(singlePlayerButton);
 		this.buttonArray.add(multiPlayerButton);
+		players.clear();
+		this.ball = new RoundedBall(GameLevel.BEGINNER);
+		players.add(new Player(1));
+		paddles.add(new Paddle(players.get(0), this.ball));
 		this.initializeListener();
 		this.initializePanel();
 	}
@@ -60,6 +72,8 @@ public class MenuPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == singlePlayerButton || e.getSource() == multiPlayerButton) {
 			this.getGameFrame().setGameForm(GameForm.valueOf(((PanelButton) e.getSource()).getText()));
+			this.getGameFrame().getMainPanel().getGamePanel().setGame(this.ball, this.players, this.paddles);
+			this.getGameFrame().getMainPanel().showPanel(this.getGameFrame().getMainPanel().getLabelGamePanel());
 		}
 		if (e.getSource() == exitButton)
 			System.exit(0);

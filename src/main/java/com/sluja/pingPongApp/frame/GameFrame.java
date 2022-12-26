@@ -29,9 +29,7 @@ public class GameFrame extends JFrame {
 	private final int POSITION_X = (Toolkit.getDefaultToolkit().getScreenSize().width / 2) - (this.WINDOW_WIDTH / 2);
 	private final int POSITION_Y = (Toolkit.getDefaultToolkit().getScreenSize().height / 2) - (this.WINDOW_HEIGTH / 2);
 	private MainPanel mainPanel;
-	ArrayList<Player> players = new ArrayList<Player>();
-	ArrayList<Paddle> paddles = new ArrayList<Paddle>();
-	Ball ball;
+
 	private CardLayout layout;
 
 	private GameForm gameForm;
@@ -44,10 +42,6 @@ public class GameFrame extends JFrame {
 		//this.setExtendedState(JFrame.); 
 		//this.setUndecorated(true);
 		mainPanel = new MainPanel(this);
-		players.clear();
-		this.ball = new RoundedBall(GameLevel.BEGINNER);
-		players.add(new Player(1));
-		paddles.add(new Paddle(players.get(0), this.ball));
 		//gamePanel.setGame(this.ball, players, paddles);
 		this.getContentPane().add(mainPanel);
 		this.setVisible(true);
@@ -68,5 +62,9 @@ public class GameFrame extends JFrame {
 	
 	public int getScreenHeigth() {
 		return this.WINDOW_HEIGTH;
+	}
+	
+	public MainPanel getMainPanel() {
+		return this.mainPanel;
 	}
 }

@@ -62,6 +62,7 @@ public class GamePanel extends JPanel implements Runnable {
 		this.addPaddles(paddles);
 		this.addPlayers(players);
 		this.setSteering(paddles);
+		System.out.println("SIEMA");
 		mainThread.start();
 	}
 
@@ -74,8 +75,8 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void setSteering(ArrayList<Paddle> paddles) {
-		steering = new Steering(paddles, this.getGameForm());
-		this.addKeyListener(steering);
+		steering = new Steering(paddles, this.getGameForm(),this);
+		//this.addKeyListener(steering);
 	}
 
 	// Thread running
