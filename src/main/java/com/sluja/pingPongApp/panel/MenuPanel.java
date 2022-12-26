@@ -23,16 +23,16 @@ public class MenuPanel extends JPanel implements ActionListener {
 	private PanelButton exitButton;
 	private PanelButton singlePlayerButton;
 	private PanelButton multiPlayerButton;
-	private Map<JButton, Integer> buttonArray = new LinkedHashMap<JButton, Integer>();
+	private ArrayList<PanelButton> buttonArray = new ArrayList<PanelButton>();
 
 	public MenuPanel(GameFrame gameFrame) {
 		this.gameFrame = gameFrame;
-		this.exitButton = new PanelButton("EXIT", this);
-		this.singlePlayerButton = new PanelButton(GameForm.SINGLE_PLAYER.name(), this);
-		this.multiPlayerButton = new PanelButton(GameForm.MULTIPLAYER.name(), this);
-		this.buttonArray.put(exitButton,2);
-		this.buttonArray.put(singlePlayerButton,1);
-		this.buttonArray.put(multiPlayerButton,3);
+		this.exitButton = new PanelButton("EXIT", this, 3, 200);
+		this.singlePlayerButton = new PanelButton(GameForm.SINGLE_PLAYER.name(), this, 1, 200);
+		this.multiPlayerButton = new PanelButton(GameForm.MULTIPLAYER.name(), this, 2, 200);
+		this.buttonArray.add(exitButton);
+		this.buttonArray.add(singlePlayerButton);
+		this.buttonArray.add(multiPlayerButton);
 		this.initializeListener();
 		this.initializePanel();
 	}
@@ -44,9 +44,12 @@ public class MenuPanel extends JPanel implements ActionListener {
 	}
 
 	private void initializePanel() {
-		for (int counter = 0; counter < buttonArray.size(); counter++)
-			((JButton)this.buttonArray.keySet().toArray()[counter]).setSize(BUTTON_WIDTH, BUTTON_HEIGTH);
-		int firstButtonPositionX = this.getGameFrame().getScreenWidth() / 4 - BUTTON_WIDTH / 2;
+		PanelButton actualButton;
+		for (int counter = 0; counter < buttonArray.size(); counter++) {
+			actualButton = buttonArray.get(counter);
+			actualButton.setSize(BUTTON_WIDTH, BUTTON_HEIGTH);
+			actualButton.calculatePosition(200, 100);
+		}
 	}
 
 	public GameFrame getGameFrame() {
@@ -55,11 +58,9 @@ public class MenuPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == singlePlayerButton || e.getSource() == multiPlayerButton)
-			System.out.println(((JButton) e.getSource()).getText());
-		// this.getGameFrame().setGameForm(GameForm.SINGLE_PLAYER);
-		// else if (e.getSource() == multiPlayerButton)
-		// this.getGameFrame().setGameForm(GameForm.MULTIPLAYER);
+		if (e.getSource() == singlePlayerButton || e.getSource() == multiPlayerButton) {
+			this.getGameFrame().setGameForm(GameForm.valueOf(((PanelButton) e.getSource()).getText()));
+		}
 		if (e.getSource() == exitButton)
 			System.exit(0);
 
