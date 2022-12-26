@@ -84,6 +84,7 @@ public class GamePanel extends JPanel implements Runnable {
 		while (run) {
 			try {
 				ball.move();
+				System.out.println("TEST");
 				// ball.ballCollision();
 				// ball.setSpeed();
 				// if (gameForm == 1)
