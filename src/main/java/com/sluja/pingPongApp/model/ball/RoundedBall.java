@@ -21,9 +21,11 @@ public class RoundedBall implements Ball {
 	private boolean movingForward;
 	private boolean pickedUp;
 	private final int SCREEN_HEIGHT = Integer.parseInt(PropertyReader.getInstance().getProperty("window.heigth"));
+	private final int SCREEN_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.width"));
 
 	public RoundedBall(GameLevel gameLevel) {
 		this.size = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.size"));
+		this.positionX = SCREEN_WIDTH/2;
 		this.speedX = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX"));
 		this.speedY = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY"));
 		this.gameLevel = gameLevel;

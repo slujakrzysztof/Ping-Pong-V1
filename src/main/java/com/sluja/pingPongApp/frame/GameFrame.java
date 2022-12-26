@@ -30,7 +30,7 @@ public class GameFrame extends JFrame {
 	ArrayList<Paddle> paddles = new ArrayList<Paddle>();
 	Ball ball;
 
-	private int gameForm = 0;
+	private GameForm gameForm;
 
 	public GameFrame() {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -50,5 +50,17 @@ public class GameFrame extends JFrame {
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	//	this.setVisible(true);
 		//
+	}
+	
+	public void setGameForm(GameForm gameForm) {
+		this.gameForm = gameForm;
+	}
+	
+	public int getScreenWidth() {
+		return this.WINDOW_WIDTH;
+	}
+	
+	public int getScreenHeigth() {
+		return this.WINDOW_HEIGTH;
 	}
 }
