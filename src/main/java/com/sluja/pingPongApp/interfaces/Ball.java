@@ -1,5 +1,7 @@
 package com.sluja.pingPongApp.interfaces;
 
+import java.awt.Graphics;
+
 public interface Ball {
 	
 	public int getPositionX();
@@ -15,6 +17,8 @@ public interface Ball {
 	public int getSizeY();
 	
 	public void setPickedUp(boolean pickedUp);
+	
+    public void draw(Graphics g);
 
 	public boolean isPickedUp();
 	

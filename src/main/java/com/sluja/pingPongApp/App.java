@@ -10,6 +10,5 @@ public class App
     public static void main( String[] args )
     {
     	GameFrame frame = new GameFrame();
-    	System.out.println("COLOR: " + Color.getColor(PropertyReader.getInstance().getProperty("color.backgroundColor")).getRGB());
     }
 }

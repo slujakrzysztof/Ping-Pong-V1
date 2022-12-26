@@ -42,7 +42,7 @@ public class Paddle {
 		g.fillRect(positionX, positionY, WIDTH, HEIGTH);
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
-		this.drawScore(g);
+		//this.drawScore(g);
 	}
 
 	protected void drawScore(Graphics g) {

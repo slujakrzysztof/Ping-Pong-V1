@@ -1,5 +1,8 @@
 package com.sluja.pingPongApp.model.ball;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 import com.sluja.pingPongApp.enums.GameLevel;
 import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.properties.PropertyReader;
@@ -21,10 +24,17 @@ public class RoundedBall implements Ball {
 
 	public RoundedBall(GameLevel gameLevel) {
 		this.size = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.size"));
-		this.speedX = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.dX"));
-		this.speedY = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.dY"));
+		this.speedX = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX"));
+		this.speedY = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY"));
 		this.gameLevel = gameLevel;
 	}
+	
+    //Drawing the ball
+    public void draw(Graphics g)
+    {
+        g.setColor(Color.white);
+        g.fillOval(this.getPositionX(), this.getPositionY(), this.getSizeX(), this.getSizeY());
+    }
 
 	@Override
 	public int getPositionX() {
