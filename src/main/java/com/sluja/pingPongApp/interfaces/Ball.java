@@ -30,15 +30,17 @@ public interface Ball {
 
 	public void setSpeedY(int speedY);
 	
-	public boolean isMovingForward();
+	public boolean isMovingUp();
 	
-	public void setMovingForward(boolean movingForward);
+	public void setMovingUp(boolean movingUp);
 	
 	public void move();
 	
 	public boolean checkBorders();
 	
 	public void increaseSpeed();
+	
+	public boolean earnPoint();
 	
 	public void restoreSpeed();
 	

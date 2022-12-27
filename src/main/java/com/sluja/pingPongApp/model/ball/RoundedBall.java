@@ -18,7 +18,7 @@ public class RoundedBall implements Ball {
 	private GameLevel gameLevel;
 	private int increasedSpeedX;
 	private int increasedSpeedY;
-	private boolean movingForward;
+	private boolean movingUp;
 	private boolean pickedUp;
 	private final int SCREEN_HEIGHT = Integer.parseInt(PropertyReader.getInstance().getProperty("window.heigth"));
 	private final int SCREEN_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.width"));
@@ -26,6 +26,7 @@ public class RoundedBall implements Ball {
 	public RoundedBall(GameLevel gameLevel) {
 		this.size = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.size"));
 		this.positionX = SCREEN_WIDTH/2;
+		this.positionY = SCREEN_HEIGHT/2;
 		this.speedX = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX"));
 		this.speedY = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY"));
 		this.gameLevel = gameLevel;
@@ -89,13 +90,13 @@ public class RoundedBall implements Ball {
 	}
 
 	@Override
-	public boolean isMovingForward() {
-		return this.movingForward;
+	public boolean isMovingUp() {
+		return this.movingUp;
 	}
 
 	@Override
-	public void setMovingForward(boolean movingForward) {
-		this.movingForward = movingForward;
+	public void setMovingUp(boolean movingUp) {
+		this.movingUp = movingUp;
 	}
 
 	@Override
@@ -144,6 +145,12 @@ public class RoundedBall implements Ball {
 		this.setSpeedY(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.dY")));
 	}
 
+	@Override
+	public boolean earnPoint() {
+		if((this.getPositionX() <= 0) || (this.getPositionX() + this.getSizeX() >= this.SCREEN_WIDTH)) return true;
+		return false;
+	}
+	
 	@Override
 	public int changeDirection(int speed) {
 		return speed * (-1);

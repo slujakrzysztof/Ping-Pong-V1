@@ -57,6 +57,22 @@ public class Steering{
 				getPaddles().get(0).move();
 	        }
 	    });
+	    
+		actionMap.put("movingUpSecondPlayer", new AbstractAction() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+				getPaddles().get(1).setMovingUp(true);
+				getPaddles().get(1).move();
+	        }
+	    });
+
+	    actionMap.put("movingDownSecondPlayer", new AbstractAction() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+				getPaddles().get(1).setMovingUp(false);
+				getPaddles().get(1).move();
+	        }
+	    });
 	}
 
 	private void setSteering() {
@@ -74,36 +90,9 @@ public class Steering{
 	}
 	
 	private void multiPlayerSteering() {
-		
+	    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "movingUpSecondPlayer");
+	    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false), "movingDownSecondPlayer");
 	}
-
-
-
-	/*@Override
-	public void keyPressed(KeyEvent e) {
-		this.singlePlayerSteering(e);
-		if (this.getGameForm() == GameForm.MULTIPLAYER)
-			this.multiPlayerSteering(e);
-		this.functionSteering(e);
-	}
-
-	private void singlePlayerSteering(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_W) 
-			this.getPaddles().get(0).setMovingUp(true);
-		
-		if (e.getKeyCode() == KeyEvent.VK_S)
-			this.getPaddles().get(0).setMovingUp(false);
-		this.getPaddles().get(0).move();
-	}
-
-	private void multiPlayerSteering(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_UP)
-			this.getPaddles().get(1).setMovingUp(true);
-
-		if (e.getKeyCode() == KeyEvent.VK_DOWN)
-			this.getPaddles().get(1).setMovingUp(false);
-		this.getPaddles().get(1).move();
-	}*/
 
 	private void functionSteering() {
 

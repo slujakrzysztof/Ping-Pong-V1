@@ -126,6 +126,12 @@ public class Paddle {
 				.getPositionY() > (this.getPositionY() + this.HEIGTH - this.PADDLE_BORDER))
 				&& (this.getBall().getPositionY() < this.getPositionY() + this.HEIGTH);
 
+		boolean changedSpeedConditionFirst = (this.getBall().getPositionY() > this.getPositionY())
+				&& (this.getBall().getPositionY() < this.getPositionY() + this.HEIGTH / 4);
+		
+		boolean changedSpeedConditionSecond = (this.getBall().getPositionY() > this.getPositionY() + this.HEIGTH * (0.75))
+				&& (this.getBall().getPositionY() < this.getPositionY() + this.HEIGTH);
+
 		if (conditionX && conditionY) {
 			if (increasedSpeedConditionFirst || increasedSpeedConditionSecond)
 				this.getBall().increaseSpeed();
