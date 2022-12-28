@@ -78,19 +78,28 @@ public class GamePanel extends JPanel implements Runnable {
 		steering = new Steering(paddles, this.getGameForm(), this);
 		// this.addKeyListener(steering);
 	}
+	
+	public void setRun(boolean run) {
+		this.run = run;
+	}
+	
+	public boolean isRun() {
+		return this.run;
+	}
 
 	// Thread running
 	@Override
 	public void run() {
-		while (run) {
+		while (isRun()) {
 			try {
-				ball.move();				
+				ball.move();
 				if (ball.earnPoint())
 					throw new InterruptedException();
-				if(this.paddles.get(0).pickup()) {
-					this.ball.setSpeedX(this.ball.changeDirection(this.ball.getSpeedX()));
-				}
+				for (int playerCounter = 0; playerCounter < paddles.size(); playerCounter++) {
+					if (this.paddles.get(playerCounter).pickup())
+						this.ball.setSpeedX(this.ball.changeDirection(this.ball.getSpeedX()));
 
+				}
 				// ball.ballCollision();
 				// ball.setSpeed();
 				// if (gameForm == 1)
@@ -102,7 +111,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 			} catch (InterruptedException ex) {
 				// gameStarted = false;
-				run = false;
+				this.setRun(false);
 				repaint();
 			}
 		}

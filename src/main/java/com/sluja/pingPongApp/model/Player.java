@@ -9,7 +9,7 @@ import com.sluja.pingPongApp.enums.GameForm;
 public class Player {
 
 	private Color playerColor;
-	private int score;
+	private Score score;
 	private int positionX;
 	private int scorePositionX;
 	private int id;
@@ -18,10 +18,11 @@ public class Player {
 		this.id = id;
 	}
 
-	public Player(int score, int positionX, int scorePositionX) {
-		this.score = 0;
+	public Player(int positionX, int scorePositionX) {
+		//this.score = 0;
 		this.positionX = positionX;
 		this.scorePositionX = scorePositionX;
+		this.score = new Score();
 	}
 
 	public Color getPlayerColor() {
@@ -32,11 +33,11 @@ public class Player {
 		this.playerColor = playerColor;
 	}
 
-	public int getScore() {
+	public Score getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	public void setScore(Score score) {
 		this.score = score;
 	}
 
