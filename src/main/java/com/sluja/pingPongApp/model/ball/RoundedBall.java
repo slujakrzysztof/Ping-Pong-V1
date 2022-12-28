@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import com.sluja.pingPongApp.enums.GameLevel;
+import com.sluja.pingPongApp.generator.RandomGenerator;
 import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.properties.PropertyReader;
 
@@ -19,9 +20,12 @@ public class RoundedBall implements Ball {
 	private int increasedSpeedX;
 	private int increasedSpeedY;
 	private boolean movingUp;
+	private boolean movingForward;
 	private boolean pickedUp;
+	private boolean firstDirection;
 	private final int SCREEN_HEIGHT = Integer.parseInt(PropertyReader.getInstance().getProperty("window.heigth"));
 	private final int SCREEN_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.width"));
+	RandomGenerator randomGenerator;
 
 	public RoundedBall(GameLevel gameLevel) {
 		this.size = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.size"));
@@ -30,6 +34,7 @@ public class RoundedBall implements Ball {
 		this.speedX = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX"));
 		this.speedY = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY"));
 		this.gameLevel = gameLevel;
+		this.randomGenerator = new RandomGenerator();
 	}
 	
     //Drawing the ball
@@ -103,6 +108,12 @@ public class RoundedBall implements Ball {
 	public boolean isPickedUp() {
 		return pickedUp;
 	}
+	
+	@Override
+	public boolean isMovingForward() {
+		if(this.getSpeedX() > 0) return true;
+		return false;
+	}
 
 	@Override
 	public void setPickedUp(boolean pickedUp) {
@@ -154,6 +165,25 @@ public class RoundedBall implements Ball {
 	@Override
 	public int changeDirection(int speed) {
 		return speed * (-1);
+	}
+
+	@Override
+	public void setStartingPosition(int points) {
+		this.setPositionX(this.SCREEN_WIDTH/2 - this.size/2);
+		this.randomGenerator.generateStartBallPosition();
+		this.setPositionY(randomGenerator.getStartBallPosition());
+		this.restoreSpeed();
+		if(points%2 == 0 && points != 0) this.setSpeedX(this.changeDirection(this.getSpeedX()));
+	}
+
+	@Override
+	public void setFirstDirection(boolean firstDirection) {
+		this.firstDirection = firstDirection;
+	}
+
+	@Override
+	public boolean getFirstDirection() {
+		return this.firstDirection;
 	}
 
 }

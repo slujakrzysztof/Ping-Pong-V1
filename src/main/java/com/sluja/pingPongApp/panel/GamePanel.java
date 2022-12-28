@@ -26,6 +26,8 @@ public class GamePanel extends JPanel implements Runnable {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private Ball ball;
 	private boolean run = true;
+	private int pickedPlayer;
+	private int points;
 
 	public GamePanel(GameFrame gameFrame, GameForm gameForm, GameLevel gameLevel) {
 		this.gameFrame = gameFrame;
@@ -78,13 +80,29 @@ public class GamePanel extends JPanel implements Runnable {
 		steering = new Steering(paddles, this.getGameForm(), this);
 		// this.addKeyListener(steering);
 	}
-	
+
 	public void setRun(boolean run) {
 		this.run = run;
 	}
-	
+
 	public boolean isRun() {
 		return this.run;
+	}
+
+	private int getPoints() {
+		for (int i = 0; i < players.size(); i++)
+			points += players.get(i).getScore().getPoints();
+		return points;
+	}
+
+	private void earnPoint() {
+		pickedPlayer = this.ball.isMovingForward() ? 0 : 1;
+		System.err.println("PICKEDPL: " + pickedPlayer);
+		this.players.get(pickedPlayer).getScore().addPoint();
+		if (!this.players.get(pickedPlayer).getScore().checkScore()) {
+			this.ball.setStartingPosition(this.getPoints());
+			this.setRun(true);
+		}
 	}
 
 	// Thread running
@@ -110,8 +128,10 @@ public class GamePanel extends JPanel implements Runnable {
 				repaint();
 
 			} catch (InterruptedException ex) {
-				// gameStarted = false;
+				// gameStarted = false;				
 				this.setRun(false);
+				this.earnPoint();
+
 				repaint();
 			}
 		}

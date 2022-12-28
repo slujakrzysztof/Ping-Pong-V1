@@ -32,6 +32,14 @@ public interface Ball {
 	
 	public boolean isMovingUp();
 	
+	public boolean isMovingForward();
+	
+	public void setStartingPosition(int points);
+	
+	public void setFirstDirection(boolean firstDirection);
+	
+	public boolean getFirstDirection();
+	
 	public void setMovingUp(boolean movingUp);
 	
 	public void move();
