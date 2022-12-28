@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.nio.channels.ShutdownChannelGroupException;
 
 import com.sluja.pingPongApp.enums.GameForm;
 import com.sluja.pingPongApp.interfaces.Ball;
@@ -28,13 +29,22 @@ public class Paddle {
 	protected Ball ball;
 	protected int realPositionY;
 	protected int realPositionX;
+	
+	boolean conditionX = false;
+	boolean conditionY = false;
+	boolean increasedSpeedConditionFirst = false;
+	boolean increasedSpeedConditionSecond = false;
+	boolean changedSpeedConditionFirst = false;
+	boolean changedSpeedConditionSecond = false;
 
 	public Paddle(Player player, Ball ball) {
 		this.player = player;
 		this.positionY = 80;
 		this.playerColor = player.getPlayerColor();
 		this.positionX = player.getPositionX();
+		this.realPositionX = WIDTH;
 		this.ball = ball;
+		System.out.println("PLAYER ID: " + this.player.getId());
 	}
 
 	public void draw(Graphics g) {
@@ -113,28 +123,39 @@ public class Paddle {
 
 	public boolean pickup() {
 
-		boolean conditionX = (this.getRealPositionX() < this.getBall().getPositionX())
-				|| (this.getPositionX() > (this.getBall().getPositionX() + this.getBall().getSizeX()));
 
-		boolean conditionY = ((this.getBall().getPositionY() > this.getPositionY())
-				&& ((this.getBall().getPositionY() + this.getBall().getSizeY()) < (this.getPositionY() + this.HEIGTH)));
 
-		boolean increasedSpeedConditionFirst = (this.getBall().getPositionY() > this.getPositionY())
-				&& (this.getBall().getPositionY() < this.getPositionY() + this.PADDLE_BORDER);
-
-		boolean increasedSpeedConditionSecond = (this.getBall()
-				.getPositionY() > (this.getPositionY() + this.HEIGTH - this.PADDLE_BORDER))
-				&& (this.getBall().getPositionY() < this.getPositionY() + this.HEIGTH);
-
-		boolean changedSpeedConditionFirst = (this.getBall().getPositionY() > this.getPositionY())
-				&& (this.getBall().getPositionY() < this.getPositionY() + this.HEIGTH / 4);
-		
-		boolean changedSpeedConditionSecond = (this.getBall().getPositionY() > this.getPositionY() + this.HEIGTH * (0.75))
-				&& (this.getBall().getPositionY() < this.getPositionY() + this.HEIGTH);
-
+		switch (this.getPlayer().getId()) {
+		case 1: {
+			conditionX = this.getRealPositionX() >= this.getBall().getPositionX();
+			conditionY = (this.getBall().getPositionY() + this.getBall().getSizeY()) > this.getPositionY();
+			increasedSpeedConditionFirst = this.getBall().getPositionY() > this.getPositionY();
+			increasedSpeedConditionSecond = this.getBall()
+					.getPositionY() > (this.getPositionY() + this.HEIGTH - this.PADDLE_BORDER);
+			changedSpeedConditionFirst = this.getBall().getPositionY() > this.getPositionY();
+			changedSpeedConditionSecond = this.getBall().getPositionY() > (this.getPositionY() + this.HEIGTH * (0.75));
+			break;
+		}
+		case 2: {
+			conditionX = this.getPositionX() > (this.getBall().getPositionX() + this.getBall().getSizeX());
+			conditionY = (this.getBall().getPositionY() + this.getBall().getSizeY()) < (this.getPositionY()
+					+ this.HEIGTH);
+			increasedSpeedConditionFirst = this.getBall().getPositionY() < (this.getPositionY() + this.PADDLE_BORDER);
+			increasedSpeedConditionSecond = this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH);
+			changedSpeedConditionFirst = this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH / 4);
+			changedSpeedConditionSecond = this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH);
+		}
+		}
+	
 		if (conditionX && conditionY) {
-			if (increasedSpeedConditionFirst || increasedSpeedConditionSecond)
+			/*if (increasedSpeedConditionFirst || increasedSpeedConditionSecond) {
 				this.getBall().increaseSpeed();
+				System.out.println("1");
+			}*/
+			if (changedSpeedConditionFirst || changedSpeedConditionSecond) {
+				this.getBall().setSpeedY(this.getBall().changeDirection(this.getBall().getSpeedY()));
+				System.out.println("2");
+			}
 			return true;
 		}
 		return false;

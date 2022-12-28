@@ -84,18 +84,18 @@ public class GamePanel extends JPanel implements Runnable {
 	public void run() {
 		while (run) {
 			try {
-				ball.move();
+				ball.move();				
 				if (ball.earnPoint())
 					throw new InterruptedException();
-				for (int playerCounter = 0; playerCounter < paddles.size(); playerCounter++) {
-					if (this.paddles.get(playerCounter).pickup())
-						ball.changeDirection(ball.getSpeedX());
+				if(this.paddles.get(0).pickup()) {
+					this.ball.setSpeedX(this.ball.changeDirection(this.ball.getSpeedX()));
 				}
+
 				// ball.ballCollision();
 				// ball.setSpeed();
 				// if (gameForm == 1)
 				// ball.AIPaddleMovement();
-				Thread.sleep(ball.getSpeedX());
+				Thread.sleep(Math.abs(ball.getSpeedX()));
 				// if (ball.getScoreEnd())
 				// throw new InterruptedException();
 				repaint();
