@@ -29,7 +29,7 @@ public class Paddle {
 	protected Ball ball;
 	protected int realPositionY;
 	protected int realPositionX;
-	
+
 	boolean conditionX = false;
 	boolean conditionY = false;
 	boolean increasedSpeedConditionFirst = false;
@@ -123,12 +123,12 @@ public class Paddle {
 
 	public boolean pickup() {
 
-
-
+		conditionY = ((this.getBall().getPositionY() + this.getBall().getSizeY()) > this.getPositionY())
+				&& ((this.getBall().getPositionY() + this.getBall().getSizeY()) < (this.getPositionY() + this.HEIGTH));
+		
 		switch (this.getPlayer().getId()) {
 		case 1: {
 			conditionX = this.getRealPositionX() >= this.getBall().getPositionX();
-			conditionY = (this.getBall().getPositionY() + this.getBall().getSizeY()) > this.getPositionY();
 			increasedSpeedConditionFirst = this.getBall().getPositionY() > this.getPositionY();
 			increasedSpeedConditionSecond = this.getBall()
 					.getPositionY() > (this.getPositionY() + this.HEIGTH - this.PADDLE_BORDER);
@@ -138,20 +138,18 @@ public class Paddle {
 		}
 		case 2: {
 			conditionX = this.getPositionX() > (this.getBall().getPositionX() + this.getBall().getSizeX());
-			conditionY = (this.getBall().getPositionY() + this.getBall().getSizeY()) < (this.getPositionY()
-					+ this.HEIGTH);
 			increasedSpeedConditionFirst = this.getBall().getPositionY() < (this.getPositionY() + this.PADDLE_BORDER);
 			increasedSpeedConditionSecond = this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH);
 			changedSpeedConditionFirst = this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH / 4);
 			changedSpeedConditionSecond = this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH);
 		}
 		}
-	
+
 		if (conditionX && conditionY) {
-			/*if (increasedSpeedConditionFirst || increasedSpeedConditionSecond) {
-				this.getBall().increaseSpeed();
-				System.out.println("1");
-			}*/
+			/*
+			 * if (increasedSpeedConditionFirst || increasedSpeedConditionSecond) {
+			 * this.getBall().increaseSpeed(); System.out.println("1"); }
+			 */
 			if (changedSpeedConditionFirst || changedSpeedConditionSecond) {
 				this.getBall().setSpeedY(this.getBall().changeDirection(this.getBall().getSpeedY()));
 				System.out.println("2");

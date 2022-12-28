@@ -124,8 +124,8 @@ public class RoundedBall implements Ball {
 		if (this.getPositionY() < 0) {
 			this.setPositionY(0);
 			return true;
-		} else if (this.getPositionY() + this.size > this.SCREEN_HEIGHT) {
-			this.setPositionY(this.SCREEN_HEIGHT - this.size);
+		} else if ((this.getPositionY() + this.size) > (this.SCREEN_HEIGHT - this.size)) {
+			this.setPositionY(this.SCREEN_HEIGHT - (2 * this.size));
 			return true;
 		}
 		return false;
