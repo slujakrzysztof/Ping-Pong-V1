@@ -10,20 +10,19 @@ public class ComputerPaddle extends Paddle {
 	GameLevel gameLevel;
 	private int speed;
 	private int backSpeed;
-	private int homePosition;
+	private int homePositionY;
 	private int border;
 	private int lowerBorder, upperBorder;
 
-
 	public ComputerPaddle(Player player, GameLevel gameLevel, Ball ball) {
-		super(player,ball);
+		super(player, ball);
 		this.gameLevel = gameLevel;
 		this.ball = ball;
-		this.homePosition = this.SCREEN_HEIGTH / 2;
+		this.homePositionY = this.SCREEN_HEIGTH / 2 - this.HEIGTH / 2;
 		this.border = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.border"));
 		this.realPositionY = this.getPositionY() + this.HEIGTH;
-		this.lowerBorder = this.homePosition + this.border;
-		this.upperBorder = this.homePosition - this.border;
+		this.lowerBorder = this.homePositionY + this.border;
+		this.upperBorder = this.homePositionY - this.border;
 		this.setSpeed();
 	}
 
@@ -41,12 +40,11 @@ public class ComputerPaddle extends Paddle {
 			positionY += backSpeed;
 	}
 
-	private void checkHomePosition() {
+	public void checkHomePosition() {
 
-
-		if ((this.ball.getPositionX() < this.homePosition)
+		if ((this.ball.getPositionX() < this.homePositionY)
 				&& !((realPositionY / 2) < this.lowerBorder && (realPositionY / 2) > this.upperBorder)) {
-			if ((realPositionY / 2) > this.homePosition)
+			if ((realPositionY / 2) > this.homePositionY)
 				this.setMovingUp(true);
 			else
 				this.setMovingUp(false);

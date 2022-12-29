@@ -11,7 +11,7 @@ public class Player {
 	private Color playerColor;
 	private Score score;
 	private int positionX;
-	private int scorePositionX;
+	private int scorePositionX, scorePositionY;
 	private int id;
 
 	public Player(int id, int positionX, int scorePositionX, int scorePositionY, Color playerColor) {
@@ -19,6 +19,7 @@ public class Player {
 		this.id = id;
 		this.positionX = positionX;
 		this.scorePositionX = scorePositionX;
+		this.scorePositionY = scorePositionY;
 		this.playerColor = playerColor;
 		this.score = new Score();
 	}
@@ -53,6 +54,14 @@ public class Player {
 
 	public void setScorePositionX(int scorePositionX) {
 		this.scorePositionX = scorePositionX;
+	}
+	
+	public int getScorePositionY() {
+		return scorePositionY;
+	}
+
+	public void setScorePositionY(int scorePositionY) {
+		this.scorePositionY = scorePositionY;
 	}
 	
 	public int getId() {

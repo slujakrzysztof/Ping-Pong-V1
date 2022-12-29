@@ -53,13 +53,13 @@ public class Paddle {
 		g.fillRect(positionX, positionY, WIDTH, HEIGTH);
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
-		// this.drawScore(g);
+		this.drawScore(g);
 	}
 
 	protected void drawScore(Graphics g) {
-		String score = "" + this.player.getScore();
+		String score = "" + this.player.getScore().getPoints();
 		int scorePositionX = this.player.getScorePositionX();
-		int scorePositionY = Integer.parseInt(PropertyReader.getInstance().getProperty("score.PositionY"));
+		int scorePositionY = this.player.getScorePositionY();
 		g.drawString(score, scorePositionX, scorePositionY);
 	}
 
