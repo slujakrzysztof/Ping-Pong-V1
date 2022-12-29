@@ -19,7 +19,7 @@ public class ComputerPaddle extends Paddle {
 		super(player,ball);
 		this.gameLevel = gameLevel;
 		this.ball = ball;
-		this.homePosition = this.SCREEN_WIDTH / 2;
+		this.homePosition = this.SCREEN_HEIGTH / 2;
 		this.border = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.border"));
 		this.realPositionY = this.getPositionY() + this.HEIGTH;
 		this.lowerBorder = this.homePosition + this.border;

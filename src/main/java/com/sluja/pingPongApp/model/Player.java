@@ -14,15 +14,12 @@ public class Player {
 	private int scorePositionX;
 	private int id;
 
-	public Player(int id) {
-		this(0, 300);
-		this.id = id;
-	}
-
-	public Player(int positionX, int scorePositionX) {
+	public Player(int id, int positionX, int scorePositionX, int scorePositionY, Color playerColor) {
 		//this.score = 0;
+		this.id = id;
 		this.positionX = positionX;
 		this.scorePositionX = scorePositionX;
+		this.playerColor = playerColor;
 		this.score = new Score();
 	}
 

@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements Runnable {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g); // To change body of generated methods, choose Tools | Templates.
 		this.paddles.get(0).draw(g); // drawing first paddle
-		// second.draw(g); // drawing second paddle
+		this.paddles.get(1).draw(g); // drawing second paddle
 		ball.draw(g); // drawing ball
 		// if (ball.getScoreEnd())
 		// ball.paintResult(g); // If game ends, the score with information will be

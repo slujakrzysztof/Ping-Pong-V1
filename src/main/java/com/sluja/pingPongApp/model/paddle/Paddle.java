@@ -45,6 +45,7 @@ public class Paddle {
 		this.realPositionX = WIDTH;
 		this.ball = ball;
 		System.out.println("PLAYER ID: " + this.player.getId());
+		System.out.println("POSX: " + this.positionX);
 	}
 
 	public void draw(Graphics g) {
@@ -125,7 +126,7 @@ public class Paddle {
 
 		conditionY = ((this.getBall().getPositionY() + this.getBall().getSizeY()) > this.getPositionY())
 				&& ((this.getBall().getPositionY() + this.getBall().getSizeY()) < (this.getPositionY() + this.HEIGTH));
-		
+
 		switch (this.getPlayer().getId()) {
 		case 1: {
 			conditionX = this.getRealPositionX() >= this.getBall().getPositionX();
@@ -137,7 +138,7 @@ public class Paddle {
 			break;
 		}
 		case 2: {
-			conditionX = this.getPositionX() > (this.getBall().getPositionX() + this.getBall().getSizeX());
+			conditionX = this.getPositionX() < (this.getBall().getPositionX() + this.getBall().getSizeX());
 			increasedSpeedConditionFirst = this.getBall().getPositionY() < (this.getPositionY() + this.PADDLE_BORDER);
 			increasedSpeedConditionSecond = this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH);
 			changedSpeedConditionFirst = this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH / 4);
