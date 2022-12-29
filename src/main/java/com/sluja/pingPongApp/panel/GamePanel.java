@@ -11,6 +11,7 @@ import com.sluja.pingPongApp.enums.GameLevel;
 import com.sluja.pingPongApp.frame.GameFrame;
 import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.model.Player;
+import com.sluja.pingPongApp.model.paddle.ComputerPaddle;
 import com.sluja.pingPongApp.model.paddle.Paddle;
 import com.sluja.pingPongApp.steering.Steering;
 
@@ -113,6 +114,7 @@ public class GamePanel extends JPanel implements Runnable {
 		while (isRun()) {
 			try {
 				ball.move();
+
 				if (ball.earnPoint()) {
 					Thread.sleep(1000);
 					throw new InterruptedException();
@@ -121,7 +123,10 @@ public class GamePanel extends JPanel implements Runnable {
 					if (this.paddles.get(playerCounter).pickup())
 						this.ball.setSpeedX(this.ball.changeDirection(this.ball.getSpeedX()));
 				}
-				Thread.sleep(Math.abs(ball.getSpeedX()));
+				if (this.getGameForm() == GameForm.SINGLE_PLAYER)
+					((ComputerPaddle) this.paddles.get(1)).computerPaddleMove();
+				System.out.println("BALL SPEED : " + this.ball.getSpeedX());
+				Thread.sleep(Math.abs(this.ball.getSpeedX()));
 				repaint();
 
 			} catch (InterruptedException ex) {

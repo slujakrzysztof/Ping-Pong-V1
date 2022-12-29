@@ -22,7 +22,7 @@ public class Paddle {
 			.parseInt(PropertyReader.getInstance().getProperty("paddle.increasedBorder"));
 	protected int positionY;
 	protected int positionX;
-	protected int speed = 20;
+	protected int speed;
 	protected boolean movingUp;
 	protected Color playerColor;
 	protected Player player;
@@ -40,12 +40,11 @@ public class Paddle {
 	public Paddle(Player player, Ball ball) {
 		this.player = player;
 		this.positionY = 80;
+		this.speed = 20;
 		this.playerColor = player.getPlayerColor();
 		this.positionX = player.getPositionX();
 		this.realPositionX = WIDTH;
 		this.ball = ball;
-		System.out.println("PLAYER ID: " + this.player.getId());
-		System.out.println("POSX: " + this.positionX);
 	}
 
 	public void draw(Graphics g) {
@@ -109,11 +108,14 @@ public class Paddle {
 		else
 			positionY += speed;
 		this.checkPosition();
+		if (player.getId() == 1)
+			System.out.println("POSY : " + positionY);
 	}
 
 	protected void checkPosition() {
 		int lowerBorder = SCREEN_HEIGTH - HEIGTH - speed;
-
+		if (player.getId() == 1)
+			System.out.println("LOWER: " + lowerBorder);
 		if (positionY <= 0) {
 			positionY = 0;
 		}
