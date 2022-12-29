@@ -90,6 +90,7 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	private int getPoints() {
+		points = 0;
 		for (int i = 0; i < players.size(); i++)
 			points += players.get(i).getScore().getPoints();
 		return points;
@@ -97,10 +98,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private void earnPoint() {
 		pickedPlayer = this.ball.isMovingForward() ? 0 : 1;
-		System.err.println("PICKEDPL: " + pickedPlayer);
+		System.out.println("PICKEDPL: " + pickedPlayer);
 		this.players.get(pickedPlayer).getScore().addPoint();
 		if (!this.players.get(pickedPlayer).getScore().checkScore()) {
 			this.ball.setStartingPosition(this.getPoints());
+			System.out.println("PUNKT: " + this.getPoints());
 			this.setRun(true);
 		}
 	}
@@ -111,27 +113,22 @@ public class GamePanel extends JPanel implements Runnable {
 		while (isRun()) {
 			try {
 				ball.move();
-				if (ball.earnPoint())
+				if (ball.earnPoint()) {
+					Thread.sleep(1000);
 					throw new InterruptedException();
+				}
 				for (int playerCounter = 0; playerCounter < paddles.size(); playerCounter++) {
 					if (this.paddles.get(playerCounter).pickup())
 						this.ball.setSpeedX(this.ball.changeDirection(this.ball.getSpeedX()));
-
 				}
-				// ball.ballCollision();
-				// ball.setSpeed();
-				// if (gameForm == 1)
-				// ball.AIPaddleMovement();
 				Thread.sleep(Math.abs(ball.getSpeedX()));
-				// if (ball.getScoreEnd())
-				// throw new InterruptedException();
 				repaint();
 
 			} catch (InterruptedException ex) {
-				// gameStarted = false;				
+				// gameStarted = false;
 				this.setRun(false);
+				this.points = 0;
 				this.earnPoint();
-
 				repaint();
 			}
 		}

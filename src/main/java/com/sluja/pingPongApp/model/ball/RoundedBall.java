@@ -152,8 +152,8 @@ public class RoundedBall implements Ball {
 
 	@Override
 	public void restoreSpeed() {
-		this.setSpeedX(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.dX")));
-		this.setSpeedY(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.dY")));
+		this.setSpeedX(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX")));
+		this.setSpeedY(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY")));
 	}
 
 	@Override

@@ -15,6 +15,7 @@ public class Player {
 	private int id;
 
 	public Player(int id) {
+		this(0, 300);
 		this.id = id;
 	}
 
