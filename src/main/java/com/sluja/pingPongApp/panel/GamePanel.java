@@ -2,6 +2,7 @@ package com.sluja.pingPongApp.panel;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -11,8 +12,10 @@ import com.sluja.pingPongApp.enums.GameLevel;
 import com.sluja.pingPongApp.frame.GameFrame;
 import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.model.Player;
+import com.sluja.pingPongApp.model.ball.RoundedBall;
 import com.sluja.pingPongApp.model.paddle.ComputerPaddle;
 import com.sluja.pingPongApp.model.paddle.Paddle;
+import com.sluja.pingPongApp.properties.PropertyReader;
 import com.sluja.pingPongApp.steering.Steering;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -22,6 +25,9 @@ public class GamePanel extends JPanel implements Runnable {
 	GameLevel gameLevel;
 	Color backgroundColor = Color.BLACK;
 	Steering steering;
+	private Thread paddleFirstThread;
+	private Thread paddleSecondThread;
+	private Thread ballThread;
 	private Thread mainThread;
 	private ArrayList<Paddle> paddles = new ArrayList<Paddle>();
 	private ArrayList<Player> players = new ArrayList<Player>();
@@ -36,6 +42,9 @@ public class GamePanel extends JPanel implements Runnable {
 		this.gameLevel = gameLevel;
 		this.setBackground(backgroundColor);
 		this.setFocusable(true);
+		this.ball = new RoundedBall(gameLevel, this);
+		this.initializePlayersArray();
+		this.initializePaddle();
 		mainThread = new Thread(this);
 	}
 
@@ -51,6 +60,22 @@ public class GamePanel extends JPanel implements Runnable {
 		// if (!gameStarted)
 		// drawInfo(g); // Displaying informations at the beginning and at the end
 	}
+	
+	private void initializePlayersArray() {
+		int firstScorePositionX = (int) (this.gameFrame.getScreenWidth() * (0.25));
+		int secondScorePositionX = (int) (this.gameFrame.getScreenWidth() * (0.75));
+		int scorePositionY = (int) (this.gameFrame.getScreenHeigth() * (0.25));
+		int secondPositionX = (int) (this.gameFrame.getScreenWidth()
+				- Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.width"))  - 15);
+		this.players.add(new Player(1, 0, firstScorePositionX, scorePositionY, Color.GREEN));
+		this.players.add(new Player(2, secondPositionX, secondScorePositionX, scorePositionY, Color.RED));
+	}
+	
+	private void initializePaddle() {
+		this.paddles.add(new Paddle(players.get(0), this.ball));
+		if(this.gameForm == GameForm.MULTIPLAYER) this.paddles.add(new Paddle(players.get(1), this.ball));
+		else this.paddles.add(new ComputerPaddle(players.get(1), GameLevel.BEGINNER, this.ball));
+	}
 
 	public GameForm getGameForm() {
 		return this.gameForm;
@@ -60,12 +85,21 @@ public class GamePanel extends JPanel implements Runnable {
 		this.gameForm = gameForm;
 	}
 
-	public void setGame(Ball ball, ArrayList<Player> players, ArrayList<Paddle> paddles) {
-		this.ball = ball;
-		this.addPaddles(paddles);
-		this.addPlayers(players);
+	public void setGame() {
+		//this.ball = ball;
+		//this.addPaddles(paddles);
+		//this.addPlayers(players);
 		this.setSteering(paddles);
+		this.paddles.get(0).setRun(true);
+		this.paddles.get(1).setRun(true);
+		this.ball.setRun(true);
 		System.out.println("SIEMA");
+		paddleFirstThread = new Thread(paddles.get(0));
+		ballThread = new Thread((RoundedBall)this.ball);
+		paddleSecondThread = new Thread(paddles.get(1));
+		paddleFirstThread.start();
+		paddleSecondThread.start();
+		ballThread.start();
 		mainThread.start();
 	}
 
@@ -108,34 +142,40 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
+	private void setHomePosition(Paddle paddle) {
+		paddle.setHomePosition();
+	}
+
+	private void setBallSpeed(Paddle paddle) {
+		if (paddle.pickup())
+			this.ball.setSpeedX(this.ball.changeDirection(this.ball.getSpeedX()));
+	}
+
 	// Thread running
 	@Override
 	public void run() {
 		while (isRun()) {
-			try {
+			/*try {
 				ball.move();
 
 				if (ball.earnPoint()) {
 					Thread.sleep(1000);
 					throw new InterruptedException();
 				}
-				for (int playerCounter = 0; playerCounter < paddles.size(); playerCounter++) {
-					if (this.paddles.get(playerCounter).pickup())
-						this.ball.setSpeedX(this.ball.changeDirection(this.ball.getSpeedX()));
-				}
+				paddles.forEach((paddle) -> setBallSpeed(paddle));
 				if (this.getGameForm() == GameForm.SINGLE_PLAYER)
 					((ComputerPaddle) this.paddles.get(1)).computerPaddleMove();
-				System.out.println("BALL SPEED : " + this.ball.getSpeedX());
-				Thread.sleep(Math.abs(this.ball.getSpeedX()));
+				Thread.sleep(Math.abs(this.ball.getSpeedX()));*/
 				repaint();
 
-			} catch (InterruptedException ex) {
+			/*} catch (InterruptedException ex) {
 				// gameStarted = false;
 				this.setRun(false);
 				this.points = 0;
 				this.earnPoint();
+				this.paddles.forEach((paddle) -> setHomePosition(paddle));
 				repaint();
-			}
+			}*/
 		}
 	}
 }

@@ -2,6 +2,8 @@ package com.sluja.pingPongApp.interfaces;
 
 import java.awt.Graphics;
 
+import com.sluja.pingPongApp.panel.GamePanel;
+
 public interface Ball {
 	
 	public int getPositionX();
@@ -51,6 +53,12 @@ public interface Ball {
 	public boolean earnPoint();
 	
 	public void restoreSpeed();
+	
+	public GamePanel getGamePanel();
+	
+	public boolean isRun();
+	
+	public void setRun(boolean run);
 	
 	public int changeDirection(int speed);
 

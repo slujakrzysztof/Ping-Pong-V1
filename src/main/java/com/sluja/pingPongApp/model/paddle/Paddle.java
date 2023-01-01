@@ -10,9 +10,10 @@ import java.nio.channels.ShutdownChannelGroupException;
 import com.sluja.pingPongApp.enums.GameForm;
 import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.model.Player;
+import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.properties.PropertyReader;
 
-public class Paddle {
+public class Paddle implements Runnable {
 
 	public final int WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.width"));
 	public final int HEIGTH = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.height"));
@@ -29,7 +30,11 @@ public class Paddle {
 	protected Ball ball;
 	protected int realPositionY;
 	protected int realPositionX;
-
+	protected int homePosition;
+	protected boolean pickedUp;
+	protected boolean run;
+	protected int sizeH;
+	protected GamePanel gamePanel;
 	boolean conditionX = false;
 	boolean conditionY = false;
 	boolean increasedSpeedConditionFirst = false;
@@ -39,12 +44,14 @@ public class Paddle {
 
 	public Paddle(Player player, Ball ball) {
 		this.player = player;
-		this.positionY = 80;
+		this.setHomePosition();
+		this.homePosition = this.SCREEN_HEIGTH / 2 - this.HEIGTH / 2;
 		this.speed = 20;
 		this.playerColor = player.getPlayerColor();
 		this.positionX = player.getPositionX();
 		this.realPositionX = WIDTH;
 		this.ball = ball;
+		this.gamePanel = this.ball.getGamePanel();
 	}
 
 	public void draw(Graphics g) {
@@ -60,6 +67,18 @@ public class Paddle {
 		int scorePositionX = this.player.getScorePositionX();
 		int scorePositionY = this.player.getScorePositionY();
 		g.drawString(score, scorePositionX, scorePositionY);
+	}
+
+	public boolean isRun() {
+		return this.run;
+	}
+
+	public void setRun(boolean run) {
+		this.run = run;
+	}
+
+	public int getHomePosition() {
+		return this.homePosition;
 	}
 
 	public Ball getBall() {
@@ -102,26 +121,47 @@ public class Paddle {
 		this.player = player;
 	}
 
-	public void move() {
-		if (isMovingUp())
-			positionY -= speed;
-		else
-			positionY += speed;
-		this.checkPosition();
-		if (player.getId() == 1)
-			System.out.println("POSY : " + positionY);
+	public void setPickedUp(boolean pickedUp) {
+		this.pickedUp = pickedUp;
 	}
 
-	protected void checkPosition() {
-		int lowerBorder = SCREEN_HEIGTH - HEIGTH - speed;
-		if (player.getId() == 1)
-			System.out.println("LOWER: " + lowerBorder);
+	public boolean isPickedUp() {
+		return this.pickedUp;
+	}
+
+	public boolean checkUpperPosition() {
 		if (positionY <= 0) {
 			positionY = 0;
+			return true;
 		}
+		return false;
+	}
+	
+	public boolean checkLowerPosition() {
+		int lowerBorder = SCREEN_HEIGTH - HEIGTH - speed;
 		if (positionY >= lowerBorder) {
 			positionY = lowerBorder;
+			return true;
 		}
+		return false;
+	}
+
+
+	public void checkPosition() {
+		this.checkUpperPosition();
+		this.checkLowerPosition();
+	}
+
+	public void moveUp() {
+		this.setPositionY(this.getPositionY() - this.speed);
+	}
+
+	public void moveDown() {
+		this.setPositionY(this.getPositionY() + this.speed);
+	}
+
+	public void setHomePosition() {
+		this.setPositionY(this.getHomePosition());
 	}
 
 	public boolean pickup() {
@@ -155,11 +195,28 @@ public class Paddle {
 			 */
 			if (changedSpeedConditionFirst || changedSpeedConditionSecond) {
 				this.getBall().setSpeedY(this.getBall().changeDirection(this.getBall().getSpeedY()));
+				this.setPickedUp(true);
 				System.out.println("2");
 			}
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void run() {
+		while (isRun()) {
+			if (this.pickup())
+				this.getBall().setSpeedX(this.getBall().changeDirection(this.getBall().getSpeedX()));
+			this.checkPosition();
+			try {
+				Thread.sleep(80);
+				// this.gamePanel.repaint();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

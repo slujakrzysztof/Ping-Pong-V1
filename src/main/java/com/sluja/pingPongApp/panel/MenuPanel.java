@@ -44,7 +44,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 		this.buttonArray.add(singlePlayerButton);
 		this.buttonArray.add(multiPlayerButton);
 		players.clear();
-		this.ball = new RoundedBall(GameLevel.BEGINNER);
+		//this.ball = new RoundedBall(GameLevel.BEGINNER);
 		this.initializeListener();
 		this.initializePanel();
 	}
@@ -64,21 +64,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	private void initializePlayersArray() {
-		int firstScorePositionX = (int) (this.gameFrame.getScreenWidth() * (0.25));
-		int secondScorePositionX = (int) (this.gameFrame.getScreenWidth() * (0.75));
-		int scorePositionY = (int) (this.gameFrame.getScreenHeigth() * (0.25));
-		int secondPositionX = (int) (this.gameFrame.getScreenWidth()
-				- Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.width"))  - 15);
-		this.players.add(new Player(1, 0, firstScorePositionX, scorePositionY, Color.GREEN));
-		this.players.add(new Player(2, secondPositionX, secondScorePositionX, scorePositionY, Color.RED));
-	}
 	
-	private void initializePaddle(ActionEvent e) {
-		this.paddles.add(new Paddle(players.get(0), this.ball));
-		if(e.getSource() == multiPlayerButton) this.paddles.add(new Paddle(players.get(1), this.ball));
-		else this.paddles.add(new ComputerPaddle(players.get(1), GameLevel.BEGINNER, this.ball));
-	}
 
 	public GameFrame getGameFrame() {
 		return this.gameFrame;
@@ -87,10 +73,10 @@ public class MenuPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == singlePlayerButton || e.getSource() == multiPlayerButton) {
-			this.initializePlayersArray();
+			//this.initializePlayersArray();
 			this.getGameFrame().setGameForm(GameForm.valueOf(((PanelButton) e.getSource()).getText()));
-			this.initializePaddle(e);
-			this.getGameFrame().getMainPanel().getGamePanel().setGame(this.ball, this.players, this.paddles);
+			//this.initializePaddle(e);
+			this.getGameFrame().getMainPanel().getGamePanel().setGame();
 			this.getGameFrame().getMainPanel().showPanel(this.getGameFrame().getMainPanel().getLabelGamePanel());
 		}
 		if (e.getSource() == exitButton)

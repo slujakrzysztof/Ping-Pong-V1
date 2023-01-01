@@ -45,16 +45,18 @@ public class Steering{
 		actionMap.put("movingUp", new AbstractAction() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-				getPaddles().get(0).setMovingUp(true);
-				getPaddles().get(0).move();
+				//getPaddles().get(0).setMovingUp(true);
+	        	if(!getPaddles().get(0).checkUpperPosition())
+				getPaddles().get(0).moveUp();
 	        }
 	    });
 
 	    actionMap.put("movingDown", new AbstractAction() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-				getPaddles().get(0).setMovingUp(false);
-				getPaddles().get(0).move();
+				//getPaddles().get(0).setMovingUp(false);
+	        	if(!getPaddles().get(0).checkLowerPosition())
+				getPaddles().get(0).moveDown();
 	        }
 	    });
 	    
@@ -62,7 +64,7 @@ public class Steering{
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 				getPaddles().get(1).setMovingUp(true);
-				getPaddles().get(1).move();
+				//getPaddles().get(1).move();
 	        }
 	    });
 
@@ -70,7 +72,7 @@ public class Steering{
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 				getPaddles().get(1).setMovingUp(false);
-				getPaddles().get(1).move();
+				//getPaddles().get(1).move();
 	        }
 	    });
 	}

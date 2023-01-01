@@ -6,9 +6,10 @@ import java.awt.Graphics;
 import com.sluja.pingPongApp.enums.GameLevel;
 import com.sluja.pingPongApp.generator.RandomGenerator;
 import com.sluja.pingPongApp.interfaces.Ball;
+import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.properties.PropertyReader;
 
-public class RoundedBall implements Ball {
+public class RoundedBall implements Ball, Runnable {
 
 	private int size;
 	private int positionX;
@@ -22,27 +23,29 @@ public class RoundedBall implements Ball {
 	private boolean movingUp;
 	private boolean movingForward;
 	private boolean pickedUp;
+	private boolean run;
 	private boolean firstDirection;
 	private final int SCREEN_HEIGHT = Integer.parseInt(PropertyReader.getInstance().getProperty("window.heigth"));
 	private final int SCREEN_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.width"));
 	RandomGenerator randomGenerator;
+	private GamePanel gamePanel;
 
-	public RoundedBall(GameLevel gameLevel) {
+	public RoundedBall(GameLevel gameLevel, GamePanel gamePanel) {
 		this.size = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.size"));
-		this.positionX = SCREEN_WIDTH/2;
-		this.positionY = SCREEN_HEIGHT/2;
+		this.positionX = SCREEN_WIDTH / 2;
+		this.positionY = SCREEN_HEIGHT / 2;
 		this.speedX = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX"));
 		this.speedY = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY"));
 		this.gameLevel = gameLevel;
+		this.gamePanel = gamePanel;
 		this.randomGenerator = new RandomGenerator();
 	}
-	
-    //Drawing the ball
-    public void draw(Graphics g)
-    {
-        g.setColor(Color.white);
-        g.fillOval(this.getPositionX(), this.getPositionY(), this.getSizeX(), this.getSizeY());
-    }
+
+	// Drawing the ball
+	public void draw(Graphics g) {
+		g.setColor(Color.white);
+		g.fillOval(this.getPositionX(), this.getPositionY(), this.getSizeX(), this.getSizeY());
+	}
 
 	@Override
 	public int getPositionX() {
@@ -108,10 +111,11 @@ public class RoundedBall implements Ball {
 	public boolean isPickedUp() {
 		return pickedUp;
 	}
-	
+
 	@Override
 	public boolean isMovingForward() {
-		if(this.getSpeedX() > 0) return true;
+		if (this.getSpeedX() > 0)
+			return true;
 		return false;
 	}
 
@@ -122,10 +126,12 @@ public class RoundedBall implements Ball {
 
 	@Override
 	public void move() {
-		if(checkBorders()) 	this.setSpeedY(this.changeDirection(this.getSpeedY()));
-		
-		if(isPickedUp()) this.setSpeedX(this.changeDirection(this.getSpeedX()));
-		
+		if (checkBorders())
+			this.setSpeedY(this.changeDirection(this.getSpeedY()));
+
+		if (isPickedUp())
+			this.setSpeedX(this.changeDirection(this.getSpeedX()));
+
 		this.setPositionX(this.getPositionX() + this.getSpeedX());
 		this.setPositionY(this.getPositionY() + this.getSpeedY());
 	}
@@ -158,10 +164,11 @@ public class RoundedBall implements Ball {
 
 	@Override
 	public boolean earnPoint() {
-		if((this.getPositionX() <= 0) || (this.getPositionX() + this.getSizeX() >= this.SCREEN_WIDTH)) return true;
+		if ((this.getPositionX() <= 0) || (this.getPositionX() + this.getSizeX() >= this.SCREEN_WIDTH))
+			return true;
 		return false;
 	}
-	
+
 	@Override
 	public int changeDirection(int speed) {
 		return speed * (-1);
@@ -169,11 +176,12 @@ public class RoundedBall implements Ball {
 
 	@Override
 	public void setStartingPosition(int points) {
-		this.setPositionX(this.SCREEN_WIDTH/2 - this.size/2);
+		this.setPositionX(this.SCREEN_WIDTH / 2 - this.size / 2);
 		this.randomGenerator.generateStartBallPosition();
 		this.setPositionY(randomGenerator.getStartBallPosition());
 		this.restoreSpeed();
-		if(points%2 == 0 && points != 0) this.setSpeedX(this.changeDirection(this.getSpeedX()));
+		if (points % 2 == 0 && points != 0)
+			this.setSpeedX(this.changeDirection(this.getSpeedX()));
 	}
 
 	@Override
@@ -184,6 +192,35 @@ public class RoundedBall implements Ball {
 	@Override
 	public boolean getFirstDirection() {
 		return this.firstDirection;
+	}
+
+	@Override
+	public void run() {
+		while(isRun()) {
+			try {
+				this.move();
+				Thread.sleep(Math.abs(this.getSpeedX()));
+				// this.gamePanel.repaint();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public GamePanel getGamePanel() {
+		return this.gamePanel;
+	}
+
+	@Override
+	public boolean isRun() {
+		return this.run;
+	}
+
+	@Override
+	public void setRun(boolean run) {
+		this.run = run;
 	}
 
 }
