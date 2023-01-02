@@ -64,7 +64,7 @@ public class Paddle implements Runnable {
 		g.setColor(playerColor);
 		g.fillRect(positionX, positionY, WIDTH, HEIGTH);
 		g.setColor(Color.WHITE);
-		g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 50));
 		this.drawScore(g);
 	}
 
@@ -182,7 +182,7 @@ public class Paddle implements Runnable {
 
 		switch (this.getPlayer().getId()) {
 		case 1: {
-			conditionX = this.getRealPositionX() >= this.getBall().getPositionX();
+			conditionX = (this.getRealPositionX() + (1.5 * this.getBall().getSizeX())) >= this.getBall().getPositionX();
 			changedSpeedConditionFirst = (this.getBall().getPositionY() > this.getPositionY())
 					&& (this.getBall().getPositionY() < (this.getPositionY() + 20));
 			changedSpeedConditionSecond = ((this.getBall().getPositionY()
@@ -244,24 +244,22 @@ public class Paddle implements Runnable {
 	public void run() {
 		while (isRun()) {
 			try {
-				this.getBall().move();
+				// this.getBall().move();
 				if (this.pickup())
 					this.getBall().setSpeedX(this.getBall().changeDirection(this.getBall().getSpeedX()));
-				if ((this.getBall().earnPoint(this.getPlayer().getId(), this.getPositionX(),
-						this.getGamePanel().getPaddles().get(1).getPositionX()))) {
-					// || this.getBall().isBorderCrossed()) {
-					// Thread.sleep(1000);
-					throw new InterruptedException();
-				}
+				/*
+				 * if ((this.getBall().earnPoint(this.getPlayer().getId(), this.getPositionX(),
+				 * this.getGamePanel().getPaddles().get(1).getPositionX()))) { throw new
+				 * InterruptedException(); }
+				 */
 				this.checkPosition();
-				Thread.sleep(Math.abs(this.getBall().getSpeedX()));
-				this.getGamePanel().repaint();
+				Thread.sleep(100);// Math.abs(this.getBall().getSpeedX()));
+				//this.getGamePanel().repaint();
 			} catch (InterruptedException e) {
-				// this.getBall().setBorderCrossed(false);
-				this.getGamePanel().setRun(false);
-				this.getGamePanel().earnPoint();
-				this.getGamePanel().setHomePosition();
-				this.getGamePanel().repaint();
+				/*
+				 * this.getGamePanel().setRun(false); this.getGamePanel().earnPoint();
+				 * this.getGamePanel().setHomePosition(); this.getGamePanel().repaint();
+				 */
 
 			}
 		}

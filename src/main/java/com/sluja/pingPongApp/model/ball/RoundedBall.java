@@ -9,30 +9,28 @@ import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.properties.PropertyReader;
 
-public class RoundedBall implements Ball {
+public class RoundedBall implements Ball, Runnable {
 
 	private int size;
 	private int positionX;
 	private int positionY;
-	private int realPositionX;
 	private int speedX;
 	private int speedY;
 	private GameLevel gameLevel;
 	private int increasedSpeedX;
 	private int increasedSpeedY;
 	private boolean movingUp;
-	private boolean movingForward;
 	private boolean movingFaster;
 	private boolean movingStraight;
 	private boolean pickedUp;
 	private boolean borderCrossed;
-	private int reflectionAmount;
 	private boolean run;
 	private boolean firstDirection;
 	private final int SCREEN_HEIGHT = Integer.parseInt(PropertyReader.getInstance().getProperty("window.heigth"));
 	private final int SCREEN_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.width"));
 	RandomGenerator randomGenerator;
 	private GamePanel gamePanel;
+	private int movingDirection;
 
 	public RoundedBall(GameLevel gameLevel, GamePanel gamePanel) {
 		this.size = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.size"));
@@ -40,6 +38,7 @@ public class RoundedBall implements Ball {
 		this.positionY = SCREEN_HEIGHT / 2;
 		this.speedX = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX"));
 		this.speedY = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY"));
+		this.movingDirection = Integer.signum(this.speedY);
 		this.gameLevel = gameLevel;
 		this.gamePanel = gamePanel;
 		this.randomGenerator = new RandomGenerator();
@@ -182,9 +181,10 @@ public class RoundedBall implements Ball {
 	}
 
 	@Override
-	public boolean earnPoint(int playerId, int firstPositionX, int secondPositionX) {
+	public boolean earnPoint(int firstPositionX, int secondPositionX) {
 		if ((this.getPositionX() <= 0) || ((this.getPositionX() + this.getSizeX()) >= this.SCREEN_WIDTH)
-				|| (playerId == 1 && this.getPositionX() < positionX) || ((this.getPositionX() + this.getSizeX()/4) > secondPositionX)) {
+				|| (this.getPositionX() < positionX)
+				|| ((this.getPositionX() + this.getSizeX() / 4) > secondPositionX)) {
 			return true;
 		}
 		return false;
@@ -202,7 +202,9 @@ public class RoundedBall implements Ball {
 		this.setPositionY(randomGenerator.getStartBallPosition());
 		this.restoreSpeed();
 		if (points % 2 == 0 && points != 0)
-			this.setSpeedX(this.changeDirection(this.getSpeedX()));
+			movingDirection *= (-1);
+		this.setSpeedX(Math.abs(this.getSpeedX()) * movingDirection);
+
 	}
 
 	@Override
@@ -270,6 +272,31 @@ public class RoundedBall implements Ball {
 	@Override
 	public boolean isBorderCrossed() {
 		return this.borderCrossed;
+	}
+
+	@Override
+	public void restoreSpeedX() {
+		this.setSpeedX(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX")));
+	}
+
+	@Override
+	public void run() {
+		while (isRun()) {
+			try {
+				this.move();
+				if ((this.earnPoint(this.getGamePanel().getPaddles().get(0).getPositionX(),
+						this.getGamePanel().getPaddles().get(1).getPositionX()))) {
+					throw new InterruptedException();
+				}
+				Thread.sleep(Math.abs(this.getSpeedX()));
+				this.getGamePanel().repaint();
+			} catch (InterruptedException e) {
+				this.getGamePanel().setRun(false);
+				this.getGamePanel().earnPoint();
+				this.getGamePanel().setHomePosition();
+				this.getGamePanel().repaint();
+			}
+		}
 	}
 
 }

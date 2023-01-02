@@ -167,25 +167,19 @@ public class ComputerPaddle extends Paddle implements Runnable {
 
 	@Override
 	public void run() {
-		//while (true) {
-			while (isRun()) {
-				try {
-					if (this.pickup())
-						this.getBall().setSpeedX(this.getBall().changeDirection(this.getBall().getSpeedX()));
+		while (isRun()) {
+			try {
+				if (this.pickup())
+					this.getBall().setSpeedX(this.getBall().changeDirection(this.getBall().getSpeedX()));
 
-					this.computerPaddleMove();
-					this.checkPosition();
-					/*if (borderCrossed()) {
-						this.getBall().setBorderCrossed(true);
-						throw new InterruptedException();
-					}*/
-					Thread.sleep(45);
-					this.gamePanel.repaint();
-				} catch (InterruptedException e) {
-				//	while(!isRun());
-				}
+				this.computerPaddleMove();
+				this.checkPosition();
+
+				Thread.sleep(45);
+				this.gamePanel.repaint();
+			} catch (InterruptedException e) {
+
 			}
-			System.out.println("POZA");
-		//}
+		}
 	}
 }
