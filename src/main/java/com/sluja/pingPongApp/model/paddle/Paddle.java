@@ -44,6 +44,7 @@ public class Paddle implements Runnable {
 	protected boolean straightStrikeConditionFirst = false;
 	protected boolean straightStrikeConditionSecond = false;
 	protected int reflectionAmount;
+	protected boolean pointEarned;
 
 	public Paddle(Player player, Ball ball) {
 		this.player = player;
@@ -54,6 +55,7 @@ public class Paddle implements Runnable {
 		this.positionX = player.getPositionX();
 		this.realPositionX = WIDTH;
 		this.ball = ball;
+		this.pointEarned = false;
 		this.reflectionAmount = 0;
 		this.gamePanel = this.ball.getGamePanel();
 	}
@@ -174,7 +176,7 @@ public class Paddle implements Runnable {
 	public boolean pickup() {
 
 		conditionY = ((this.getBall().getPositionY() + this.getBall().getSizeY()) > this.getPositionY())
-				&& ((this.getBall().getPositionY() + this.getBall().getSizeY()) < (this.getPositionY() + this.HEIGTH));
+				&& (this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH));
 		straightStrikeConditionFirst = this.getBall().getPositionY() >= ((this.getPositionY() + this.HEIGTH) / 2 - 20);
 		straightStrikeConditionSecond = this.getBall().getPositionY() <= ((this.getPositionY() + this.HEIGTH) / 2 + 20);
 
@@ -190,7 +192,8 @@ public class Paddle implements Runnable {
 			break;
 		}
 		case 2: {
-			conditionX = this.getPositionX() < (this.getBall().getPositionX() + this.getBall().getSizeX());
+			conditionX = (this.getPositionX() - this.getBall().getSizeX()) < (this.getBall().getPositionX()
+					+ this.getBall().getSizeX());
 			changedSpeedConditionFirst = (this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH / 4));
 			changedSpeedConditionSecond = this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH);
 		}
@@ -244,18 +247,22 @@ public class Paddle implements Runnable {
 				this.getBall().move();
 				if (this.pickup())
 					this.getBall().setSpeedX(this.getBall().changeDirection(this.getBall().getSpeedX()));
-				if (this.getBall().earnPoint()) {
-					this.gamePanel.setRun(false);
-					Thread.sleep(1000);
+				if ((this.getBall().earnPoint(this.getPlayer().getId(), this.getPositionX(),
+						this.getGamePanel().getPaddles().get(1).getPositionX()))) {
+					// || this.getBall().isBorderCrossed()) {
+					// Thread.sleep(1000);
 					throw new InterruptedException();
 				}
 				this.checkPosition();
 				Thread.sleep(Math.abs(this.getBall().getSpeedX()));
 				this.getGamePanel().repaint();
 			} catch (InterruptedException e) {
+				// this.getBall().setBorderCrossed(false);
+				this.getGamePanel().setRun(false);
 				this.getGamePanel().earnPoint();
 				this.getGamePanel().setHomePosition();
 				this.getGamePanel().repaint();
+
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package com.sluja.pingPongApp.panel;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -33,11 +34,15 @@ public class GamePanel extends JPanel {
 	private boolean run = true;
 	private int pickedPlayer;
 	private int points;
+	private int sumPoint;
+	private boolean gameFinished;
 
 	public GamePanel(GameFrame gameFrame, GameForm gameForm, GameLevel gameLevel) {
 		this.gameFrame = gameFrame;
 		this.gameForm = gameForm;
 		this.gameLevel = gameLevel;
+		this.sumPoint = 0;
+		this.gameFinished = false;
 		this.setBackground(backgroundColor);
 		this.setFocusable(true);
 		this.ball = new RoundedBall(gameLevel, this);
@@ -48,16 +53,28 @@ public class GamePanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g); // To change body of generated methods, choose Tools | Templates.
-		this.paddles.get(0).draw(g); // drawing first paddle
-		this.paddles.get(1).draw(g); // drawing second paddle
+		this.paddles.forEach((paddle) -> paddle.draw(g));
 		ball.draw(g); // drawing ball
 		// if (ball.getScoreEnd())
 		// ball.paintResult(g); // If game ends, the score with information will be
 		// displayed
-		// if (!gameStarted)
-		// drawInfo(g); // Displaying informations at the beginning and at the end
+		 if (this.isGameFinished())
+		 drawInfo(g); // Displaying informations at the beginning and at the end
+	}
+	
+	private void drawInfo(Graphics g) {
+		String text = "PRESS ESCAPE TO EXIT";
+        g.setColor(Color.white);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+        int textWidth = g.getFontMetrics().stringWidth(text);
+		int textPositionX = this.gameFrame.getScreenWidth()/2 - textWidth/2;
+        g.drawString(text, textPositionX, this.gameFrame.getScreenHeigth()/2);
 	}
 
+	public boolean isGameFinished() {
+		return this.gameFinished;
+	}
+	
 	private void initializePlayersArray() {
 		int firstScorePositionX = (int) (this.gameFrame.getScreenWidth() * (0.25));
 		int secondScorePositionX = (int) (this.gameFrame.getScreenWidth() * (0.75));
@@ -86,17 +103,16 @@ public class GamePanel extends JPanel {
 
 	public void setGame() {
 		this.setSteering(paddles);
-		setRun(true);
-		this.ball.generateReflectionAmount();
 		paddleFirstThread = new Thread(paddles.get(0));
 		paddleSecondThread = new Thread(paddles.get(1));
+		setRun(true);
+		this.ball.generateReflectionAmount();
 		paddleFirstThread.start();
 		paddleSecondThread.start();
 	}
 
 	public void setSteering(ArrayList<Paddle> paddles) {
-		steering = new Steering(paddles, this.getGameForm(), this);
-		// this.addKeyListener(steering);
+		this.steering = new Steering(paddles, this.getGameForm(), this);
 	}
 
 	public void setRun(boolean run) {
@@ -111,6 +127,10 @@ public class GamePanel extends JPanel {
 	public boolean isRun() {
 		return this.run;
 	}
+	
+	public GameFrame getGameFrame() {
+		return this.gameFrame;
+	}
 
 	private int getPoints() {
 		points = 0;
@@ -118,25 +138,30 @@ public class GamePanel extends JPanel {
 			points += players.get(i).getScore().getPoints();
 		return points;
 	}
+	
+	public ArrayList<Paddle> getPaddles(){
+		return this.paddles;
+	}
 
 	public void earnPoint() {
-		pickedPlayer = this.ball.isMovingForward() ? 0 : 1;
-		System.out.println("PICKEDPL: " + pickedPlayer);
+		if(this.ball.getPositionX() < this.getGameFrame().getScreenHeigth()/2) pickedPlayer = 1;
+		else pickedPlayer = 0;
 		this.players.get(pickedPlayer).getScore().addPoint();
-		if (!this.players.get(pickedPlayer).getScore().checkScore()) {
+		sumPoint = Math.abs(this.players.get(1).getScore().getPoints() - this.players.get(0).getScore().getPoints());
+		if (!this.players.get(pickedPlayer).getScore().checkScore() || (sumPoint < 2)) {
 			this.ball.setStartingPosition(this.getPoints());
-			System.out.println("PUNKT: " + this.getPoints());
 			this.setRun(true);
-		}
+		} else
+			setGameFinished(true);
+	}
+
+	private void setGameFinished(boolean gameFinished) {
+		this.gameFinished = gameFinished;
 	}
 
 	public void setHomePosition() {
 		paddles.forEach((paddle) -> paddle.setHomePosition());
 	}
 
-	private void setBallSpeed(Paddle paddle) {
-		if (paddle.pickup())
-			this.ball.setSpeedX(this.ball.changeDirection(this.ball.getSpeedX()));
-	}
 
 }

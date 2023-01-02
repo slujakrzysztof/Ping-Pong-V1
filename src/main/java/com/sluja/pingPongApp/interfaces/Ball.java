@@ -50,7 +50,7 @@ public interface Ball {
 	
 	public void increaseSpeed();
 	
-	public boolean earnPoint();
+	public boolean earnPoint(int playerId, int firstPositionX, int secondPositionX);
 	
 	public void restoreSpeed();
 	
@@ -75,5 +75,11 @@ public interface Ball {
 	boolean isMovingFaster();
 	
 	void setMovingFaster(boolean movingFaster);
+	
+	boolean checkPosition();
+	
+	void setBorderCrossed(boolean borderCrossed);
+	
+	boolean isBorderCrossed();
 
 }

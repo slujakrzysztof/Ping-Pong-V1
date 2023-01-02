@@ -9,7 +9,7 @@ import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.properties.PropertyReader;
 
-public class RoundedBall implements Ball{
+public class RoundedBall implements Ball {
 
 	private int size;
 	private int positionX;
@@ -25,6 +25,7 @@ public class RoundedBall implements Ball{
 	private boolean movingFaster;
 	private boolean movingStraight;
 	private boolean pickedUp;
+	private boolean borderCrossed;
 	private int reflectionAmount;
 	private boolean run;
 	private boolean firstDirection;
@@ -49,15 +50,15 @@ public class RoundedBall implements Ball{
 		g.setColor(Color.white);
 		g.fillOval(this.getPositionX(), this.getPositionY(), this.getSizeX(), this.getSizeY());
 	}
-	
+
 	@Override
 	public void generateReflectionAmount() {
 		this.randomGenerator.generateReflectionAmount();
 	}
-	
+
 	@Override
 	public int getReflectionAmount() {
-		return this.randomGenerator.getReflectionAmount(); 
+		return this.randomGenerator.getReflectionAmount();
 	}
 
 	@Override
@@ -139,17 +140,16 @@ public class RoundedBall implements Ball{
 	}
 
 	@Override
-	public void move(){
+	public void move() {
 		if (checkBorders())
 			this.setSpeedY(this.changeDirection(this.getSpeedY()));
 
-		if (isPickedUp())
-		{
+		if (isPickedUp()) {
 			System.out.println("SPEED X : " + this.getSpeedX());
 			this.setSpeedX(this.changeDirection(this.getSpeedX()));
 		}
-		//if (this.earnPoint())
-		//	System.out.println("PUNKT");
+		// if (this.earnPoint())
+		// System.out.println("PUNKT");
 
 		this.setPositionX(this.getPositionX() + this.getSpeedX());
 		this.setPositionY(this.getPositionY() + this.getSpeedY());
@@ -182,9 +182,11 @@ public class RoundedBall implements Ball{
 	}
 
 	@Override
-	public boolean earnPoint() {
-		if ((this.getPositionX() <= 0) || ((this.getPositionX() + this.getSizeX()) >= this.SCREEN_WIDTH))
+	public boolean earnPoint(int playerId, int firstPositionX, int secondPositionX) {
+		if ((this.getPositionX() <= 0) || ((this.getPositionX() + this.getSizeX()) >= this.SCREEN_WIDTH)
+				|| (playerId == 1 && this.getPositionX() < positionX) || ((this.getPositionX() + this.getSizeX()/4) > secondPositionX)) {
 			return true;
+		}
 		return false;
 	}
 
@@ -251,6 +253,23 @@ public class RoundedBall implements Ball{
 	@Override
 	public void setMovingFaster(boolean movingFaster) {
 		this.movingFaster = movingFaster;
+	}
+
+	@Override
+	public boolean checkPosition() {
+		if (this.getPositionX() < this.SCREEN_WIDTH / 2)
+			return true;
+		return false;
+	}
+
+	@Override
+	public void setBorderCrossed(boolean borderCrossed) {
+		this.borderCrossed = borderCrossed;
+	}
+
+	@Override
+	public boolean isBorderCrossed() {
+		return this.borderCrossed;
 	}
 
 }
