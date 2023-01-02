@@ -56,6 +56,7 @@ public interface Ball {
 	
 	public GamePanel getGamePanel();
 	
+	
 	public boolean isRun();
 	
 	public void setRun(boolean run);

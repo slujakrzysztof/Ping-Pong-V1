@@ -18,7 +18,7 @@ import com.sluja.pingPongApp.model.paddle.Paddle;
 import com.sluja.pingPongApp.properties.PropertyReader;
 import com.sluja.pingPongApp.steering.Steering;
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel{
 
 	GameFrame gameFrame;
 	GameForm gameForm;
@@ -28,7 +28,6 @@ public class GamePanel extends JPanel implements Runnable {
 	private Thread paddleFirstThread;
 	private Thread paddleSecondThread;
 	private Thread ballThread;
-	private Thread mainThread;
 	private ArrayList<Paddle> paddles = new ArrayList<Paddle>();
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private Ball ball;
@@ -45,7 +44,6 @@ public class GamePanel extends JPanel implements Runnable {
 		this.ball = new RoundedBall(gameLevel, this);
 		this.initializePlayersArray();
 		this.initializePaddle();
-		mainThread = new Thread(this);
 	}
 
 	@Override
@@ -90,25 +88,14 @@ public class GamePanel extends JPanel implements Runnable {
 		//this.addPaddles(paddles);
 		//this.addPlayers(players);
 		this.setSteering(paddles);
-		this.paddles.get(0).setRun(true);
-		this.paddles.get(1).setRun(true);
-		this.ball.setRun(true);
+		setRun(true);
 		System.out.println("SIEMA");
 		paddleFirstThread = new Thread(paddles.get(0));
 		ballThread = new Thread((RoundedBall)this.ball);
 		paddleSecondThread = new Thread(paddles.get(1));
 		paddleFirstThread.start();
 		paddleSecondThread.start();
-		ballThread.start();
-		mainThread.start();
-	}
-
-	private void addPaddles(ArrayList<Paddle> paddles) {
-		this.paddles.addAll(paddles);
-	}
-
-	private void addPlayers(ArrayList<Player> players) {
-		this.players.addAll(players);
+		//ballThread.start();
 	}
 
 	public void setSteering(ArrayList<Paddle> paddles) {
@@ -117,7 +104,8 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void setRun(boolean run) {
-		this.run = run;
+		this.paddles.forEach((paddle) -> paddle.setRun(run));
+//		this.ball.setRun(run);
 	}
 
 	public boolean isRun() {
@@ -131,7 +119,7 @@ public class GamePanel extends JPanel implements Runnable {
 		return points;
 	}
 
-	private void earnPoint() {
+	public void earnPoint() {
 		pickedPlayer = this.ball.isMovingForward() ? 0 : 1;
 		System.out.println("PICKEDPL: " + pickedPlayer);
 		this.players.get(pickedPlayer).getScore().addPoint();
@@ -142,8 +130,8 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
-	private void setHomePosition(Paddle paddle) {
-		paddle.setHomePosition();
+	public void setHomePosition() {
+		paddles.forEach((paddle) -> paddle.setHomePosition());
 	}
 
 	private void setBallSpeed(Paddle paddle) {
@@ -151,31 +139,4 @@ public class GamePanel extends JPanel implements Runnable {
 			this.ball.setSpeedX(this.ball.changeDirection(this.ball.getSpeedX()));
 	}
 
-	// Thread running
-	@Override
-	public void run() {
-		while (isRun()) {
-			/*try {
-				ball.move();
-
-				if (ball.earnPoint()) {
-					Thread.sleep(1000);
-					throw new InterruptedException();
-				}
-				paddles.forEach((paddle) -> setBallSpeed(paddle));
-				if (this.getGameForm() == GameForm.SINGLE_PLAYER)
-					((ComputerPaddle) this.paddles.get(1)).computerPaddleMove();
-				Thread.sleep(Math.abs(this.ball.getSpeedX()));*/
-				repaint();
-
-			/*} catch (InterruptedException ex) {
-				// gameStarted = false;
-				this.setRun(false);
-				this.points = 0;
-				this.earnPoint();
-				this.paddles.forEach((paddle) -> setHomePosition(paddle));
-				repaint();
-			}*/
-		}
-	}
 }

@@ -89,6 +89,7 @@ public class RoundedBall implements Ball, Runnable {
 
 	@Override
 	public void setSpeedX(int speedX) {
+		System.out.println("BALL SETX");
 		this.speedX = speedX;
 	}
 
@@ -125,12 +126,17 @@ public class RoundedBall implements Ball, Runnable {
 	}
 
 	@Override
-	public void move() {
+	public void move(){
 		if (checkBorders())
 			this.setSpeedY(this.changeDirection(this.getSpeedY()));
 
 		if (isPickedUp())
+		{
+			System.out.println("SPEED X : " + this.getSpeedX());
 			this.setSpeedX(this.changeDirection(this.getSpeedX()));
+		}
+		//if (this.earnPoint())
+		//	System.out.println("PUNKT");
 
 		this.setPositionX(this.getPositionX() + this.getSpeedX());
 		this.setPositionY(this.getPositionY() + this.getSpeedY());
@@ -164,7 +170,7 @@ public class RoundedBall implements Ball, Runnable {
 
 	@Override
 	public boolean earnPoint() {
-		if ((this.getPositionX() <= 0) || (this.getPositionX() + this.getSizeX() >= this.SCREEN_WIDTH))
+		if ((this.getPositionX() <= 0) || ((this.getPositionX() + this.getSizeX()) >= this.SCREEN_WIDTH))
 			return true;
 		return false;
 	}
@@ -196,14 +202,13 @@ public class RoundedBall implements Ball, Runnable {
 
 	@Override
 	public void run() {
-		while(isRun()) {
+		while (isRun()) {
 			try {
 				this.move();
-				Thread.sleep(Math.abs(this.getSpeedX()));
-				// this.gamePanel.repaint();
+				Thread.sleep(5);//Math.abs(this.getSpeedX()));
+				this.gamePanel.repaint();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
 			}
 		}
 	}
