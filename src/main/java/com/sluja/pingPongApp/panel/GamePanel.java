@@ -18,7 +18,7 @@ import com.sluja.pingPongApp.model.paddle.Paddle;
 import com.sluja.pingPongApp.properties.PropertyReader;
 import com.sluja.pingPongApp.steering.Steering;
 
-public class GamePanel extends JPanel{
+public class GamePanel extends JPanel {
 
 	GameFrame gameFrame;
 	GameForm gameForm;
@@ -27,7 +27,6 @@ public class GamePanel extends JPanel{
 	Steering steering;
 	private Thread paddleFirstThread;
 	private Thread paddleSecondThread;
-	private Thread ballThread;
 	private ArrayList<Paddle> paddles = new ArrayList<Paddle>();
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private Ball ball;
@@ -58,21 +57,23 @@ public class GamePanel extends JPanel{
 		// if (!gameStarted)
 		// drawInfo(g); // Displaying informations at the beginning and at the end
 	}
-	
+
 	private void initializePlayersArray() {
 		int firstScorePositionX = (int) (this.gameFrame.getScreenWidth() * (0.25));
 		int secondScorePositionX = (int) (this.gameFrame.getScreenWidth() * (0.75));
 		int scorePositionY = (int) (this.gameFrame.getScreenHeigth() * (0.25));
 		int secondPositionX = (int) (this.gameFrame.getScreenWidth()
-				- Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.width"))  - 15);
+				- Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.width")) - 15);
 		this.players.add(new Player(1, 0, firstScorePositionX, scorePositionY, Color.GREEN));
 		this.players.add(new Player(2, secondPositionX, secondScorePositionX, scorePositionY, Color.RED));
 	}
-	
+
 	private void initializePaddle() {
 		this.paddles.add(new Paddle(players.get(0), this.ball));
-		if(this.gameForm == GameForm.MULTIPLAYER) this.paddles.add(new Paddle(players.get(1), this.ball));
-		else this.paddles.add(new ComputerPaddle(players.get(1), GameLevel.BEGINNER, this.ball));
+		if (this.gameForm == GameForm.MULTIPLAYER)
+			this.paddles.add(new Paddle(players.get(1), this.ball));
+		else
+			this.paddles.add(new ComputerPaddle(players.get(1), GameLevel.BEGINNER, this.ball));
 	}
 
 	public GameForm getGameForm() {
@@ -84,18 +85,12 @@ public class GamePanel extends JPanel{
 	}
 
 	public void setGame() {
-		//this.ball = ball;
-		//this.addPaddles(paddles);
-		//this.addPlayers(players);
 		this.setSteering(paddles);
 		setRun(true);
-		System.out.println("SIEMA");
 		paddleFirstThread = new Thread(paddles.get(0));
-		ballThread = new Thread((RoundedBall)this.ball);
 		paddleSecondThread = new Thread(paddles.get(1));
 		paddleFirstThread.start();
 		paddleSecondThread.start();
-		//ballThread.start();
 	}
 
 	public void setSteering(ArrayList<Paddle> paddles) {

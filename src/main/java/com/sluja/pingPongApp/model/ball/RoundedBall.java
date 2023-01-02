@@ -9,7 +9,7 @@ import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.properties.PropertyReader;
 
-public class RoundedBall implements Ball, Runnable {
+public class RoundedBall implements Ball{
 
 	private int size;
 	private int positionX;
@@ -22,6 +22,7 @@ public class RoundedBall implements Ball, Runnable {
 	private int increasedSpeedY;
 	private boolean movingUp;
 	private boolean movingForward;
+	private boolean movingStraight;
 	private boolean pickedUp;
 	private boolean run;
 	private boolean firstDirection;
@@ -201,19 +202,6 @@ public class RoundedBall implements Ball, Runnable {
 	}
 
 	@Override
-	public void run() {
-		while (isRun()) {
-			try {
-				this.move();
-				Thread.sleep(5);//Math.abs(this.getSpeedX()));
-				this.gamePanel.repaint();
-			} catch (InterruptedException e) {
-
-			}
-		}
-	}
-
-	@Override
 	public GamePanel getGamePanel() {
 		return this.gamePanel;
 	}
@@ -226,6 +214,21 @@ public class RoundedBall implements Ball, Runnable {
 	@Override
 	public void setRun(boolean run) {
 		this.run = run;
+	}
+
+	@Override
+	public boolean isMovingStraight() {
+		return this.movingStraight;
+	}
+
+	@Override
+	public void setMovingStraight(boolean movingStraight) {
+		this.movingStraight = movingStraight;
+	}
+
+	@Override
+	public void restoreSpeedY() {
+		this.setSpeedY(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY")));
 	}
 
 }

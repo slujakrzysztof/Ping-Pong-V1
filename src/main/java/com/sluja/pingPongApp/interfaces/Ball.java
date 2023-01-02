@@ -56,6 +56,11 @@ public interface Ball {
 	
 	public GamePanel getGamePanel();
 	
+	public boolean isMovingStraight();
+	
+	public void setMovingStraight(boolean movingStraight);
+	
+	public void restoreSpeedY();
 	
 	public boolean isRun();
 	
