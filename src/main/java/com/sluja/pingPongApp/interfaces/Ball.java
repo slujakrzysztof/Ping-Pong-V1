@@ -68,4 +68,12 @@ public interface Ball {
 	
 	public int changeDirection(int speed);
 
+	void generateReflectionAmount();
+
+	int getReflectionAmount();
+	
+	boolean isMovingFaster();
+	
+	void setMovingFaster(boolean movingFaster);
+
 }

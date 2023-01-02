@@ -17,7 +17,7 @@ public class RandomGenerator {
 
 	public void generateReflectionAmount() {
 		this.reflectionAmount = 1 + generator
-				.nextInt(Integer.parseInt(PropertyReader.getInstance().getProperty("ball.maxReflectionAmount ")));
+				.nextInt(Integer.parseInt(PropertyReader.getInstance().getProperty("ball.maxReflectionAmount")));
 	}
 
 	public Random getGenerator() {

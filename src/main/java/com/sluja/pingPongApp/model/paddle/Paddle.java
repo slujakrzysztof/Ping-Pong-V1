@@ -43,6 +43,7 @@ public class Paddle implements Runnable {
 	protected boolean changedSpeedConditionSecond = false;
 	protected boolean straightStrikeConditionFirst = false;
 	protected boolean straightStrikeConditionSecond = false;
+	protected int reflectionAmount;
 
 	public Paddle(Player player, Ball ball) {
 		this.player = player;
@@ -53,6 +54,7 @@ public class Paddle implements Runnable {
 		this.positionX = player.getPositionX();
 		this.realPositionX = WIDTH;
 		this.ball = ball;
+		this.reflectionAmount = 0;
 		this.gamePanel = this.ball.getGamePanel();
 	}
 
@@ -179,9 +181,6 @@ public class Paddle implements Runnable {
 		switch (this.getPlayer().getId()) {
 		case 1: {
 			conditionX = this.getRealPositionX() >= this.getBall().getPositionX();
-			increasedSpeedConditionFirst = this.getBall().getPositionY() > this.getPositionY();
-			increasedSpeedConditionSecond = this.getBall()
-					.getPositionY() > (this.getPositionY() + this.HEIGTH - this.PADDLE_BORDER);
 			changedSpeedConditionFirst = (this.getBall().getPositionY() > this.getPositionY())
 					&& (this.getBall().getPositionY() < (this.getPositionY() + 20));
 			changedSpeedConditionSecond = ((this.getBall().getPositionY()
@@ -192,18 +191,22 @@ public class Paddle implements Runnable {
 		}
 		case 2: {
 			conditionX = this.getPositionX() < (this.getBall().getPositionX() + this.getBall().getSizeX());
-			increasedSpeedConditionFirst = this.getBall().getPositionY() < (this.getPositionY() + this.PADDLE_BORDER);
-			increasedSpeedConditionSecond = this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH);
 			changedSpeedConditionFirst = (this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH / 4));
 			changedSpeedConditionSecond = this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH);
 		}
 		}
 
 		if (conditionX && conditionY) {
-			/*
-			 * if (increasedSpeedConditionFirst || increasedSpeedConditionSecond) {
-			 * this.getBall().increaseSpeed(); System.out.println("1"); }
-			 */
+
+			if (this.getBall().isMovingFaster()) {
+				this.resetReflectionAmount();
+				this.getBall().setMovingFaster(false);
+			}
+
+			if (this.reflectionAmount == this.getBall().getReflectionAmount()) {
+				this.getBall().increaseSpeed();
+				this.getBall().setMovingFaster(true);
+			}
 			if (straightStrikeConditionFirst && straightStrikeConditionSecond) {
 				System.out.println("STRAIGHT");
 				this.getBall().setSpeedY(0);
@@ -223,9 +226,15 @@ public class Paddle implements Runnable {
 			if (changedSpeedConditionFirst || changedSpeedConditionSecond)
 				this.getBall().setSpeedY(this.getBall().changeDirection(this.getBall().getSpeedY()));
 
+			this.reflectionAmount += 1;
 			return true;
 		}
 		return false;
+	}
+
+	public void resetReflectionAmount() {
+		this.reflectionAmount = 0;
+		this.getBall().generateReflectionAmount();
 	}
 
 	@Override

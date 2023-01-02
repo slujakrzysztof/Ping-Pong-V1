@@ -22,8 +22,10 @@ public class RoundedBall implements Ball{
 	private int increasedSpeedY;
 	private boolean movingUp;
 	private boolean movingForward;
+	private boolean movingFaster;
 	private boolean movingStraight;
 	private boolean pickedUp;
+	private int reflectionAmount;
 	private boolean run;
 	private boolean firstDirection;
 	private final int SCREEN_HEIGHT = Integer.parseInt(PropertyReader.getInstance().getProperty("window.heigth"));
@@ -46,6 +48,16 @@ public class RoundedBall implements Ball{
 	public void draw(Graphics g) {
 		g.setColor(Color.white);
 		g.fillOval(this.getPositionX(), this.getPositionY(), this.getSizeX(), this.getSizeY());
+	}
+	
+	@Override
+	public void generateReflectionAmount() {
+		this.randomGenerator.generateReflectionAmount();
+	}
+	
+	@Override
+	public int getReflectionAmount() {
+		return this.randomGenerator.getReflectionAmount(); 
 	}
 
 	@Override
@@ -229,6 +241,16 @@ public class RoundedBall implements Ball{
 	@Override
 	public void restoreSpeedY() {
 		this.setSpeedY(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY")));
+	}
+
+	@Override
+	public boolean isMovingFaster() {
+		return this.movingFaster;
+	}
+
+	@Override
+	public void setMovingFaster(boolean movingFaster) {
+		this.movingFaster = movingFaster;
 	}
 
 }

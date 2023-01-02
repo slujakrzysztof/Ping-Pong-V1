@@ -87,6 +87,7 @@ public class GamePanel extends JPanel {
 	public void setGame() {
 		this.setSteering(paddles);
 		setRun(true);
+		this.ball.generateReflectionAmount();
 		paddleFirstThread = new Thread(paddles.get(0));
 		paddleSecondThread = new Thread(paddles.get(1));
 		paddleFirstThread.start();
@@ -99,8 +100,12 @@ public class GamePanel extends JPanel {
 	}
 
 	public void setRun(boolean run) {
-		this.paddles.forEach((paddle) -> paddle.setRun(run));
-//		this.ball.setRun(run);
+		this.paddles.forEach((paddle) -> {
+			paddle.setRun(run);
+			if (!run)
+				paddle.resetReflectionAmount();
+			System.out.println("111: " + this.ball.getReflectionAmount());
+		});
 	}
 
 	public boolean isRun() {
