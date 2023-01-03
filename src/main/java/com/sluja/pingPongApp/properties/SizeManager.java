@@ -44,8 +44,8 @@ public class SizeManager {
 	public final int PADDLE_FIRST_POSITION_X = this.SCREEN_LEFT_BORDER;
 	public final int PADDLE_FIRST_REAL_POSITION_X = this.PADDLE_FIRST_POSITION_X + PADDLE_WIDTH;
 	public final int PADDLE_SECOND_POSITION_X = this.SCREEN_RIGHT_BORDER - this.PADDLE_WIDTH;
-	public final int PADDLE_POSITION_X = Integer
-			.parseInt(PropertyReader.getInstance().getProperty("paddle.first.positionX"));
+	//public final int PADDLE_POSITION_X = Integer
+		//	.parseInt(PropertyReader.getInstance().getProperty("paddle.first.positionX"));
 	public final int BALL_ROUNDED_SIZE = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.size"));
 	public final int BALL_ROUNDED_SPEED_X = Integer
 			.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX"));

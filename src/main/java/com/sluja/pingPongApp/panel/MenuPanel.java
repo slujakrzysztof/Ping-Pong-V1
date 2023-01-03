@@ -25,7 +25,7 @@ import com.sluja.pingPongApp.properties.PropertyReader;
 public class MenuPanel extends JPanel implements ActionListener {
 
 	private final int BUTTON_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("button.width"));
-	private final int BUTTON_HEIGTH = Integer.parseInt(PropertyReader.getInstance().getProperty("button.heigth"));
+	private final int BUTTON_HEIGTH = Integer.parseInt(PropertyReader.getInstance().getProperty("button.height"));
 	private GameFrame gameFrame;
 	private PanelButton exitButton;
 	private PanelButton singlePlayerButton;

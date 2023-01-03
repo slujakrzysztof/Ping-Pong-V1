@@ -12,8 +12,8 @@ import com.sluja.pingPongApp.properties.PropertyReader;
 public class MainPanel extends JPanel {
 
 	private CardLayout layout;
-	public final String MENU_PANEL = PropertyReader.getInstance().getProperty("card.menuPanel");
-	public final String GAME_PANEL = PropertyReader.getInstance().getProperty("card.gamePanel");
+	public final String MENU_PANEL = PropertyReader.getInstance().getProperty("card.name.menuPanel");
+	public final String GAME_PANEL = PropertyReader.getInstance().getProperty("card.name.gamePanel");
 	private GamePanel gamePanel;
 	private MenuPanel menuPanel;
 	private GameFrame gameFrame;

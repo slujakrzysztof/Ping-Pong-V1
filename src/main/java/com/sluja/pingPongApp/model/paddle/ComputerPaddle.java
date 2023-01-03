@@ -3,6 +3,7 @@ package com.sluja.pingPongApp.model.paddle;
 import com.sluja.pingPongApp.enums.GameLevel;
 import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.model.Player;
+import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.properties.PropertyReader;
 
 public class ComputerPaddle extends Paddle implements Runnable {
@@ -24,18 +25,11 @@ public class ComputerPaddle extends Paddle implements Runnable {
 		this.ball = ball;
 		this.conditionFirst = false;
 		this.conditionSecond = false;
-		this.homePositionY = this.SCREEN_HEIGTH / 2 - this.HEIGTH / 2;
-		this.backSpeed = setBackSpeed();
-		this.border = setBorder(gameLevel);
-		this.realPositionY = this.getPositionY() + this.HEIGTH;
+		this.homePositionY = this.SCREEN_HEIGHT / 2 - this.PADDLE_HEIGHT / 2;
+		this.realPositionY = this.getPositionY() + this.PADDLE_HEIGHT;
 		this.borderX = (int) (this.SCREEN_WIDTH
 				* Float.parseFloat(PropertyReader.getInstance().getProperty("paddle.computer.borderX")));
 		this.setSpeed();
-	}
-
-	private int setBackSpeed() {
-		String backSpeedString = "backSpeed." + this.getGameLevel().name().toLowerCase();
-		return Integer.parseInt(PropertyReader.getInstance().getProperty(backSpeedString));
 	}
 
 	public int getBackSpeed() {
@@ -46,23 +40,14 @@ public class ComputerPaddle extends Paddle implements Runnable {
 		return this.gameLevel;
 	}
 
-	private int setBorder(GameLevel gameLevel) {
-		String borderValue = "paddle.computer.border." + gameLevel.name().toLowerCase();
-		System.out.println("BORDER: " + borderValue + " , "
-				+ Integer.parseInt(PropertyReader.getInstance().getProperty(borderValue)));
-		return Integer.parseInt(PropertyReader.getInstance().getProperty(borderValue));
-	}
-
 	private void setSpeed() {
 		String actualSpeed = "speed." + this.gameLevel.name().toLowerCase();
-		String actualBackSpeed = "backSpeed." + this.gameLevel.name().toLowerCase();
 		this.speed = Integer.parseInt(PropertyReader.getInstance().getProperty(actualSpeed));
-		this.backSpeed = Integer.parseInt(PropertyReader.getInstance().getProperty(actualBackSpeed));
 	}
 
 	private boolean checkBorder(int positionY, int ballPositionY) {
 		conditionFirst = (positionY - this.border) < ballPositionY;
-		conditionSecond = ((positionY + this.HEIGTH) + this.border) > ballPositionY;
+		conditionSecond = ((positionY + this.PADDLE_HEIGHT) + this.border) > ballPositionY;
 		if (conditionFirst && conditionSecond)
 			return true;
 		return false;

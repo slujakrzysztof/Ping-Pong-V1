@@ -21,6 +21,10 @@ public class Paddle implements Runnable {
 	public final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
 	public final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_HEIGHT;
 	private final int PADDLE_FIRST_REAL_POSITION_X = SizeManager.getInstance().PADDLE_FIRST_REAL_POSITION_X;
+	private final int SCREEN_LOWER_BORDER = SizeManager.getInstance().SCREEN_LOWER_BORDER;
+	private final int SCREEN_UPPER_BORDER = SizeManager.getInstance().SCREEN_UPPER_BORDER;
+	private final int SCREEN_LEFT_BORDER = SizeManager.getInstance().SCREEN_LEFT_BORDER;
+	private final int SCREEN_RIGHT_BORDER = SizeManager.getInstance().SCREEN_RIGHT_BORDER;
 
 	protected int positionY;
 	protected int positionX;
@@ -59,7 +63,7 @@ public class Paddle implements Runnable {
 		this.ball = this.gamePanel.getBall();
 		this.pointEarned = false;
 		this.reflectionAmount = 0;
-		//this.gamePanel = this.ball.getGamePanel();
+		// this.gamePanel = this.ball.getGamePanel();
 	}
 
 	public void draw(Graphics g) {
@@ -124,7 +128,7 @@ public class Paddle implements Runnable {
 	public GamePanel getGamePanel() {
 		return this.gamePanel;
 	}
-	
+
 	public int getSpeed() {
 		return this.speed;
 	}
@@ -154,25 +158,27 @@ public class Paddle implements Runnable {
 	}
 
 	public boolean checkLowerPosition() {
-		int lowerBorder = SCREEN_HEIGHT - PADDLE_HEIGHT - this.getSpeed();
-		if (positionY >= lowerBorder) {
-			positionY = lowerBorder;
+		if (this.getPositionY() >= (this.SCREEN_LOWER_BORDER - this.PADDLE_HEIGHT))
 			return true;
-		}
 		return false;
 	}
 
 	public void checkPosition() {
-		this.checkUpperPosition();
-		this.checkLowerPosition();
+
+		if (this.getPositionY() <= 0)
+			this.setPositionY(0);
+
+		if (this.getPositionY() >= (this.SCREEN_LOWER_BORDER - this.PADDLE_HEIGHT))
+			this.setPositionY(this.SCREEN_LOWER_BORDER - this.PADDLE_HEIGHT);
+
 	}
 
 	public void moveUp() {
-		this.setPositionY(this.getPositionY() - this.speed);
+		this.setPositionY(this.getPositionY() - this.getSpeed());
 	}
 
 	public void moveDown() {
-		this.setPositionY(this.getPositionY() + this.speed);
+		this.setPositionY(this.getPositionY() + this.getSpeed());
 	}
 
 	public void setHomePosition() {
@@ -182,9 +188,9 @@ public class Paddle implements Runnable {
 	public boolean pickup() {
 
 		conditionY = ((this.getBall().getPositionY() + this.getBall().getSizeY()) > this.getPositionY())
-				&& (this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH));
-		straightStrikeConditionFirst = this.getBall().getPositionY() >= ((this.getPositionY() + this.HEIGTH) / 2 - 20);
-		straightStrikeConditionSecond = this.getBall().getPositionY() <= ((this.getPositionY() + this.HEIGTH) / 2 + 20);
+				&& (this.getBall().getPositionY() < (this.getPositionY() + this.PADDLE_HEIGHT));
+		straightStrikeConditionFirst = this.getBall().getPositionY() >= ((this.getPositionY() + this.PADDLE_HEIGHT) / 2 - 20);
+		straightStrikeConditionSecond = this.getBall().getPositionY() <= ((this.getPositionY() + this.PADDLE_HEIGHT) / 2 + 20);
 
 		switch (this.getPlayer().getId()) {
 		case 1: {
@@ -192,16 +198,16 @@ public class Paddle implements Runnable {
 			changedSpeedConditionFirst = (this.getBall().getPositionY() > this.getPositionY())
 					&& (this.getBall().getPositionY() < (this.getPositionY() + 20));
 			changedSpeedConditionSecond = ((this.getBall().getPositionY()
-					+ this.getBall().getSizeY()) > (this.getPositionY() + this.HEIGTH - 20))
+					+ this.getBall().getSizeY()) > (this.getPositionY() + this.PADDLE_HEIGHT - 20))
 					&& ((this.getBall().getPositionY() + this.getBall().getSizeY()) < this.getPositionY()
-							+ this.HEIGTH);
+							+ this.PADDLE_HEIGHT);
 			break;
 		}
 		case 2: {
 			conditionX = (this.getPositionX() - this.getBall().getSizeX()) < (this.getBall().getPositionX()
 					+ this.getBall().getSizeX());
-			changedSpeedConditionFirst = (this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH / 4));
-			changedSpeedConditionSecond = this.getBall().getPositionY() < (this.getPositionY() + this.HEIGTH);
+			changedSpeedConditionFirst = (this.getBall().getPositionY() < (this.getPositionY() + this.PADDLE_HEIGHT / 4));
+			changedSpeedConditionSecond = this.getBall().getPositionY() < (this.getPositionY() + this.PADDLE_HEIGHT);
 		}
 		}
 
@@ -223,7 +229,7 @@ public class Paddle implements Runnable {
 				straightStrikeConditionFirst = false;
 				straightStrikeConditionSecond = false;
 			} else if (this.getBall().isMovingStraight()) {
-				if (this.getBall().getPositionY() > (this.getPositionY() + this.HEIGTH) / 2)
+				if (this.getBall().getPositionY() > (this.getPositionY() + this.PADDLE_HEIGHT) / 2)
 					this.getBall().restoreSpeedY();
 				else {
 					this.getBall().restoreSpeedY();
@@ -250,23 +256,12 @@ public class Paddle implements Runnable {
 	public void run() {
 		while (isRun()) {
 			try {
-				// this.getBall().move();
 				if (this.pickup())
 					this.getBall().setSpeedX(this.getBall().changeDirection(this.getBall().getSpeedX()));
-				/*
-				 * if ((this.getBall().earnPoint(this.getPlayer().getId(), this.getPositionX(),
-				 * this.getGamePanel().getPaddles().get(1).getPositionX()))) { throw new
-				 * InterruptedException(); }
-				 */
 				this.checkPosition();
-				Thread.sleep(100);// Math.abs(this.getBall().getSpeedX()));
+				Thread.sleep(50);
 				// this.getGamePanel().repaint();
 			} catch (InterruptedException e) {
-				/*
-				 * this.getGamePanel().setRun(false); this.getGamePanel().earnPoint();
-				 * this.getGamePanel().setHomePosition(); this.getGamePanel().repaint();
-				 */
-
 			}
 		}
 	}
