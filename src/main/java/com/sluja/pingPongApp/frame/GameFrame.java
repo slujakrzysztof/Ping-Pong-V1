@@ -19,15 +19,16 @@ import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.panel.MainPanel;
 import com.sluja.pingPongApp.panel.MenuPanel;
 import com.sluja.pingPongApp.properties.PropertyReader;
+import com.sluja.pingPongApp.properties.SizeManager;
 
 public class GameFrame extends JFrame {
 
 	private final String TITLE = PropertyReader.getInstance().getProperty("title");
-	private final int WINDOW_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.width"));
-	private final int WINDOW_HEIGTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.heigth"));
-	private final Dimension WINDOW_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
-	private final int POSITION_X = (Toolkit.getDefaultToolkit().getScreenSize().width / 2) - (this.WINDOW_WIDTH / 2);
-	private final int POSITION_Y = (Toolkit.getDefaultToolkit().getScreenSize().height / 2) - (this.WINDOW_HEIGTH / 2);
+	private final int SCREEN_POSITION_X = SizeManager.getInstance().SCREEN_POSITION_X;
+	private final int SCREEN_POSITION_Y = SizeManager.getInstance().SCREEN_POSITION_Y;
+	private final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_WIDTH;
+	private final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
+
 	private MainPanel mainPanel;
 
 	private CardLayout layout;
@@ -38,32 +39,18 @@ public class GameFrame extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		layout = new CardLayout();
 		this.setLayout(layout);
-		//this.setSize((int)WINDOW_SIZE.getWidth(), (int)WINDOW_SIZE.getHeight());
-		//this.setExtendedState(JFrame.); 
-		//this.setUndecorated(true);
 		mainPanel = new MainPanel(this);
-		//gamePanel.setGame(this.ball, players, paddles);
 		this.getContentPane().add(mainPanel);
 		this.setVisible(true);
 		this.setResizable(false);
-		this.setBounds(POSITION_X, POSITION_Y, WINDOW_WIDTH, WINDOW_HEIGTH);
-		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-	//	this.setVisible(true);
-		//
+		this.setTitle(TITLE);
+		this.setBounds(SCREEN_POSITION_X, SCREEN_POSITION_Y, SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
-	
+
 	public void setGameForm(GameForm gameForm) {
 		this.gameForm = gameForm;
 	}
-	
-	public int getScreenWidth() {
-		return this.WINDOW_WIDTH;
-	}
-	
-	public int getScreenHeigth() {
-		return this.WINDOW_HEIGTH;
-	}
-	
+
 	public MainPanel getMainPanel() {
 		return this.mainPanel;
 	}

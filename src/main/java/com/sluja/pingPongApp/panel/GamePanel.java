@@ -17,15 +17,24 @@ import com.sluja.pingPongApp.model.ball.RoundedBall;
 import com.sluja.pingPongApp.model.paddle.ComputerPaddle;
 import com.sluja.pingPongApp.model.paddle.Paddle;
 import com.sluja.pingPongApp.properties.PropertyReader;
+import com.sluja.pingPongApp.properties.SizeManager;
 import com.sluja.pingPongApp.steering.Steering;
 
 public class GamePanel extends JPanel {
 
+	private final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_WIDTH;
+	private final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
+	private final int SCORE_FIRST_POSITION_X = SizeManager.getInstance().SCORE_FIRST_POSITION_X;
+	private final int SCORE_SECOND_POSITION_X = SizeManager.getInstance().SCORE_SECOND_POSITION_X;
+	private final int SCORE_POSITION_Y = SizeManager.getInstance().SCORE_POSITION_Y;
+	private final int PADDLE_FIRST_POSITION_X = SizeManager.getInstance().PADDLE_FIRST_POSITION_X;
+	private final int PADDLE_SECOND_POSITION_X = SizeManager.getInstance().PADDLE_SECOND_POSITION_X;
 	GameFrame gameFrame;
 	GameForm gameForm;
 	GameLevel gameLevel;
 	Color backgroundColor = Color.BLACK;
 	Steering steering;
+
 	private Thread paddleFirstThread;
 	private Thread paddleSecondThread;
 	private Thread ballThread;
@@ -46,7 +55,7 @@ public class GamePanel extends JPanel {
 		this.gameFinished = false;
 		this.setBackground(backgroundColor);
 		this.setFocusable(true);
-		this.ball = new RoundedBall(gameLevel, this);
+		this.ball = new RoundedBall(this);
 		this.initializePlayersArray();
 		this.initializePaddle();
 	}
@@ -68,8 +77,8 @@ public class GamePanel extends JPanel {
 		g.setColor(Color.white);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
 		int textWidth = g.getFontMetrics().stringWidth(text);
-		int textPositionX = this.gameFrame.getScreenWidth() / 2 - textWidth / 2;
-		g.drawString(text, textPositionX, this.gameFrame.getScreenHeigth() / 2);
+		int textPositionX = SCREEN_WIDTH / 2 - textWidth / 2;
+		g.drawString(text, textPositionX, SCREEN_HEIGHT / 2);
 	}
 
 	public boolean isGameFinished() {
@@ -77,13 +86,8 @@ public class GamePanel extends JPanel {
 	}
 
 	private void initializePlayersArray() {
-		int firstScorePositionX = (int) (this.gameFrame.getScreenWidth() * (0.25));
-		int secondScorePositionX = (int) (this.gameFrame.getScreenWidth() * (0.75));
-		int scorePositionY = (int) (this.gameFrame.getScreenHeigth() * (0.25));
-		int secondPositionX = (int) (this.gameFrame.getScreenWidth()
-				- Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.width")) - 15);
-		this.players.add(new Player(1, 0, firstScorePositionX, scorePositionY, Color.GREEN));
-		this.players.add(new Player(2, secondPositionX, secondScorePositionX, scorePositionY, Color.RED));
+		this.players.add(new Player(1, PADDLE_FIRST_POSITION_X, SCORE_FIRST_POSITION_X, SCORE_POSITION_Y, Color.GREEN));
+		this.players.add(new Player(2, PADDLE_SECOND_POSITION_X, SCORE_SECOND_POSITION_X, SCORE_POSITION_Y, Color.RED));
 	}
 
 	private void initializePaddle() {
@@ -106,12 +110,11 @@ public class GamePanel extends JPanel {
 		this.setSteering(paddles);
 		paddleFirstThread = new Thread(paddles.get(0));
 		paddleSecondThread = new Thread(paddles.get(1));
-		ballThread = new Thread((RoundedBall)this.ball);
 		setRun(true);
+		this.ball.setThread();
 		this.ball.generateReflectionAmount();
 		paddleFirstThread.start();
 		paddleSecondThread.start();
-		ballThread.start();
 	}
 
 	public void setSteering(ArrayList<Paddle> paddles) {
@@ -147,7 +150,7 @@ public class GamePanel extends JPanel {
 	}
 
 	public void earnPoint() {
-		if (this.ball.getPositionX() < this.getGameFrame().getScreenHeigth() / 2)
+		if (this.ball.getPositionX() < SCREEN_WIDTH / 2)
 			pickedPlayer = 1;
 		else
 			pickedPlayer = 0;

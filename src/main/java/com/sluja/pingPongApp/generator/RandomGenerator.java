@@ -12,7 +12,7 @@ public class RandomGenerator {
 
 	public void generateStartBallPosition() {
 		this.startBallPosition = 20 + generator
-				.nextInt(Integer.parseInt(PropertyReader.getInstance().getProperty("ball.startPositionBorder")));
+				.nextInt(Integer.parseInt(PropertyReader.getInstance().getProperty("ball.startPositionY")));
 	}
 
 	public void generateReflectionAmount() {

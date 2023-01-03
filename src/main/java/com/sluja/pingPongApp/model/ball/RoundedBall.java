@@ -8,17 +8,22 @@ import com.sluja.pingPongApp.generator.RandomGenerator;
 import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.properties.PropertyReader;
+import com.sluja.pingPongApp.properties.SizeManager;
 
 public class RoundedBall implements Ball, Runnable {
+
+	private final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
+	private final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_WIDTH;
+	private final int BALL_ROUNDED_SPEED_X = SizeManager.getInstance().BALL_ROUNDED_SPEED_X;
+	private final int BALL_ROUNDED_SPEED_Y = SizeManager.getInstance().BALL_ROUNDED_SPEED_Y;
+	private final int BALL_INCREASED_SPEED_X = SizeManager.getInstance().BALL_INCREASED_SPEED_X;
+	private final int BALL_INCREASED_SPEED_Y = SizeManager.getInstance().BALL_INCREASED_SPEED_Y;
 
 	private int size;
 	private int positionX;
 	private int positionY;
 	private int speedX;
 	private int speedY;
-	private GameLevel gameLevel;
-	private int increasedSpeedX;
-	private int increasedSpeedY;
 	private boolean movingUp;
 	private boolean movingFaster;
 	private boolean movingStraight;
@@ -26,20 +31,18 @@ public class RoundedBall implements Ball, Runnable {
 	private boolean borderCrossed;
 	private boolean run;
 	private boolean firstDirection;
-	private final int SCREEN_HEIGHT = Integer.parseInt(PropertyReader.getInstance().getProperty("window.heigth"));
-	private final int SCREEN_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.width"));
 	RandomGenerator randomGenerator;
 	private GamePanel gamePanel;
 	private int movingDirection;
+	private Thread ballThread;
 
-	public RoundedBall(GameLevel gameLevel, GamePanel gamePanel) {
-		this.size = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.size"));
+	public RoundedBall(GamePanel gamePanel) {
+		this.size = SizeManager.getInstance().BALL_ROUNDED_SIZE;
 		this.positionX = SCREEN_WIDTH / 2;
 		this.positionY = SCREEN_HEIGHT / 2;
-		this.speedX = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX"));
-		this.speedY = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY"));
+		this.speedX = BALL_ROUNDED_SPEED_X;
+		this.speedY = BALL_ROUNDED_SPEED_Y;
 		this.movingDirection = Integer.signum(this.speedY);
-		this.gameLevel = gameLevel;
 		this.gamePanel = gamePanel;
 		this.randomGenerator = new RandomGenerator();
 	}
@@ -168,16 +171,14 @@ public class RoundedBall implements Ball, Runnable {
 
 	@Override
 	public void increaseSpeed() {
-		increasedSpeedX = Integer.parseInt(PropertyReader.getInstance().getProperty("ball.increasedSpeedX"));
-		increasedSpeedY = Integer.parseInt(PropertyReader.getInstance().getProperty("ball.increasedSpeedY"));
-		this.setSpeedX(increasedSpeedX);
-		this.setSpeedY(increasedSpeedY);
+		this.setSpeedX(this.BALL_INCREASED_SPEED_X);
+		this.setSpeedY(this.BALL_INCREASED_SPEED_Y);
 	}
 
 	@Override
 	public void restoreSpeed() {
-		this.setSpeedX(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX")));
-		this.setSpeedY(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY")));
+		this.setSpeedX(this.BALL_ROUNDED_SPEED_X);
+		this.setSpeedY(this.BALL_ROUNDED_SPEED_Y);
 	}
 
 	@Override
@@ -244,7 +245,7 @@ public class RoundedBall implements Ball, Runnable {
 
 	@Override
 	public void restoreSpeedY() {
-		this.setSpeedY(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY")));
+		this.setSpeedY(this.BALL_ROUNDED_SPEED_Y);
 	}
 
 	@Override
@@ -276,7 +277,7 @@ public class RoundedBall implements Ball, Runnable {
 
 	@Override
 	public void restoreSpeedX() {
-		this.setSpeedX(Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX")));
+		this.setSpeedX(this.BALL_ROUNDED_SPEED_X);
 	}
 
 	@Override
@@ -297,6 +298,12 @@ public class RoundedBall implements Ball, Runnable {
 				this.getGamePanel().repaint();
 			}
 		}
+	}
+
+	@Override
+	public void setThread() {
+		this.ballThread = new Thread(this);
+		this.ballThread.start();
 	}
 
 }

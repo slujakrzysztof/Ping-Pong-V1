@@ -83,5 +83,7 @@ public interface Ball {
 	void setBorderCrossed(boolean borderCrossed);
 	
 	boolean isBorderCrossed();
+	
+	void setThread();
 
 }
