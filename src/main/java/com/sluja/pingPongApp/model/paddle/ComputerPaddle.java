@@ -18,8 +18,8 @@ public class ComputerPaddle extends Paddle implements Runnable {
 	private boolean conditionFirst;
 	private boolean conditionSecond;
 
-	public ComputerPaddle(Player player, GameLevel gameLevel, Ball ball) {
-		super(player, ball);
+	public ComputerPaddle(Player player, GameLevel gameLevel, GamePanel gamePanel) {
+		super(player, gamePanel);
 		this.gameLevel = gameLevel;
 		this.ball = ball;
 		this.conditionFirst = false;

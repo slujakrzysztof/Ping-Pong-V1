@@ -12,15 +12,16 @@ import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.model.Player;
 import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.properties.PropertyReader;
+import com.sluja.pingPongApp.properties.SizeManager;
 
 public class Paddle implements Runnable {
 
-	public final int WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.width"));
-	public final int HEIGTH = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.height"));
-	public final int SCREEN_HEIGTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.heigth"));
-	public final int SCREEN_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("window.width"));
-	public final int PADDLE_BORDER = Integer
-			.parseInt(PropertyReader.getInstance().getProperty("paddle.increasedBorder"));
+	public final int PADDLE_WIDTH = SizeManager.getInstance().PADDLE_WIDTH;
+	public final int PADDLE_HEIGHT = SizeManager.getInstance().PADDLE_HEIGHT;
+	public final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
+	public final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_HEIGHT;
+	private final int PADDLE_FIRST_REAL_POSITION_X = SizeManager.getInstance().PADDLE_FIRST_REAL_POSITION_X;
+
 	protected int positionY;
 	protected int positionX;
 	protected int speed;
@@ -46,23 +47,24 @@ public class Paddle implements Runnable {
 	protected int reflectionAmount;
 	protected boolean pointEarned;
 
-	public Paddle(Player player, Ball ball) {
+	public Paddle(Player player, GamePanel gamePanel) {
 		this.player = player;
-		this.homePosition = this.SCREEN_HEIGTH / 2 - this.HEIGTH / 2;
+		this.homePosition = this.SCREEN_HEIGHT / 2 - this.PADDLE_HEIGHT / 2;
 		this.setHomePosition();
 		this.speed = 30;
 		this.playerColor = player.getPlayerColor();
 		this.positionX = player.getPositionX();
-		this.realPositionX = WIDTH;
-		this.ball = ball;
+		this.realPositionX = this.PADDLE_FIRST_REAL_POSITION_X;
+		this.gamePanel = gamePanel;
+		this.ball = this.gamePanel.getBall();
 		this.pointEarned = false;
 		this.reflectionAmount = 0;
-		this.gamePanel = this.ball.getGamePanel();
+		//this.gamePanel = this.ball.getGamePanel();
 	}
 
 	public void draw(Graphics g) {
 		g.setColor(playerColor);
-		g.fillRect(positionX, positionY, WIDTH, HEIGTH);
+		g.fillRect(positionX, positionY, PADDLE_WIDTH, PADDLE_HEIGHT);
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 50));
 		this.drawScore(g);
@@ -122,6 +124,10 @@ public class Paddle implements Runnable {
 	public GamePanel getGamePanel() {
 		return this.gamePanel;
 	}
+	
+	public int getSpeed() {
+		return this.speed;
+	}
 
 	public Player getPlayer() {
 		return this.player;
@@ -140,7 +146,7 @@ public class Paddle implements Runnable {
 	}
 
 	public boolean checkUpperPosition() {
-		if (positionY <= 0) {
+		if (this.getPositionY() <= 0) {
 			positionY = 0;
 			return true;
 		}
@@ -148,7 +154,7 @@ public class Paddle implements Runnable {
 	}
 
 	public boolean checkLowerPosition() {
-		int lowerBorder = SCREEN_HEIGTH - HEIGTH - speed;
+		int lowerBorder = SCREEN_HEIGHT - PADDLE_HEIGHT - this.getSpeed();
 		if (positionY >= lowerBorder) {
 			positionY = lowerBorder;
 			return true;
@@ -254,7 +260,7 @@ public class Paddle implements Runnable {
 				 */
 				this.checkPosition();
 				Thread.sleep(100);// Math.abs(this.getBall().getSpeedX()));
-				//this.getGamePanel().repaint();
+				// this.getGamePanel().repaint();
 			} catch (InterruptedException e) {
 				/*
 				 * this.getGamePanel().setRun(false); this.getGamePanel().earnPoint();

@@ -15,7 +15,6 @@ public class Player {
 	private int id;
 
 	public Player(int id, int positionX, int scorePositionX, int scorePositionY, Color playerColor) {
-		//this.score = 0;
 		this.id = id;
 		this.positionX = positionX;
 		this.scorePositionX = scorePositionX;

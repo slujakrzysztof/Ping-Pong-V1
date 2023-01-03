@@ -91,11 +91,11 @@ public class GamePanel extends JPanel {
 	}
 
 	private void initializePaddle() {
-		this.paddles.add(new Paddle(players.get(0), this.ball));
+		this.paddles.add(new Paddle(players.get(0), this));
 		if (this.gameForm == GameForm.MULTIPLAYER)
-			this.paddles.add(new Paddle(players.get(1), this.ball));
+			this.paddles.add(new Paddle(players.get(1), this));
 		else
-			this.paddles.add(new ComputerPaddle(players.get(1), GameLevel.BEGINNER, this.ball));
+			this.paddles.add(new ComputerPaddle(players.get(1), GameLevel.BEGINNER, this));
 	}
 
 	public GameForm getGameForm() {
@@ -104,6 +104,10 @@ public class GamePanel extends JPanel {
 
 	public void setGameForm(GameForm gameForm) {
 		this.gameForm = gameForm;
+	}
+	
+	public Ball getBall() {
+		return this.ball;
 	}
 
 	public void setGame() {

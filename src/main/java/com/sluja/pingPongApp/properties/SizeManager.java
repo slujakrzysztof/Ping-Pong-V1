@@ -23,6 +23,11 @@ public class SizeManager {
 			.parseInt(PropertyReader.getInstance().getProperty("ball.increasedSpeedX"));
 	public final int BALL_INCREASED_SPEED_Y = Integer
 			.parseInt(PropertyReader.getInstance().getProperty("ball.increasedSpeedY"));
+	public final int SCREEN_BORDER = Integer.parseInt(PropertyReader.getInstance().getProperty("window.border"));
+	public final int SCREEN_LOWER_BORDER = this.SCREEN_HEIGHT - this.SCREEN_BORDER;
+	public final int SCREEN_UPPER_BORDER = this.SCREEN_BORDER;
+	public final int SCREEN_LEFT_BORDER = this.SCREEN_BORDER;
+	public final int SCREEN_RIGHT_BORDER = this.SCREEN_WIDTH - this.SCREEN_BORDER;
 	public final int BALL_START_POSITION_Y = Integer
 			.parseInt(PropertyReader.getInstance().getProperty("ball.startPositionY"));
 	public final int BALL_MAX_REFLECTION_AMOUNT = Integer
@@ -36,19 +41,17 @@ public class SizeManager {
 	public final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
 	public final int SCORE_FIRST_POSITION_X = (int) (SCREEN_WIDTH * (0.25));
 	public final int SCORE_SECOND_POSITION_X = (int) (SCREEN_WIDTH * (0.75));
-	public final int PADDLE_FIRST_POSITION_X = Integer
-			.parseInt(PropertyReader.getInstance().getProperty("paddle.first.positionX"));
-	public final int PADDLE_SECOND_POSITION_X = (int) (SCREEN_WIDTH
-			- Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.width")) - 30);
+	public final int PADDLE_FIRST_POSITION_X = this.SCREEN_LEFT_BORDER;
+	public final int PADDLE_FIRST_REAL_POSITION_X = this.PADDLE_FIRST_POSITION_X + PADDLE_WIDTH;
+	public final int PADDLE_SECOND_POSITION_X = this.SCREEN_RIGHT_BORDER - this.PADDLE_WIDTH;
 	public final int PADDLE_POSITION_X = Integer
 			.parseInt(PropertyReader.getInstance().getProperty("paddle.first.positionX"));
-	public final int BALL_ROUNDED_SIZE = Integer
-			.parseInt(PropertyReader.getInstance().getProperty("roundedBall.size"));
+	public final int BALL_ROUNDED_SIZE = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.size"));
 	public final int BALL_ROUNDED_SPEED_X = Integer
 			.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX"));
 	public final int BALL_ROUNDED_SPEED_Y = Integer
 			.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY"));
-	
+
 	public static SizeManager getInstance() {
 		return sizeManager;
 	}
