@@ -30,6 +30,8 @@ public class ComputerPaddle extends Paddle implements Runnable {
 		this.borderX = (int) (this.SCREEN_WIDTH
 				* Float.parseFloat(PropertyReader.getInstance().getProperty("paddle.computer.borderX")));
 		this.setSpeed();
+		System.out.println("ROZMIAR OKNA: " + this.SCREEN_WIDTH);
+		System.out.println("PADDLE XXX : " + this.getPositionX());
 	}
 
 	public int getBackSpeed() {

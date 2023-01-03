@@ -285,6 +285,7 @@ public class RoundedBall implements Ball, Runnable {
 		while (isRun()) {
 			try {
 				this.move();
+				this.getGamePanel().getPaddles().forEach((paddle) -> paddle.checkPickup());
 				if ((this.earnPoint(this.getGamePanel().getPaddles().get(0).getPositionX(),
 						this.getGamePanel().getPaddles().get(1).getPositionX()))) {
 					throw new InterruptedException();

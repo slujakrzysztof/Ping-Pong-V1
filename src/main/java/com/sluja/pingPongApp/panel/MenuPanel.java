@@ -1,6 +1,7 @@
 package com.sluja.pingPongApp.panel;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,11 +22,14 @@ import com.sluja.pingPongApp.model.ball.RoundedBall;
 import com.sluja.pingPongApp.model.paddle.ComputerPaddle;
 import com.sluja.pingPongApp.model.paddle.Paddle;
 import com.sluja.pingPongApp.properties.PropertyReader;
+import com.sluja.pingPongApp.properties.SizeManager;
 
 public class MenuPanel extends JPanel implements ActionListener {
 
 	private final int BUTTON_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("button.width"));
 	private final int BUTTON_HEIGTH = Integer.parseInt(PropertyReader.getInstance().getProperty("button.height"));
+	private final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_WIDTH;
+	private final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
 	private GameFrame gameFrame;
 	private PanelButton exitButton;
 	private PanelButton singlePlayerButton;
@@ -37,6 +41,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 
 	public MenuPanel(GameFrame gameFrame) {
 		this.gameFrame = gameFrame;
+		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.exitButton = new PanelButton("EXIT", this, 3, 200);
 		this.singlePlayerButton = new PanelButton(GameForm.SINGLE_PLAYER.name(), this, 1, 200);
 		this.multiPlayerButton = new PanelButton(GameForm.MULTIPLAYER.name(), this, 2, 200);
@@ -44,7 +49,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 		this.buttonArray.add(singlePlayerButton);
 		this.buttonArray.add(multiPlayerButton);
 		players.clear();
-		//this.ball = new RoundedBall(GameLevel.BEGINNER);
+		// this.ball = new RoundedBall(GameLevel.BEGINNER);
 		this.initializeListener();
 		this.initializePanel();
 	}
@@ -64,8 +69,6 @@ public class MenuPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	
-
 	public GameFrame getGameFrame() {
 		return this.gameFrame;
 	}
@@ -73,9 +76,9 @@ public class MenuPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == singlePlayerButton || e.getSource() == multiPlayerButton) {
-			//this.initializePlayersArray();
+			// this.initializePlayersArray();
 			this.getGameFrame().setGameForm(GameForm.valueOf(((PanelButton) e.getSource()).getText()));
-			//this.initializePaddle(e);
+			// this.initializePaddle(e);
 			this.getGameFrame().getMainPanel().getGamePanel().setGame();
 			this.getGameFrame().getMainPanel().showPanel(this.getGameFrame().getMainPanel().getLabelGamePanel());
 		}

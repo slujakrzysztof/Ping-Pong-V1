@@ -19,7 +19,7 @@ public class Paddle implements Runnable {
 	public final int PADDLE_WIDTH = SizeManager.getInstance().PADDLE_WIDTH;
 	public final int PADDLE_HEIGHT = SizeManager.getInstance().PADDLE_HEIGHT;
 	public final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
-	public final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_HEIGHT;
+	public final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_WIDTH;
 	private final int PADDLE_FIRST_REAL_POSITION_X = SizeManager.getInstance().PADDLE_FIRST_REAL_POSITION_X;
 	private final int SCREEN_LOWER_BORDER = SizeManager.getInstance().SCREEN_LOWER_BORDER;
 	private final int SCREEN_UPPER_BORDER = SizeManager.getInstance().SCREEN_UPPER_BORDER;
@@ -158,7 +158,7 @@ public class Paddle implements Runnable {
 	}
 
 	public boolean checkLowerPosition() {
-		if (this.getPositionY() >= (this.SCREEN_LOWER_BORDER - this.PADDLE_HEIGHT))
+		if (this.getPositionY() >= (this.SCREEN_HEIGHT - this.PADDLE_HEIGHT))
 			return true;
 		return false;
 	}
@@ -168,8 +168,8 @@ public class Paddle implements Runnable {
 		if (this.getPositionY() <= 0)
 			this.setPositionY(0);
 
-		if (this.getPositionY() >= (this.SCREEN_LOWER_BORDER - this.PADDLE_HEIGHT))
-			this.setPositionY(this.SCREEN_LOWER_BORDER - this.PADDLE_HEIGHT);
+		if (this.getPositionY() >= (this.SCREEN_HEIGHT - this.PADDLE_HEIGHT))
+			this.setPositionY(this.SCREEN_HEIGHT - this.PADDLE_HEIGHT);
 
 	}
 
@@ -189,12 +189,14 @@ public class Paddle implements Runnable {
 
 		conditionY = ((this.getBall().getPositionY() + this.getBall().getSizeY()) > this.getPositionY())
 				&& (this.getBall().getPositionY() < (this.getPositionY() + this.PADDLE_HEIGHT));
-		straightStrikeConditionFirst = this.getBall().getPositionY() >= ((this.getPositionY() + this.PADDLE_HEIGHT) / 2 - 20);
-		straightStrikeConditionSecond = this.getBall().getPositionY() <= ((this.getPositionY() + this.PADDLE_HEIGHT) / 2 + 20);
+		straightStrikeConditionFirst = this.getBall()
+				.getPositionY() >= ((this.getPositionY() + this.PADDLE_HEIGHT) / 2 - 20);
+		straightStrikeConditionSecond = this.getBall()
+				.getPositionY() <= ((this.getPositionY() + this.PADDLE_HEIGHT) / 2 + 20);
 
 		switch (this.getPlayer().getId()) {
 		case 1: {
-			conditionX = (this.getRealPositionX() + (1.5 * this.getBall().getSizeX())) >= this.getBall().getPositionX();
+			conditionX = this.getRealPositionX() /* + this.getBall().getSizeX()) */ >= this.getBall().getPositionX();
 			changedSpeedConditionFirst = (this.getBall().getPositionY() > this.getPositionY())
 					&& (this.getBall().getPositionY() < (this.getPositionY() + 20));
 			changedSpeedConditionSecond = ((this.getBall().getPositionY()
@@ -204,9 +206,10 @@ public class Paddle implements Runnable {
 			break;
 		}
 		case 2: {
-			conditionX = (this.getPositionX() - this.getBall().getSizeX()) < (this.getBall().getPositionX()
-					+ this.getBall().getSizeX());
-			changedSpeedConditionFirst = (this.getBall().getPositionY() < (this.getPositionY() + this.PADDLE_HEIGHT / 4));
+			conditionX = (this.getPositionX() - this.getBall().getSizeX()) < this.getBall().getPositionX();
+			// + this.getBall().getSizeX());
+			changedSpeedConditionFirst = (this.getBall()
+					.getPositionY() < (this.getPositionY() + this.PADDLE_HEIGHT / 4));
 			changedSpeedConditionSecond = this.getBall().getPositionY() < (this.getPositionY() + this.PADDLE_HEIGHT);
 		}
 		}
@@ -247,6 +250,11 @@ public class Paddle implements Runnable {
 		return false;
 	}
 
+	public void checkPickup() {
+		if (this.pickup())
+			this.getBall().setSpeedX(this.getBall().changeDirection(this.getBall().getSpeedX()));
+	}
+
 	public void resetReflectionAmount() {
 		this.reflectionAmount = 0;
 		this.getBall().generateReflectionAmount();
@@ -256,11 +264,8 @@ public class Paddle implements Runnable {
 	public void run() {
 		while (isRun()) {
 			try {
-				if (this.pickup())
-					this.getBall().setSpeedX(this.getBall().changeDirection(this.getBall().getSpeedX()));
 				this.checkPosition();
 				Thread.sleep(50);
-				// this.getGamePanel().repaint();
 			} catch (InterruptedException e) {
 			}
 		}

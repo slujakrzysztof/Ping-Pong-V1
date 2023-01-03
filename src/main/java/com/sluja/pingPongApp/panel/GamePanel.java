@@ -1,6 +1,8 @@
 package com.sluja.pingPongApp.panel;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -55,9 +57,11 @@ public class GamePanel extends JPanel {
 		this.gameFinished = false;
 		this.setBackground(backgroundColor);
 		this.setFocusable(true);
+		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		this.ball = new RoundedBall(this);
 		this.initializePlayersArray();
 		this.initializePaddle();
+		// this.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 
 	@Override
@@ -105,7 +109,7 @@ public class GamePanel extends JPanel {
 	public void setGameForm(GameForm gameForm) {
 		this.gameForm = gameForm;
 	}
-	
+
 	public Ball getBall() {
 		return this.ball;
 	}

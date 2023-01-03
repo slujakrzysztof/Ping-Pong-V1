@@ -1,6 +1,7 @@
 package com.sluja.pingPongApp.panel;
 
 import java.awt.CardLayout;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
@@ -8,18 +9,22 @@ import com.sluja.pingPongApp.enums.GameForm;
 import com.sluja.pingPongApp.enums.GameLevel;
 import com.sluja.pingPongApp.frame.GameFrame;
 import com.sluja.pingPongApp.properties.PropertyReader;
+import com.sluja.pingPongApp.properties.SizeManager;
 
 public class MainPanel extends JPanel {
 
 	private CardLayout layout;
 	public final String MENU_PANEL = PropertyReader.getInstance().getProperty("card.name.menuPanel");
 	public final String GAME_PANEL = PropertyReader.getInstance().getProperty("card.name.gamePanel");
+	private final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_WIDTH;
+	private final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
 	private GamePanel gamePanel;
 	private MenuPanel menuPanel;
 	private GameFrame gameFrame;
 
 	public MainPanel(GameFrame gameFrame) {
 		this.gameFrame = gameFrame;
+		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		layout = new CardLayout();
 		gamePanel = new GamePanel(gameFrame, GameForm.SINGLE_PLAYER, GameLevel.BEGINNER);
 		menuPanel = new MenuPanel(gameFrame);
