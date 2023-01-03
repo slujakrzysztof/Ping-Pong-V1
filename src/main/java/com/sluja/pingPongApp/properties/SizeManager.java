@@ -11,8 +11,10 @@ public class SizeManager {
 	public final int SCREEN_HEIGHT = Integer.parseInt(PropertyReader.getInstance().getProperty("window.height"));
 	public final int PADDLE_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.width"));
 	public final int PADDLE_HEIGHT = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.height"));
-	public final int PADDLE_INCREASED_SPEED_BORDER = Integer
-			.parseInt(PropertyReader.getInstance().getProperty("paddle.increasedBorder"));
+	public final int PADDLE_BORDER_INCREASED_SPEED = Integer
+			.parseInt(PropertyReader.getInstance().getProperty("paddle.border.increasedSpeed"));
+	public final int PADDLE_BORDER_CHANGED_SPEED = Integer
+			.parseInt(PropertyReader.getInstance().getProperty("paddle.border.changedSpeed"));
 	public final int SCORE_POSITION_Y = Integer.parseInt(PropertyReader.getInstance().getProperty("score.positionY"));
 	public final int SPEED_BEGINNER = Integer.parseInt(PropertyReader.getInstance().getProperty("speed.beginner"));
 	public final int SPEED_EASY = Integer.parseInt(PropertyReader.getInstance().getProperty("speed.easy"));
