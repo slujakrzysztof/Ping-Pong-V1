@@ -26,7 +26,7 @@ public class Paddle implements Runnable {
 	private final int SCREEN_LEFT_BORDER = SizeManager.getInstance().SCREEN_LEFT_BORDER;
 	private final int SCREEN_RIGHT_BORDER = SizeManager.getInstance().SCREEN_RIGHT_BORDER;
 	private final int PADDLE_BORDER_CHANGED_SPEED = SizeManager.getInstance().PADDLE_BORDER_CHANGED_SPEED;
-	private final int PADDLE_BORDER_INCREASED_SPEED = SizeManager.getInstance().PADDLE_BORDER_INCREASED_SPEED;
+	private final int PADDLE_BORDER_STRAIGHT_STRIKE = SizeManager.getInstance().PADDLE_BORDER_STRAIGHT_STRIKE;
 
 	protected int positionY;
 	protected int positionX;
@@ -73,6 +73,7 @@ public class Paddle implements Runnable {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 50));
 		this.drawScore(g);
+		this.drawPaddleBorders(g);
 	}
 
 	protected void drawScore(Graphics g) {
@@ -80,6 +81,24 @@ public class Paddle implements Runnable {
 		int scorePositionX = this.player.getScorePositionX();
 		int scorePositionY = this.player.getScorePositionY();
 		g.drawString(score, scorePositionX, scorePositionY);
+	}
+
+	protected void drawPaddleBorders(Graphics g) {
+		g.setColor(Color.WHITE);
+		g.drawLine(player.getPositionX(), (this.getPositionY() + this.PADDLE_BORDER_CHANGED_SPEED),
+				(player.getPositionX() + this.PADDLE_WIDTH), (this.getPositionY() + this.PADDLE_BORDER_CHANGED_SPEED));
+		g.drawLine(player.getPositionX(), (this.getPositionY() + this.PADDLE_HEIGHT - this.PADDLE_BORDER_CHANGED_SPEED),
+				(player.getPositionX() + this.PADDLE_WIDTH),
+				(this.getPositionY() + this.PADDLE_HEIGHT - this.PADDLE_BORDER_CHANGED_SPEED));
+		g.drawLine(player.getPositionX(),
+				((this.getPositionY() + this.PADDLE_HEIGHT / 2) - this.PADDLE_BORDER_STRAIGHT_STRIKE),
+				(player.getPositionX() + this.PADDLE_WIDTH),
+				(this.getPositionY() + this.PADDLE_HEIGHT / 2) - this.PADDLE_BORDER_STRAIGHT_STRIKE);
+		g.drawLine(player.getPositionX(),
+				((this.getPositionY() + this.PADDLE_HEIGHT / 2) + this.PADDLE_BORDER_STRAIGHT_STRIKE),
+				(player.getPositionX() + this.PADDLE_WIDTH),
+				((this.getPositionY() + this.PADDLE_HEIGHT / 2) + this.PADDLE_BORDER_STRAIGHT_STRIKE));
+
 	}
 
 	public boolean isRun() {
@@ -190,10 +209,10 @@ public class Paddle implements Runnable {
 
 		conditionY = ((this.getBall().getPositionY() + this.getBall().getSizeY()) > this.getPositionY())
 				&& (this.getBall().getPositionY() < (this.getPositionY() + this.PADDLE_HEIGHT));
-		straightStrikeConditionFirst = this.getBall().getPositionY() >= ((this.getPositionY() + this.PADDLE_HEIGHT) / 2
-				- this.PADDLE_BORDER_INCREASED_SPEED);
-		straightStrikeConditionSecond = this.getBall().getPositionY() <= ((this.getPositionY() + this.PADDLE_HEIGHT) / 2
-				+ this.PADDLE_BORDER_INCREASED_SPEED);
+		straightStrikeConditionFirst = this.getBall().getPositionY() >= ((this.getPositionY() + this.PADDLE_HEIGHT / 2)
+				- this.PADDLE_BORDER_STRAIGHT_STRIKE);
+		straightStrikeConditionSecond = this.getBall().getPositionY() <= ((this.getPositionY() + this.PADDLE_HEIGHT / 2)
+				+ this.PADDLE_BORDER_STRAIGHT_STRIKE);
 		changedSpeedConditionFirst = (this.getBall().getPositionY() > this.getPositionY())
 				&& (this.getBall().getPositionY() < (this.getPositionY() + this.PADDLE_BORDER_CHANGED_SPEED));
 		changedSpeedConditionSecond = ((this.getBall().getPositionY()

@@ -11,8 +11,8 @@ public class SizeManager {
 	public final int SCREEN_HEIGHT = Integer.parseInt(PropertyReader.getInstance().getProperty("window.height"));
 	public final int PADDLE_WIDTH = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.width"));
 	public final int PADDLE_HEIGHT = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.height"));
-	public final int PADDLE_BORDER_INCREASED_SPEED = Integer
-			.parseInt(PropertyReader.getInstance().getProperty("paddle.border.increasedSpeed"));
+	public final int PADDLE_BORDER_STRAIGHT_STRIKE = Integer
+			.parseInt(PropertyReader.getInstance().getProperty("paddle.border.straightStrike"));
 	public final int PADDLE_BORDER_CHANGED_SPEED = Integer
 			.parseInt(PropertyReader.getInstance().getProperty("paddle.border.changedSpeed"));
 	public final int SCORE_POSITION_Y = Integer.parseInt(PropertyReader.getInstance().getProperty("score.positionY"));
@@ -46,8 +46,6 @@ public class SizeManager {
 	public final int PADDLE_FIRST_POSITION_X = this.SCREEN_LEFT_BORDER;
 	public final int PADDLE_FIRST_REAL_POSITION_X = this.PADDLE_FIRST_POSITION_X + PADDLE_WIDTH;
 	public final int PADDLE_SECOND_POSITION_X = this.SCREEN_RIGHT_BORDER - this.PADDLE_WIDTH;
-	//public final int PADDLE_POSITION_X = Integer
-		//	.parseInt(PropertyReader.getInstance().getProperty("paddle.first.positionX"));
 	public final int BALL_ROUNDED_SIZE = Integer.parseInt(PropertyReader.getInstance().getProperty("roundedBall.size"));
 	public final int BALL_ROUNDED_SPEED_X = Integer
 			.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX"));

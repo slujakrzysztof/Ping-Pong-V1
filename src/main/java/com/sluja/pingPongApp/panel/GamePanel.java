@@ -39,7 +39,6 @@ public class GamePanel extends JPanel {
 
 	private Thread paddleFirstThread;
 	private Thread paddleSecondThread;
-	private Thread ballThread;
 	private ArrayList<Paddle> paddles = new ArrayList<Paddle>();
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private Ball ball;
@@ -61,7 +60,6 @@ public class GamePanel extends JPanel {
 		this.ball = new RoundedBall(this);
 		this.initializePlayersArray();
 		this.initializePaddle();
-		// this.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 
 	@Override
