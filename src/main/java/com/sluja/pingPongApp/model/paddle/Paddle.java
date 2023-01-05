@@ -21,10 +21,6 @@ public class Paddle implements Runnable {
 	public final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
 	public final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_WIDTH;
 	private final int PADDLE_FIRST_REAL_POSITION_X = SizeManager.getInstance().PADDLE_FIRST_REAL_POSITION_X;
-	private final int SCREEN_LOWER_BORDER = SizeManager.getInstance().SCREEN_LOWER_BORDER;
-	private final int SCREEN_UPPER_BORDER = SizeManager.getInstance().SCREEN_UPPER_BORDER;
-	private final int SCREEN_LEFT_BORDER = SizeManager.getInstance().SCREEN_LEFT_BORDER;
-	private final int SCREEN_RIGHT_BORDER = SizeManager.getInstance().SCREEN_RIGHT_BORDER;
 	private final int PADDLE_BORDER_CHANGED_SPEED = SizeManager.getInstance().PADDLE_BORDER_CHANGED_SPEED;
 	private final int PADDLE_BORDER_STRAIGHT_STRIKE = SizeManager.getInstance().PADDLE_BORDER_STRAIGHT_STRIKE;
 
@@ -35,12 +31,9 @@ public class Paddle implements Runnable {
 	protected Color playerColor;
 	protected Player player;
 	protected Ball ball;
-	protected int realPositionY;
 	protected int realPositionX;
 	protected int homePosition;
-	protected boolean pickedUp;
 	protected boolean run;
-	protected int sizeH;
 	protected GamePanel gamePanel;
 	protected boolean conditionX = false;
 	protected boolean conditionY = false;
@@ -51,7 +44,6 @@ public class Paddle implements Runnable {
 	protected boolean straightStrikeConditionFirst = false;
 	protected boolean straightStrikeConditionSecond = false;
 	protected int reflectionAmount;
-	protected boolean pointEarned;
 
 	public Paddle(Player player, GamePanel gamePanel) {
 		this.player = player;
@@ -63,7 +55,6 @@ public class Paddle implements Runnable {
 		this.realPositionX = this.PADDLE_FIRST_REAL_POSITION_X;
 		this.gamePanel = gamePanel;
 		this.ball = this.gamePanel.getBall();
-		this.pointEarned = false;
 		this.reflectionAmount = 0;
 	}
 
@@ -85,20 +76,23 @@ public class Paddle implements Runnable {
 
 	protected void drawPaddleBorders(Graphics g) {
 		g.setColor(Color.WHITE);
+
 		g.drawLine(player.getPositionX(), (this.getPositionY() + this.PADDLE_BORDER_CHANGED_SPEED),
 				(player.getPositionX() + this.PADDLE_WIDTH), (this.getPositionY() + this.PADDLE_BORDER_CHANGED_SPEED));
+
 		g.drawLine(player.getPositionX(), (this.getPositionY() + this.PADDLE_HEIGHT - this.PADDLE_BORDER_CHANGED_SPEED),
 				(player.getPositionX() + this.PADDLE_WIDTH),
 				(this.getPositionY() + this.PADDLE_HEIGHT - this.PADDLE_BORDER_CHANGED_SPEED));
+
 		g.drawLine(player.getPositionX(),
 				((this.getPositionY() + this.PADDLE_HEIGHT / 2) - this.PADDLE_BORDER_STRAIGHT_STRIKE),
 				(player.getPositionX() + this.PADDLE_WIDTH),
 				(this.getPositionY() + this.PADDLE_HEIGHT / 2) - this.PADDLE_BORDER_STRAIGHT_STRIKE);
+
 		g.drawLine(player.getPositionX(),
 				((this.getPositionY() + this.PADDLE_HEIGHT / 2) + this.PADDLE_BORDER_STRAIGHT_STRIKE),
 				(player.getPositionX() + this.PADDLE_WIDTH),
 				((this.getPositionY() + this.PADDLE_HEIGHT / 2) + this.PADDLE_BORDER_STRAIGHT_STRIKE));
-
 	}
 
 	public boolean isRun() {
@@ -159,14 +153,6 @@ public class Paddle implements Runnable {
 
 	public void setPlayer(Player player) {
 		this.player = player;
-	}
-
-	public void setPickedUp(boolean pickedUp) {
-		this.pickedUp = pickedUp;
-	}
-
-	public boolean isPickedUp() {
-		return this.pickedUp;
 	}
 
 	public boolean checkUpperPosition() {

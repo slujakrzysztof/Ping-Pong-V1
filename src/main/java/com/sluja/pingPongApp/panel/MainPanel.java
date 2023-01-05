@@ -18,10 +18,13 @@ public class MainPanel extends JPanel {
 	public final String GAME_PANEL = PropertyReader.getInstance().getProperty("card.name.gamePanel");
 	private final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_WIDTH;
 	private final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
+	
 	private GamePanel gamePanel;
 	private MenuPanel menuPanel;
 	private GameFrame gameFrame;
 
+	private GameForm gameForm;
+	
 	public MainPanel(GameFrame gameFrame) {
 		this.gameFrame = gameFrame;
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -32,6 +35,14 @@ public class MainPanel extends JPanel {
 		this.add(gamePanel, GAME_PANEL);
 		this.add(menuPanel, MENU_PANEL);
 		this.showPanel(MENU_PANEL);
+	}
+	
+	public GameForm getGameForm() {
+		return this.gameForm;
+	}
+	
+	public void setGameForm(GameForm gameForm) {
+		this.gameForm = gameForm;
 	}
 
 	public String getLabelMenuPanel() {

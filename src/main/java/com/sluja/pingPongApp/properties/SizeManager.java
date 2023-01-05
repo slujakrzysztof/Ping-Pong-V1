@@ -51,7 +51,9 @@ public class SizeManager {
 			.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedX"));
 	public final int BALL_ROUNDED_SPEED_Y = Integer
 			.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY"));
-
+	public final int BUTTON_GAP = Integer.parseInt(PropertyReader.getInstance().getProperty("button.gap"));
+	public final int BUTTON_BORDER = Integer.parseInt(PropertyReader.getInstance().getProperty("button.border"));
+	
 	public static SizeManager getInstance() {
 		return sizeManager;
 	}

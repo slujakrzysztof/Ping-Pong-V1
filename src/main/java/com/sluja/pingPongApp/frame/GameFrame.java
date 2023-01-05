@@ -39,7 +39,6 @@ public class GameFrame extends JFrame {
 
 	public GameFrame() {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		// layout = new CardLayout();
 		this.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER));
 		mainPanel = new MainPanel(this);
 		this.getContentPane().add(mainPanel);
@@ -50,8 +49,11 @@ public class GameFrame extends JFrame {
 		this.pack();
 		System.out.println("XXXXXXXXXXXXX : " + this.getSize().width);
 		System.out.println("YYYYYYYYYYYYY : " + this.getSize().height);
-		// this.setBounds(SCREEN_POSITION_X, SCREEN_POSITION_Y, SCREEN_WIDTH,
-		// SCREEN_HEIGHT);
+
+	}
+	
+	public GameForm getGameForm() {
+		return this.gameForm;
 	}
 
 	public void setGameForm(GameForm gameForm) {

@@ -51,6 +51,7 @@ public class GamePanel extends JPanel {
 	public GamePanel(GameFrame gameFrame, GameForm gameForm, GameLevel gameLevel) {
 		this.gameFrame = gameFrame;
 		this.gameForm = gameForm;
+		System.out.println("GAMEFORM: " + this.gameForm);
 		this.gameLevel = gameLevel;
 		this.sumPoint = 0;
 		this.gameFinished = false;
@@ -67,9 +68,6 @@ public class GamePanel extends JPanel {
 		super.paintComponent(g); // To change body of generated methods, choose Tools | Templates.
 		this.paddles.forEach((paddle) -> paddle.draw(g));
 		ball.draw(g); // drawing ball
-		// if (ball.getScoreEnd())
-		// ball.paintResult(g); // If game ends, the score with information will be
-		// displayed
 		if (this.isGameFinished())
 			drawInfo(g); // Displaying informations at the beginning and at the end
 	}
