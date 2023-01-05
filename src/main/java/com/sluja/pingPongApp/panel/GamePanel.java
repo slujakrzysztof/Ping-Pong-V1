@@ -39,28 +39,37 @@ public class GamePanel extends JPanel {
 
 	private Thread paddleFirstThread;
 	private Thread paddleSecondThread;
+
 	private ArrayList<Paddle> paddles = new ArrayList<Paddle>();
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private Ball ball;
 	private boolean run = true;
+
 	private int pickedPlayer;
 	private int points;
 	private int sumPoint;
 	private boolean gameFinished;
 
+	public GamePanel(GameFrame gameFrame) {
+		this.sumPoint = 0;
+		this.gameFinished = false;
+		this.setBackground(backgroundColor);
+		this.setFocusable(true);
+		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+	}
+
 	public GamePanel(GameFrame gameFrame, GameForm gameForm, GameLevel gameLevel) {
 		this.gameFrame = gameFrame;
 		this.gameForm = gameForm;
-		System.out.println("GAMEFORM: " + this.gameForm);
 		this.gameLevel = gameLevel;
 		this.sumPoint = 0;
 		this.gameFinished = false;
 		this.setBackground(backgroundColor);
 		this.setFocusable(true);
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-		this.ball = new RoundedBall(this);
-		this.initializePlayersArray();
-		this.initializePaddle();
+		// this.ball = new RoundedBall(this);
+		// this.initializePlayersArray();
+		// this.initializePaddle();
 	}
 
 	@Override
@@ -83,6 +92,14 @@ public class GamePanel extends JPanel {
 
 	public boolean isGameFinished() {
 		return this.gameFinished;
+	}
+	
+	public void setGameLevel(GameLevel gameLevel) {
+		this.gameLevel = gameLevel;
+	}
+	
+	public GameLevel getGameLevel() {
+		return this.gameLevel;
 	}
 
 	private void initializePlayersArray() {
@@ -112,6 +129,9 @@ public class GamePanel extends JPanel {
 
 	public void setGame() {
 		this.setSteering(paddles);
+		System.out.println("GAAAAAAAAAAAAAAAMEMODE: " + this.getGameForm());
+		this.initializePlayersArray();
+		this.initializePaddle();
 		paddleFirstThread = new Thread(paddles.get(0));
 		paddleSecondThread = new Thread(paddles.get(1));
 		setRun(true);

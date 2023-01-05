@@ -18,29 +18,31 @@ public class MainPanel extends JPanel {
 	public final String GAME_PANEL = PropertyReader.getInstance().getProperty("card.name.gamePanel");
 	private final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_WIDTH;
 	private final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
-	
+
 	private GamePanel gamePanel;
 	private MenuPanel menuPanel;
 	private GameFrame gameFrame;
 
 	private GameForm gameForm;
-	
+
 	public MainPanel(GameFrame gameFrame) {
 		this.gameFrame = gameFrame;
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		layout = new CardLayout();
-		gamePanel = new GamePanel(gameFrame, GameForm.SINGLE_PLAYER, GameLevel.BEGINNER);
+		// gamePanel = new GamePanel(gameFrame, GameForm.SINGLE_PLAYER,
+		// GameLevel.BEGINNER);
+		gamePanel = new GamePanel(gameFrame);
 		menuPanel = new MenuPanel(gameFrame);
 		this.setLayout(layout);
 		this.add(gamePanel, GAME_PANEL);
 		this.add(menuPanel, MENU_PANEL);
 		this.showPanel(MENU_PANEL);
 	}
-	
+
 	public GameForm getGameForm() {
 		return this.gameForm;
 	}
-	
+
 	public void setGameForm(GameForm gameForm) {
 		this.gameForm = gameForm;
 	}
@@ -53,6 +55,10 @@ public class MainPanel extends JPanel {
 		return GAME_PANEL;
 	}
 
+	public MenuPanel getMenuPanel() {
+		return this.menuPanel;
+	}
+
 	public GamePanel getGamePanel() {
 		return this.gamePanel;
 	}
@@ -62,6 +68,13 @@ public class MainPanel extends JPanel {
 		if (panel.equals(GAME_PANEL)) {
 			gamePanel.setFocusable(true);
 		}
+	}
+
+	public void startGame(GameForm gameForm, GameLevel gameLevel) {
+		this.getGamePanel().setGameForm(gameForm);
+		if (gameForm == GameForm.SINGLE_PLAYER)
+			this.getGamePanel().setGameLevel(gameLevel);
+		this.getGamePanel().setGame();
 	}
 
 }
