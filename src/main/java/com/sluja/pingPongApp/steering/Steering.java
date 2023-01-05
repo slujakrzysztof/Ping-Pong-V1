@@ -47,39 +47,42 @@ public class Steering {
 		return this.paddles;
 	}
 
+	private void moveDown(int index) {
+		if (!getPaddles().get(index).checkLowerPosition())
+			getPaddles().get(index).moveDown();
+	}
+
+	private void moveUp(int index) {
+		if (!getPaddles().get(index).checkUpperPosition())
+			getPaddles().get(index).moveUp();
+	}
+
 	private void initializeActionMap() {
 		actionMap.put("movingUp", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// getPaddles().get(0).setMovingUp(true);
-				if (!getPaddles().get(0).checkUpperPosition())
-					getPaddles().get(0).moveUp();
+				moveUp(0);
 			}
 		});
 
 		actionMap.put("movingDown", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// getPaddles().get(0).setMovingUp(false);
-				if (!getPaddles().get(0).checkLowerPosition())
-					getPaddles().get(0).moveDown();
+				moveDown(0);
 			}
 		});
 
 		actionMap.put("movingUpSecondPlayer", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getPaddles().get(1).setMovingUp(true);
-				// getPaddles().get(1).move();
+				moveUp(1);
 			}
 		});
 
 		actionMap.put("movingDownSecondPlayer", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("UPUPUPUP");
-				getPaddles().get(1).setMovingUp(false);
-				// getPaddles().get(1).move();
+				moveDown(1);
 			}
 		});
 
@@ -90,7 +93,6 @@ public class Steering {
 		this.singlePlayerSteering();
 		if (this.getGameForm() == GameForm.MULTIPLAYER)
 			this.multiPlayerSteering();
-
 	}
 
 	private void singlePlayerSteering() {

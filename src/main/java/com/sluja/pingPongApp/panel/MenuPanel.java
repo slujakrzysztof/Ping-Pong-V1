@@ -1,16 +1,13 @@
 package com.sluja.pingPongApp.panel;
 
 import javax.swing.JPanel;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
-import javax.swing.Box;
 import javax.swing.JComboBox;
-import java.awt.Component;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -23,6 +20,7 @@ import com.sluja.pingPongApp.frame.GameFrame;
 import javax.swing.ImageIcon;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import com.sluja.pingPongApp.enums.BallModel;
 
 public class MenuPanel extends JPanel implements ActionListener {
 
@@ -48,11 +46,13 @@ public class MenuPanel extends JPanel implements ActionListener {
 		this.gameFrame = gameFrame;
 
 		this.gameLevelCheckBox = new JComboBox<GameLevel>();
+		gameLevelCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		gameLevelCheckBox.setModel(new DefaultComboBoxModel(GameLevel.values()));
 		gameLevelCheckBox.setBounds(40, 297, 310, 35);
 		add(gameLevelCheckBox);
 
 		this.gameFormCheckBox = new JComboBox();
+		gameFormCheckBox.setModel(new DefaultComboBoxModel(BallModel.values()));
 		gameFormCheckBox.setBounds(40, 392, 310, 35);
 		add(gameFormCheckBox);
 
@@ -61,10 +61,6 @@ public class MenuPanel extends JPanel implements ActionListener {
 		gameLevelLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		gameLevelLabel.setBounds(40, 255, 310, 30);
 		add(gameLevelLabel);
-
-		JLabel gameFormLabel = new JLabel("New label");
-		gameFormLabel.setBounds(40, 353, 310, 30);
-		add(gameFormLabel);
 
 		this.startButton = new JButton("START");
 		startButton.setBounds(40, 472, 310, 50);
@@ -96,11 +92,18 @@ public class MenuPanel extends JPanel implements ActionListener {
 		multiPlayerRadioButton.setBounds(241, 209, 109, 23);
 		add(multiPlayerRadioButton);
 
-		JLabel lblGameForm = new JLabel("Game Form");
-		lblGameForm.setHorizontalAlignment(SwingConstants.CENTER);
-		lblGameForm.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblGameForm.setBounds(40, 157, 310, 30);
-		add(lblGameForm);
+		JLabel GameFormLabel = new JLabel("Game Form");
+		GameFormLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		GameFormLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+		GameFormLabel.setBounds(40, 157, 310, 30);
+		add(GameFormLabel);
+
+		JLabel ballModelLabel = new JLabel("Ball Model");
+		ballModelLabel.setLabelFor(this);
+		ballModelLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		ballModelLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+		ballModelLabel.setBounds(40, 351, 310, 30);
+		add(ballModelLabel);
 
 		this.setButtonArray();
 		this.setButtonListener();
@@ -152,7 +155,6 @@ public class MenuPanel extends JPanel implements ActionListener {
 		if (e.getSource() == startButton) {
 			this.getMainPanel().setGameForm(this.getGameForm());
 			this.getMainPanel().startGame(this.getMainPanel().getGameForm(), this.getGameLevel());
-			;
 			this.getMainPanel().showPanel(this.getMainPanel().getLabelGamePanel());
 		}
 

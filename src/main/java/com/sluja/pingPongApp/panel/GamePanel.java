@@ -112,7 +112,7 @@ public class GamePanel extends JPanel {
 		if (this.gameForm == GameForm.MULTIPLAYER)
 			this.paddles.add(new Paddle(players.get(1), this));
 		else
-			this.paddles.add(new ComputerPaddle(players.get(1), GameLevel.BEGINNER, this));
+			this.paddles.add(new ComputerPaddle(players.get(1), this.getGameLevel(), this));
 	}
 
 	public GameForm getGameForm() {
@@ -126,7 +126,7 @@ public class GamePanel extends JPanel {
 	public Ball getBall() {
 		return this.ball;
 	}
-	
+
 	public void setBall(Ball ball) {
 		this.ball = ball;
 	}

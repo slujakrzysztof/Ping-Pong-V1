@@ -30,10 +30,8 @@ public class MainPanel extends JPanel {
 		this.gameFrame = gameFrame;
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		layout = new CardLayout();
-		// gamePanel = new GamePanel(gameFrame, GameForm.SINGLE_PLAYER,
-		// GameLevel.BEGINNER);
 		gamePanel = new GamePanel(gameFrame);
-		menuPanel = new MenuPanel(this,gameFrame);
+		menuPanel = new MenuPanel(this, gameFrame);
 		this.setLayout(layout);
 		this.add(gamePanel, GAME_PANEL);
 		this.add(menuPanel, MENU_PANEL);
