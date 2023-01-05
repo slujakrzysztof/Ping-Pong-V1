@@ -93,11 +93,11 @@ public class GamePanel extends JPanel {
 	public boolean isGameFinished() {
 		return this.gameFinished;
 	}
-	
+
 	public void setGameLevel(GameLevel gameLevel) {
 		this.gameLevel = gameLevel;
 	}
-	
+
 	public GameLevel getGameLevel() {
 		return this.gameLevel;
 	}
@@ -126,17 +126,20 @@ public class GamePanel extends JPanel {
 	public Ball getBall() {
 		return this.ball;
 	}
+	
+	public void setBall(Ball ball) {
+		this.ball = ball;
+	}
 
 	public void setGame() {
 		this.setSteering(paddles);
-		System.out.println("GAAAAAAAAAAAAAAAMEMODE: " + this.getGameForm());
 		this.initializePlayersArray();
 		this.initializePaddle();
 		paddleFirstThread = new Thread(paddles.get(0));
 		paddleSecondThread = new Thread(paddles.get(1));
 		setRun(true);
-		this.ball.setThread();
-		this.ball.generateReflectionAmount();
+		this.getBall().setThread();
+		this.getBall().generateReflectionAmount();
 		paddleFirstThread.start();
 		paddleSecondThread.start();
 	}

@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import com.sluja.pingPongApp.enums.GameForm;
 import com.sluja.pingPongApp.enums.GameLevel;
 import com.sluja.pingPongApp.frame.GameFrame;
+import com.sluja.pingPongApp.model.ball.RoundedBall;
 import com.sluja.pingPongApp.properties.PropertyReader;
 import com.sluja.pingPongApp.properties.SizeManager;
 
@@ -32,7 +33,7 @@ public class MainPanel extends JPanel {
 		// gamePanel = new GamePanel(gameFrame, GameForm.SINGLE_PLAYER,
 		// GameLevel.BEGINNER);
 		gamePanel = new GamePanel(gameFrame);
-		menuPanel = new MenuPanel(gameFrame);
+		menuPanel = new MenuPanel(this,gameFrame);
 		this.setLayout(layout);
 		this.add(gamePanel, GAME_PANEL);
 		this.add(menuPanel, MENU_PANEL);
@@ -74,6 +75,7 @@ public class MainPanel extends JPanel {
 		this.getGamePanel().setGameForm(gameForm);
 		if (gameForm == GameForm.SINGLE_PLAYER)
 			this.getGamePanel().setGameLevel(gameLevel);
+		this.getGamePanel().setBall(new RoundedBall(this.getGamePanel()));
 		this.getGamePanel().setGame();
 	}
 

@@ -2,8 +2,12 @@ package com.sluja.pingPongApp.panel;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
+import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.JComboBox;
 import java.awt.Component;
@@ -16,10 +20,11 @@ import javax.swing.DefaultComboBoxModel;
 import com.sluja.pingPongApp.enums.GameForm;
 import com.sluja.pingPongApp.enums.GameLevel;
 import com.sluja.pingPongApp.frame.GameFrame;
-import com.sluja.pingPongApp.listener.PanelListener;
 import javax.swing.ImageIcon;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 
-public class MenuPanel extends JPanel {
+public class MenuPanel extends JPanel implements ActionListener {
 
 	private GameFrame gameFrame;
 
@@ -31,14 +36,16 @@ public class MenuPanel extends JPanel {
 
 	private ArrayList<JButton> buttonArray = new ArrayList<JButton>();
 
-	private PanelListener panelListener;
 	private GameLevel gameLevel;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 
-	public MenuPanel(GameFrame gameFrame) {
+	private MainPanel mainPanel;
+
+	public MenuPanel(MainPanel mainPanel, GameFrame gameFrame) {
 		setLayout(null);
 
+		this.mainPanel = mainPanel;
 		this.gameFrame = gameFrame;
-		this.panelListener = new PanelListener(this);
 
 		this.gameLevelCheckBox = new JComboBox<GameLevel>();
 		gameLevelCheckBox.setModel(new DefaultComboBoxModel(GameLevel.values()));
@@ -76,11 +83,34 @@ public class MenuPanel extends JPanel {
 		titleLabel.setBounds(60, 30, 410, 60);
 		add(titleLabel);
 
+		JRadioButton singlePlayerRadioButton = new JRadioButton("SINGLE_PLAYER");
+		singlePlayerRadioButton.setSelected(true);
+		singlePlayerRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		buttonGroup.add(singlePlayerRadioButton);
+		singlePlayerRadioButton.setBounds(40, 209, 138, 23);
+		add(singlePlayerRadioButton);
+
+		JRadioButton multiPlayerRadioButton = new JRadioButton("MULTIPLAYER");
+		multiPlayerRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		buttonGroup.add(multiPlayerRadioButton);
+		multiPlayerRadioButton.setBounds(241, 209, 109, 23);
+		add(multiPlayerRadioButton);
+
+		JLabel lblGameForm = new JLabel("Game Form");
+		lblGameForm.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGameForm.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblGameForm.setBounds(40, 157, 310, 30);
+		add(lblGameForm);
+
 		this.setButtonArray();
 		this.setButtonListener();
 
 	}
-	
+
+	public MainPanel getMainPanel() {
+		return this.mainPanel;
+	}
+
 	public GameFrame getGameFrame() {
 		return this.gameFrame;
 	}
@@ -91,7 +121,7 @@ public class MenuPanel extends JPanel {
 	}
 
 	private void setButtonListener() {
-		this.buttonArray.forEach((button) -> button.addActionListener(panelListener));
+		this.buttonArray.forEach((button) -> button.addActionListener(this));
 	}
 
 	public void setGameLevel(GameLevel gameLevel) {
@@ -100,5 +130,34 @@ public class MenuPanel extends JPanel {
 
 	public GameLevel getGameLevel() {
 		return (GameLevel) this.gameLevelCheckBox.getSelectedItem();
+	}
+
+	private String getSelectedButtonText() {
+		for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+			AbstractButton button = buttons.nextElement();
+			if (button.isSelected())
+				return button.getText();
+		}
+
+		return null;
+	}
+
+	public GameForm getGameForm() {
+		return (GameForm) GameForm.valueOf(getSelectedButtonText());
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+		if (e.getSource() == startButton) {
+			this.getMainPanel().setGameForm(this.getGameForm());
+			this.getMainPanel().startGame(this.getMainPanel().getGameForm(), this.getGameLevel());
+			;
+			this.getMainPanel().showPanel(this.getMainPanel().getLabelGamePanel());
+		}
+
+		if (e.getSource() == exitButton)
+			System.exit(0);
+
 	}
 }
