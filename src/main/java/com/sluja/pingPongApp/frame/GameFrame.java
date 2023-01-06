@@ -9,12 +9,18 @@ import com.sluja.pingPongApp.properties.SizeManager;
 
 public class GameFrame extends JFrame {
 
+	// ----- CONSTANTS ----- //
 	private final String TITLE = PropertyReader.getInstance().getProperty("title");
 	private final int SCREEN_POSITION_X = SizeManager.getInstance().SCREEN_POSITION_X;
 	private final int SCREEN_POSITION_Y = SizeManager.getInstance().SCREEN_POSITION_Y;
 
+	// ----- Variables ----- //
 	private MainPanel mainPanel;
 
+	// ------------------------ //
+	// ----- CONSTRUCTORS ----- //
+	// ------------------------ //
+	
 	public GameFrame() {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -27,6 +33,10 @@ public class GameFrame extends JFrame {
 		this.pack();
 	}
 
+	// ------------------- //
+	// ----- GETTERS ----- //
+	// ------------------- //
+	
 	public MainPanel getMainPanel() {
 		return this.mainPanel;
 	}

@@ -10,7 +10,10 @@ public class RandomGenerator {
 	private int reflectionAmount;
 	private int startBallPosition;
 	
+	// ------------------- //
 	// ----- GETTERS ----- //
+	// ------------------- //
+	
 	public Random getGenerator() {
 		return generator;
 	}
@@ -22,6 +25,10 @@ public class RandomGenerator {
 	public int getStartBallPosition() {
 		return startBallPosition;
 	}
+	
+	// ------------------- //
+	// ----- METHODS ----- //
+	// ------------------- //
 	
 	//Generate y position for ball after each point
 	public void generateStartBallPosition() {

@@ -2,7 +2,9 @@ package com.sluja.pingPongApp.interfaces;
 
 public interface BallMovement {
 
+	// ------------------- //
 	// ----- GETTERS ----- //
+	// ------------------- //
 
 	boolean getFirstDirection();
 
@@ -16,7 +18,9 @@ public interface BallMovement {
 
 	boolean isRun();
 
+	// ------------------- //
 	// ----- SETTERS ----- //
+	// ------------------- //
 
 	void setFirstDirection(boolean firstDirection);
 
@@ -26,6 +30,8 @@ public interface BallMovement {
 
 	void setRun(boolean run);
 
+	// ------------------- //
+	// ----- METHODS ----- //
 	// ------------------- //
 
 	void move();

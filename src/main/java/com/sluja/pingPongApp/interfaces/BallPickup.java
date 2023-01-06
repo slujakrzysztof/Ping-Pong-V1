@@ -2,16 +2,24 @@ package com.sluja.pingPongApp.interfaces;
 
 public interface BallPickup {
 
+	// ------------------- //
 	// ----- GETTERS ----- //
+	// ------------------- //
 
 	int getReflectionAmount();
 
 	boolean isPickedUp();
 
+	// ------------------- //
 	// ----- SETTERS ----- //
+	// ------------------- //
 
 	void setPickedUp(boolean pickedUp);
 
+	// ------------------- //
+	// ----- METHODS ----- //
+	// ------------------- //
+	
 	// Changing the direction of the ball movement
 	int changeDirection(int speed);
 
