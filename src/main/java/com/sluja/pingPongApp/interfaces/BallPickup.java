@@ -9,4 +9,8 @@ public interface BallPickup {
 	int getReflectionAmount();
 
 	boolean earnPoint(int firstPositionX, int secondPositionX);
+
+	boolean isPickedUp();
+	
+	void setPickedUp(boolean pickedUp);
 }

@@ -3,87 +3,36 @@ package com.sluja.pingPongApp.interfaces;
 import java.awt.Graphics;
 
 import com.sluja.pingPongApp.panel.GamePanel;
+import com.sluja.pingPongApp.properties.SizeManager;
 
 public interface Ball extends BallMovement, BallPickup{
+	 
+	int getPositionX();
 
-	public int getPositionX();
+	int getPositionY();
 
-	public int getPositionY();
+	int getSpeedX();
 
-	public int getSpeedX();
+	int getSpeedY();
 
-	public int getSpeedY();
+	int getSizeX();
 
-	public int getSizeX();
+	int getSizeY();
 
-	public int getSizeY();
+	void draw(Graphics g);
 
-	public void setPickedUp(boolean pickedUp);
+	void setStartingPosition(int points);
 
-	public void draw(Graphics g);
-
-	public boolean isPickedUp();
-
-	public void setPositionX(int positionX);
-
-	public void setPositionY(int positionY);
-
-	public void setSpeedX(int speedX);
-
-	public void setSpeedY(int speedY);
-
-	public boolean isMovingUp();
-
-	public boolean isMovingForward();
-
-	public void setStartingPosition(int points);
-
-	public void setMovingUp(boolean movingUp);
-
-	public GamePanel getGamePanel();
-
-	public boolean isMovingStraight();
-
-	public void setMovingStraight(boolean movingStraight);
-
-	public boolean isRun();
-
-	public void setRun(boolean run);
-
-	boolean isMovingFaster();
-
-	void setMovingFaster(boolean movingFaster);
-
-	void setBorderCrossed(boolean borderCrossed);
-
-	boolean isBorderCrossed();
-
+	GamePanel getGamePanel();
+	
 	void setThread();
 	
 	void setFirstDirection(boolean firstDirection);
+	
+	void setSpeedX(int speedX);
+	
+	void setSpeedY(int speedY);
 
 	boolean getFirstDirection();
-
-	void move();
-
-	boolean checkBorders();
-
-	void increaseSpeed();
-
-	void restoreSpeed();
-
-	void restoreSpeedY();
-
-	void restoreSpeedX();
-
-	boolean checkPosition();
-	
-	int changeDirection(int speed);
-
-	void generateReflectionAmount();
-
-	int getReflectionAmount();
-
-	boolean earnPoint(int firstPositionX, int secondPositionX);
 
 }

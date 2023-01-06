@@ -48,28 +48,19 @@ public class GamePanel extends JPanel {
 	private int pickedPlayer;
 	private int points;
 	private int sumPoint;
-	private boolean gameFinished;
 
 	public GamePanel(GameFrame gameFrame) {
+		this.gameFrame = gameFrame;
 		this.sumPoint = 0;
-		this.gameFinished = false;
 		this.setBackground(backgroundColor);
 		this.setFocusable(true);
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 	}
 
 	public GamePanel(GameFrame gameFrame, GameForm gameForm, GameLevel gameLevel) {
-		this.gameFrame = gameFrame;
+		this(gameFrame);
 		this.gameForm = gameForm;
 		this.gameLevel = gameLevel;
-		this.sumPoint = 0;
-		this.gameFinished = false;
-		this.setBackground(backgroundColor);
-		this.setFocusable(true);
-		this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-		// this.ball = new RoundedBall(this);
-		// this.initializePlayersArray();
-		// this.initializePaddle();
 	}
 
 	@Override
@@ -77,21 +68,6 @@ public class GamePanel extends JPanel {
 		super.paintComponent(g); // To change body of generated methods, choose Tools | Templates.
 		this.paddles.forEach((paddle) -> paddle.draw(g));
 		ball.draw(g); // drawing ball
-		if (this.isGameFinished())
-			drawInfo(g); // Displaying informations at the beginning and at the end
-	}
-
-	private void drawInfo(Graphics g) {
-		String text = "PRESS ESCAPE TO EXIT";
-		g.setColor(Color.white);
-		g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
-		int textWidth = g.getFontMetrics().stringWidth(text);
-		int textPositionX = SCREEN_WIDTH / 2 - textWidth / 2;
-		g.drawString(text, textPositionX, SCREEN_HEIGHT / 2);
-	}
-
-	public boolean isGameFinished() {
-		return this.gameFinished;
 	}
 
 	public void setGameLevel(GameLevel gameLevel) {
@@ -117,6 +93,10 @@ public class GamePanel extends JPanel {
 
 	public GameForm getGameForm() {
 		return this.gameForm;
+	}
+
+	public GamePanel getObject() {
+		return this;
 	}
 
 	public void setGameForm(GameForm gameForm) {
@@ -176,6 +156,14 @@ public class GamePanel extends JPanel {
 		return this.paddles;
 	}
 
+	private void resetScore() {
+		this.players.forEach((player) -> player.resetScore());
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return this.players;
+	}
+
 	public void earnPoint() {
 		if (this.ball.getPositionX() < SCREEN_WIDTH / 2)
 			pickedPlayer = 1;
@@ -186,12 +174,18 @@ public class GamePanel extends JPanel {
 		if (!this.players.get(pickedPlayer).getScore().checkScore() || (sumPoint < 2)) {
 			this.ball.setStartingPosition(this.getPoints());
 			this.setRun(true);
-		} else
-			setGameFinished(true);
+		} else {
+			this.resetGame();
+			this.getGameFrame().getMainPanel().showPanel(this.getGameFrame().getMainPanel().MENU_PANEL);
+		}
 	}
 
-	private void setGameFinished(boolean gameFinished) {
-		this.gameFinished = gameFinished;
+	private void resetGame() {
+		// this.resetScore();
+		this.getPaddles().clear();
+		this.getPlayers().clear();
+		GamePanel gamePanel = this.getObject();
+		gamePanel = null;
 	}
 
 	public void setHomePosition() {

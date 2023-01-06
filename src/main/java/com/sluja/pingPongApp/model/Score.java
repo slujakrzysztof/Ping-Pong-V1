@@ -19,6 +19,10 @@ public class Score {
 	public void setPoints(int points) {
 		this.points = points;
 	}
+	
+	public void getWinningPoints(int winningPoints) {
+		this.winningPoints = winningPoints;
+	}
 
 	public int getWinningPoints() {
 		return this.winningPoints;
@@ -39,6 +43,10 @@ public class Score {
 	public boolean checkScore() {
 		if(this.getPoints() >= this.getWinningPoints()) this.setPlayerWon(true);
 		return this.isPlayerWon();
+	}
+	
+	public void resetScore() {
+		this.points = 0;
 	}
 
 }

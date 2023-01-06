@@ -66,5 +66,9 @@ public class Player {
 	public int getId() {
 		return this.id;
 	}
+	
+	public void resetScore() {
+		this.score.resetScore();
+	}
 
 }

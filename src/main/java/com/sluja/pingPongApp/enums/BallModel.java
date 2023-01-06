@@ -1,24 +1,24 @@
 package com.sluja.pingPongApp.enums;
 
-import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.model.ball.RoundedBall;
 
 public enum BallModel {
-	ROUNDED_BALL("RoundedBall", RoundedBall.class.getName());
-	
-	private String className;
+	ROUNDED("Rounded Ball", RoundedBall.class.getName());
+
+	private String modelName;
 	private String classModel;
-	
-	private BallModel(String className, String classModel) {
-		this.className = className;
+
+	private BallModel(String modelName, String classModel) {
+		this.modelName = modelName;
 		this.classModel = classModel;
 	}
-	
-	public String getClassName() {
-		return this.className;
+
+	public String getModelName() {
+		return this.modelName;
 	}
-	
+
 	public String getClassModel() {
 		return this.classModel;
 	}
+
 }
