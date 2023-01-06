@@ -111,9 +111,7 @@ public class Steering {
 		});
 
 	}
-
-
-
+	
 	private void singlePlayerSteering() {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false), "movingUp");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, false), "movingDown");
