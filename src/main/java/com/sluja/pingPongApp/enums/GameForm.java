@@ -3,8 +3,9 @@ package com.sluja.pingPongApp.enums;
 public enum GameForm {
 
 	SINGLE_PLAYER,
-	MULTIPLAYER,
+	MULTIPLAYER
+	/*
 	NORMAL_GAME,
-	FAST_GAME;
+	FAST_GAME;*/
 	
 }

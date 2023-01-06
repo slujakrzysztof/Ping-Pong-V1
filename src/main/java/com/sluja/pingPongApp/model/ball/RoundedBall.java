@@ -9,7 +9,8 @@ import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.properties.SizeManager;
 
 public class RoundedBall implements Ball, Runnable {
-	
+
+	// ----- CONSTANTS ----- //
 	private final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
 	private final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_WIDTH;
 	private final int BALL_ROUNDED_SPEED_X = SizeManager.getInstance().BALL_ROUNDED_SPEED_X;
@@ -17,6 +18,7 @@ public class RoundedBall implements Ball, Runnable {
 	private final int BALL_INCREASED_SPEED_X = SizeManager.getInstance().BALL_INCREASED_SPEED_X;
 	private final int BALL_INCREASED_SPEED_Y = SizeManager.getInstance().BALL_INCREASED_SPEED_Y;
 
+	// ----- Primitive type variables ----- //
 	private int size;
 	private int positionX;
 	private int positionY;
@@ -28,10 +30,16 @@ public class RoundedBall implements Ball, Runnable {
 	private boolean pickedUp;
 	private boolean run;
 	private boolean firstDirection;
+	private int movingDirection;
+
+	// ----- Variables ----- //
 	RandomGenerator randomGenerator;
 	private GamePanel gamePanel;
-	private int movingDirection;
 	private Thread ballThread;
+
+	// ------------------------ //
+	// ----- CONSTRUCTORS ----- //
+	// ------------------------ //
 
 	public RoundedBall(GamePanel gamePanel) {
 		this.size = SizeManager.getInstance().BALL_ROUNDED_SIZE;
@@ -44,16 +52,9 @@ public class RoundedBall implements Ball, Runnable {
 		this.randomGenerator = new RandomGenerator();
 	}
 
-	// Drawing the ball
-	public void draw(Graphics g) {
-		g.setColor(Color.white);
-		g.fillOval(this.getPositionX(), this.getPositionY(), this.getSizeX(), this.getSizeY());
-	}
-
-	@Override
-	public void generateReflectionAmount() {
-		this.randomGenerator.generateReflectionAmount();
-	}
+	// ------------------- //
+	// ----- GETTERS ----- //
+	// ------------------- //
 
 	@Override
 	public int getReflectionAmount() {
@@ -90,32 +91,9 @@ public class RoundedBall implements Ball, Runnable {
 		return this.size;
 	}
 
-	public void setPositionX(int positionX) {
-		this.positionX = positionX;
-	}
-
-	public void setPositionY(int positionY) {
-		this.positionY = positionY;
-	}
-
-	@Override
-	public void setSpeedX(int speedX) {
-		System.out.println("BALL SETX");
-		this.speedX = speedX;
-	}
-
-	@Override
-	public void setSpeedY(int speedY) {
-		this.speedY = speedY;
-	}
-
 	@Override
 	public boolean isMovingUp() {
 		return this.movingUp;
-	}
-
-	public void setMovingUp(boolean movingUp) {
-		this.movingUp = movingUp;
 	}
 
 	@Override
@@ -130,21 +108,112 @@ public class RoundedBall implements Ball, Runnable {
 		return false;
 	}
 
-	
+	@Override
+	public boolean getFirstDirection() {
+		return this.firstDirection;
+	}
+
+	@Override
+	public GamePanel getGamePanel() {
+		return this.gamePanel;
+	}
+
+	@Override
+	public boolean isRun() {
+		return this.run;
+	}
+
+	@Override
+	public boolean isMovingStraight() {
+		return this.movingStraight;
+	}
+
+	@Override
+	public boolean isMovingFaster() {
+		return this.movingFaster;
+	}
+
+	// ------------------- //
+	// ----- SETTERS ----- //
+	// ------------------- //
+
+	public void setPositionX(int positionX) {
+		this.positionX = positionX;
+	}
+
+	public void setPositionY(int positionY) {
+		this.positionY = positionY;
+	}
+
+	@Override
+	public void setSpeedX(int speedX) {
+		this.speedX = speedX;
+	}
+
+	@Override
+	public void setSpeedY(int speedY) {
+		this.speedY = speedY;
+	}
+
+	public void setMovingUp(boolean movingUp) {
+		this.movingUp = movingUp;
+	}
+
 	public void setPickedUp(boolean pickedUp) {
 		this.pickedUp = pickedUp;
 	}
 
 	@Override
+	public void setFirstDirection(boolean firstDirection) {
+		this.firstDirection = firstDirection;
+	}
+
+	@Override
+	public void setRun(boolean run) {
+		this.run = run;
+	}
+
+	@Override
+	public void setMovingStraight(boolean movingStraight) {
+		this.movingStraight = movingStraight;
+	}
+
+	@Override
+	public void setMovingFaster(boolean movingFaster) {
+		this.movingFaster = movingFaster;
+	}
+
+	@Override
+	public void setThread() {
+		this.ballThread = new Thread(this);
+		this.ballThread.start();
+	}
+	// ------------------- //
+	// ----- METHODS ----- //
+	// ------------------- //
+
+	// Drawing the ball
+	public void draw(Graphics g) {
+		g.setColor(Color.white);
+		g.fillOval(this.getPositionX(), this.getPositionY(), this.getSizeX(), this.getSizeY());
+	}
+
+	@Override
+	public void generateReflectionAmount() {
+		this.randomGenerator.generateReflectionAmount();
+	}
+
+	@Override
 	public void move() {
+		// Reflecting ball if it touches upper or lower border of the screen
 		if (checkBorders())
 			this.setSpeedY(this.changeDirection(this.getSpeedY()));
 
-		if (isPickedUp()) {
-			System.out.println("SPEED X : " + this.getSpeedX());
+		// Reflecting ball if it touches the paddle
+		if (isPickedUp())
 			this.setSpeedX(this.changeDirection(this.getSpeedX()));
-		}
-
+		
+		// Moving the ball
 		this.setPositionX(this.getPositionX() + this.getSpeedX());
 		this.setPositionY(this.getPositionY() + this.getSpeedY());
 	}
@@ -160,7 +229,7 @@ public class RoundedBall implements Ball, Runnable {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public void increaseSpeed() {
 		this.setSpeedX(this.BALL_INCREASED_SPEED_X);
@@ -194,6 +263,7 @@ public class RoundedBall implements Ball, Runnable {
 		this.randomGenerator.generateStartBallPosition();
 		this.setPositionY(randomGenerator.getStartBallPosition());
 		this.restoreSpeed();
+		// After every two points the ball changes its moving direction - service simulation 
 		if (points % 2 == 0 && points != 0)
 			movingDirection *= (-1);
 		this.setSpeedX(Math.abs(this.getSpeedX()) * movingDirection);
@@ -201,53 +271,8 @@ public class RoundedBall implements Ball, Runnable {
 	}
 
 	@Override
-	public void setFirstDirection(boolean firstDirection) {
-		this.firstDirection = firstDirection;
-	}
-
-	@Override
-	public boolean getFirstDirection() {
-		return this.firstDirection;
-	}
-
-	@Override
-	public GamePanel getGamePanel() {
-		return this.gamePanel;
-	}
-
-	@Override
-	public boolean isRun() {
-		return this.run;
-	}
-
-	@Override
-	public void setRun(boolean run) {
-		this.run = run;
-	}
-
-	@Override
-	public boolean isMovingStraight() {
-		return this.movingStraight;
-	}
-
-	@Override
-	public void setMovingStraight(boolean movingStraight) {
-		this.movingStraight = movingStraight;
-	}
-
-	@Override
 	public void restoreSpeedY() {
 		this.setSpeedY(this.BALL_ROUNDED_SPEED_Y);
-	}
-
-	@Override
-	public boolean isMovingFaster() {
-		return this.movingFaster;
-	}
-
-	@Override
-	public void setMovingFaster(boolean movingFaster) {
-		this.movingFaster = movingFaster;
 	}
 
 	@Override
@@ -267,7 +292,9 @@ public class RoundedBall implements Ball, Runnable {
 		while (isRun()) {
 			try {
 				this.move();
+				// Check the reflection with the paddle
 				this.getGamePanel().getPaddles().forEach((paddle) -> paddle.checkPickup());
+				// Ball is out of the playing field - throwing InterruptedException
 				if ((this.earnPoint(this.getGamePanel().getPaddles().get(0).getPositionX(),
 						this.getGamePanel().getPaddles().get(1).getPositionX()))) {
 					throw new InterruptedException();
@@ -275,18 +302,13 @@ public class RoundedBall implements Ball, Runnable {
 				Thread.sleep(Math.abs(this.getSpeedX()));
 				this.getGamePanel().repaint();
 			} catch (InterruptedException e) {
+				// Stop the game and add point to the player
 				this.getGamePanel().setRun(false);
 				this.getGamePanel().earnPoint();
 				this.getGamePanel().setHomePosition();
 				this.getGamePanel().repaint();
 			}
 		}
-	}
-
-	@Override
-	public void setThread() {
-		this.ballThread = new Thread(this);
-		this.ballThread.start();
 	}
 
 }

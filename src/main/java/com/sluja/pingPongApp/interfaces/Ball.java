@@ -6,7 +6,8 @@ import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.properties.SizeManager;
 
 public interface Ball extends BallMovement, BallPickup{
-	 
+	
+	// ----- GETTERS ----- // 
 	int getPositionX();
 
 	int getPositionY();
@@ -19,20 +20,24 @@ public interface Ball extends BallMovement, BallPickup{
 
 	int getSizeY();
 
-	void draw(Graphics g);
-
-	void setStartingPosition(int points);
-
+	boolean getFirstDirection();
+	
 	GamePanel getGamePanel();
 	
-	void setThread();
+	// ----- SETTERS ----- // 
 	
 	void setFirstDirection(boolean firstDirection);
 	
 	void setSpeedX(int speedX);
 	
 	void setSpeedY(int speedY);
+	
+	void setStartingPosition(int points);
 
-	boolean getFirstDirection();
+	void setThread();	 
+	
+	// ------------------- //
+
+	void draw(Graphics g);	
 
 }

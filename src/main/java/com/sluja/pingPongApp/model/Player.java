@@ -1,18 +1,21 @@
 package com.sluja.pingPongApp.model;
 
 import java.awt.Color;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-
-import com.sluja.pingPongApp.enums.GameForm;
 
 public class Player {
 
-	private Color playerColor;
-	private Score score;
+	// ----- Primitive type variables ----- //
 	private int positionX;
 	private int scorePositionX, scorePositionY;
 	private int id;
+
+	// ----- Variables ----- //
+	private Color playerColor;
+	private Score score;
+
+	// ------------------------ //
+	// ----- CONSTRUCTORS ----- //
+	// ------------------------ //
 
 	public Player(int id, int positionX, int scorePositionX, int scorePositionY, Color playerColor) {
 		this.id = id;
@@ -23,50 +26,62 @@ public class Player {
 		this.score = new Score();
 	}
 
+	// ------------------- //
+	// ----- GETTERS ----- //
+	// ------------------- //
+
 	public Color getPlayerColor() {
 		return playerColor;
-	}
-
-	public void setPlayerColor(Color playerColor) {
-		this.playerColor = playerColor;
 	}
 
 	public Score getScore() {
 		return score;
 	}
 
-	public void setScore(Score score) {
-		this.score = score;
-	}
-
 	public int getPositionX() {
 		return positionX;
-	}
-
-	public void setPositionX(int positionX) {
-		this.positionX = positionX;
 	}
 
 	public int getScorePositionX() {
 		return scorePositionX;
 	}
 
-	public void setScorePositionX(int scorePositionX) {
-		this.scorePositionX = scorePositionX;
-	}
-	
 	public int getScorePositionY() {
 		return scorePositionY;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	// ------------------- //
+	// ----- SETTERS ----- //
+	// ------------------- //
+
+	public void setPlayerColor(Color playerColor) {
+		this.playerColor = playerColor;
+	}
+
+	public void setScore(Score score) {
+		this.score = score;
+	}
+
+	public void setPositionX(int positionX) {
+		this.positionX = positionX;
+	}
+
+	public void setScorePositionX(int scorePositionX) {
+		this.scorePositionX = scorePositionX;
 	}
 
 	public void setScorePositionY(int scorePositionY) {
 		this.scorePositionY = scorePositionY;
 	}
-	
-	public int getId() {
-		return this.id;
-	}
-	
+
+	// ------------------- //
+	// ----- METHODS ----- //
+	// ------------------- //
+
 	public void resetScore() {
 		this.score.resetScore();
 	}

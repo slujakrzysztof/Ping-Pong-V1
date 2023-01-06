@@ -17,12 +17,17 @@ import com.sluja.pingPongApp.panel.GamePanel;
 
 public class Steering {
 
-	ArrayList<Paddle> paddles;
-	GameForm gameForm;
-	InputMap inputMap;
-	ActionMap actionMap;
-	GamePanel gamePanel;
+	// ----- Variables ----- //
+	private ArrayList<Paddle> paddles;
+	private GameForm gameForm;
+	private InputMap inputMap;
+	private ActionMap actionMap;
+	private GamePanel gamePanel;
 
+	// ------------------------ //
+	// ----- CONSTRUCTORS ----- //
+	// ------------------------ //
+	
 	public Steering(ArrayList<Paddle> paddles, GameForm gameForm, GamePanel gamePanel) {
 		this.gamePanel = gamePanel;
 		this.paddles = paddles;
@@ -35,6 +40,10 @@ public class Steering {
 		gamePanel.requestFocusInWindow();
 	}
 
+	// ------------------- //
+	// ----- GETTERS ----- //
+	// ------------------- //
+	
 	public GameForm getGameForm() {
 		return this.gameForm;
 	}
@@ -46,7 +55,22 @@ public class Steering {
 	public ArrayList<Paddle> getPaddles() {
 		return this.paddles;
 	}
+	
+	// ------------------- //
+	// ----- SETTERS ----- //
+	// ------------------- //
 
+	private void setSteering() {
+
+		this.singlePlayerSteering();
+		if (this.getGameForm() == GameForm.MULTIPLAYER)
+			this.multiPlayerSteering();
+	}
+	
+	// ------------------- //
+	// ----- METHODS ----- //
+	// ------------------- //
+	
 	private void moveDown(int index) {
 		if (!getPaddles().get(index).checkLowerPosition())
 			getPaddles().get(index).moveDown();
@@ -88,12 +112,7 @@ public class Steering {
 
 	}
 
-	private void setSteering() {
 
-		this.singlePlayerSteering();
-		if (this.getGameForm() == GameForm.MULTIPLAYER)
-			this.multiPlayerSteering();
-	}
 
 	private void singlePlayerSteering() {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false), "movingUp");

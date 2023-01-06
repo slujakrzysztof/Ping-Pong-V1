@@ -20,6 +20,7 @@ import com.sluja.pingPongApp.enums.GameForm;
 import com.sluja.pingPongApp.enums.GameLevel;
 import com.sluja.pingPongApp.frame.GameFrame;
 import com.sluja.pingPongApp.interfaces.Ball;
+import com.sluja.pingPongApp.properties.PropertyReader;
 
 import javax.swing.ImageIcon;
 import javax.swing.JRadioButton;
@@ -28,29 +29,31 @@ import com.sluja.pingPongApp.enums.BallModel;
 
 public class MenuPanel extends JPanel implements ActionListener {
 
+	// ----- CONSTANTS ----- //
+	private final String gameTitle = PropertyReader.getInstance().getProperty("title");
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	
+	// ----- Primitive type variables ----- //
+	private boolean checkBoxEnabled;
+	
+	// ----- Variables ----- //
 	private GameFrame gameFrame;
-
 	private JButton exitButton;
 	private JButton startButton;
-
 	private JComboBox<BallModel> gameFormCheckBox;
 	private JComboBox<GameLevel> gameLevelCheckBox;
-
 	private ArrayList<AbstractButton> buttonArray = new ArrayList<AbstractButton>();
-
-	private final ButtonGroup buttonGroup = new ButtonGroup();
-
 	private JRadioButton singlePlayerRadioButton;
 	private JRadioButton multiPlayerRadioButton;
-
 	private MainPanel mainPanel;
-
 	private Class ballClass;
 	private Constructor ballClassConstructor;
 	private Object ball;
 	private GamePanel gamePanel;
 
-	private boolean checkBoxEnabled;
+	// ------------------------ //
+	// ----- CONSTRUCTORS ----- //
+	// ------------------------ //
 
 	public MenuPanel(MainPanel mainPanel, GameFrame gameFrame) {
 		setLayout(null);
@@ -89,8 +92,10 @@ public class MenuPanel extends JPanel implements ActionListener {
 		imageLabel.setBounds(500, 60, 480, 500);
 		add(imageLabel);
 
-		JLabel titleLabel = new JLabel("New label");
-		titleLabel.setBounds(60, 30, 410, 60);
+		JLabel titleLabel = new JLabel(gameTitle);
+		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		titleLabel.setFont(new Font("Segoe Script", Font.BOLD, 40));
+		titleLabel.setBounds(305, 29, 410, 60);
 		add(titleLabel);
 
 		singlePlayerRadioButton = new JRadioButton("SINGLE_PLAYER");
@@ -123,6 +128,10 @@ public class MenuPanel extends JPanel implements ActionListener {
 		this.setButtonListener();
 
 	}
+	
+	// ------------------- //
+	// ----- GETTERS ----- //
+	// ------------------- //
 
 	public MainPanel getMainPanel() {
 		return this.mainPanel;
@@ -130,6 +139,29 @@ public class MenuPanel extends JPanel implements ActionListener {
 
 	public GameFrame getGameFrame() {
 		return this.gameFrame;
+	}
+	
+	public GameLevel getGameLevel() {
+		return (GameLevel) this.gameLevelCheckBox.getSelectedItem();
+	}
+	
+	private Ball getBall() {
+		try {
+			ballClass = Class.forName(this.getBallModel());
+			ballClassConstructor = ballClass.getConstructor(GamePanel.class);
+			ball = ballClassConstructor.newInstance(gamePanel);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return (Ball) this.ball;
+	}
+	
+	public GameForm getGameForm() {
+		return (GameForm) GameForm.valueOf(getSelectedButtonText());
+	}
+
+	public String getBallModel() {
+		return ((BallModel) this.gameFormCheckBox.getSelectedItem()).getClassModel();
 	}
 
 	private void setButtonArray() {
@@ -142,10 +174,14 @@ public class MenuPanel extends JPanel implements ActionListener {
 	private void setButtonListener() {
 		this.buttonArray.forEach((button) -> button.addActionListener(this));
 	}
-
-	public GameLevel getGameLevel() {
-		return (GameLevel) this.gameLevelCheckBox.getSelectedItem();
+	
+	public boolean isCheckBoxEnabled() {
+		return this.checkBoxEnabled;
 	}
+
+	// ------------------- //
+	// ----- METHODS ----- //
+	// ------------------- //
 
 	private String getSelectedButtonText() {
 		for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
@@ -156,25 +192,11 @@ public class MenuPanel extends JPanel implements ActionListener {
 		return null;
 	}
 
-	private Ball getBall() {
-		try {
-			ballClass = Class.forName(this.getBallModel());
-			ballClassConstructor = ballClass.getConstructor(GamePanel.class);
-			ball = ballClassConstructor.newInstance(gamePanel);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return (Ball) this.ball;
-	}
-
 	public void setCheckBoxEnabled(boolean checkBoxEnabled) {
 		this.checkBoxEnabled = checkBoxEnabled;
 	}
-	
-	public boolean isCheckBoxEnabled() {
-		return this.checkBoxEnabled;
-	}
 
+	// If multiplayer mode is selected it is impossible to choose game level
 	private void setGameLevelEnabled() {
 		if (this.multiPlayerRadioButton.isSelected())
 			this.setCheckBoxEnabled(false);
@@ -183,15 +205,6 @@ public class MenuPanel extends JPanel implements ActionListener {
 		
 		this.gameLevelCheckBox.setEnabled(isCheckBoxEnabled());
 	}
-
-	public GameForm getGameForm() {
-		return (GameForm) GameForm.valueOf(getSelectedButtonText());
-	}
-
-	public String getBallModel() {
-		return ((BallModel) this.gameFormCheckBox.getSelectedItem()).getClassModel();
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 

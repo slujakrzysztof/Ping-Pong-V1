@@ -7,42 +7,47 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertyReader {
-	private String propertyFilename;
+
+	// ----- CONSTANTS ----- //
 	private static final PropertyReader propertyReader = new PropertyReader();
+
+	// ----- Variables ----- //
+	private String propertyFilename;
 	private Properties property = new Properties();
 	ClassLoader loader = Thread.currentThread().getContextClassLoader();
+
+	// ------------------------ //
+	// ----- CONSTRUCTORS ----- //
+	// ------------------------ //
 
 	public PropertyReader() {
 		this.setPropertyFilename("com/sluja/pingPongApp/properties/config.properties");
 		this.setConnection();
 	}
 
+	// ------------------- //
+	// ----- GETTERS ----- //
+	// ------------------- //
+	
 	public String getPropertyFilename() {
 		return this.propertyFilename;
 	}
+	
+	public String getFilename() {
+		return this.propertyFilename;
+	}
+
+	// ------------------- //
+	// ----- SETTERS ----- //
+	// ------------------- //
 
 	public void setPropertyFilename(String name) {
 		this.propertyFilename = name;
 	}
 
-	public String getFilename() {
-		return this.propertyFilename;
-	}
-
-	//
-	public void saveProperty(String key, String newValue) {
-		FileOutputStream output;
-		try {
-			output = new FileOutputStream("properties/config.properties");
-			property.setProperty(key, newValue);
-			property.store(output, null);
-			output.close();
-		} catch (FileNotFoundException ex1) {
-			ex1.printStackTrace();
-		} catch (IOException ex2) {
-			ex2.printStackTrace();
-		}
-	}
+	// ------------------- //
+	// ----- METHODS ----- //
+	// ------------------- //
 
 	// Connecting with given file with data
 	public void setConnection() {

@@ -15,17 +15,22 @@ import com.sluja.pingPongApp.properties.SizeManager;
 
 public class MainPanel extends JPanel {
 
-	private CardLayout layout;
+	// ----- CONSTANTS ----- //
 	public final String MENU_PANEL = PropertyReader.getInstance().getProperty("card.name.menuPanel");
 	public final String GAME_PANEL = PropertyReader.getInstance().getProperty("card.name.gamePanel");
 	private final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_WIDTH;
 	private final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
-
+	
+	// ----- Variables ----- //
+	private CardLayout layout;
 	private GamePanel gamePanel;
 	private MenuPanel menuPanel;
 	private GameFrame gameFrame;
-
 	private GameForm gameForm;
+	
+	// ------------------------ //
+	// ----- CONSTRUCTORS ----- //
+	// ------------------------ //
 
 	public MainPanel(GameFrame gameFrame) {
 		this.gameFrame = gameFrame;
@@ -39,14 +44,14 @@ public class MainPanel extends JPanel {
 		this.showPanel(MENU_PANEL);
 	}
 
+	// ------------------- //
+	// ----- GETTERS ----- //
+	// ------------------- //
+	
 	public GameForm getGameForm() {
 		return this.gameForm;
 	}
-
-	public void setGameForm(GameForm gameForm) {
-		this.gameForm = gameForm;
-	}
-
+	
 	public String getLabelMenuPanel() {
 		return MENU_PANEL;
 	}
@@ -62,7 +67,19 @@ public class MainPanel extends JPanel {
 	public GamePanel getGamePanel() {
 		return this.gamePanel;
 	}
+	
+	// ------------------- //
+	// ----- SETTERS ----- //
+	// ------------------- //
 
+	public void setGameForm(GameForm gameForm) {
+		this.gameForm = gameForm;
+	}
+
+	// ------------------- //
+	// ----- METHODS ----- //
+	// ------------------- //
+	
 	public void showPanel(String panel) {
 		((CardLayout) this.getLayout()).show(this, panel);
 		if (panel.equals(GAME_PANEL)) {
@@ -74,7 +91,7 @@ public class MainPanel extends JPanel {
 		this.getGamePanel().setGameForm(gameForm);
 		if (gameForm == GameForm.SINGLE_PLAYER)
 			this.getGamePanel().setGameLevel(gameLevel);
-		this.getGamePanel().setBall(ball);//new RoundedBall(this.getGamePanel()));
+		this.getGamePanel().setBall(ball);
 		this.getGamePanel().setGame();
 	}
 

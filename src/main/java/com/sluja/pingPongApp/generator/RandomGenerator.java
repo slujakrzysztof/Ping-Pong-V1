@@ -9,17 +9,8 @@ public class RandomGenerator {
 	private Random generator = new Random();
 	private int reflectionAmount;
 	private int startBallPosition;
-
-	public void generateStartBallPosition() {
-		this.startBallPosition = 20 + generator
-				.nextInt(Integer.parseInt(PropertyReader.getInstance().getProperty("ball.startPositionY")));
-	}
-
-	public void generateReflectionAmount() {
-		this.reflectionAmount = 1 + generator
-				.nextInt(Integer.parseInt(PropertyReader.getInstance().getProperty("ball.maxReflectionAmount")));
-	}
-
+	
+	// ----- GETTERS ----- //
 	public Random getGenerator() {
 		return generator;
 	}
@@ -30,6 +21,18 @@ public class RandomGenerator {
 
 	public int getStartBallPosition() {
 		return startBallPosition;
+	}
+	
+	//Generate y position for ball after each point
+	public void generateStartBallPosition() {
+		this.startBallPosition = 20 + generator
+				.nextInt(Integer.parseInt(PropertyReader.getInstance().getProperty("ball.startPositionY")));
+	}
+
+	//After generated amount of reflection ball will increase its speed
+	public void generateReflectionAmount() {
+		this.reflectionAmount = 1 + generator
+				.nextInt(Integer.parseInt(PropertyReader.getInstance().getProperty("ball.maxReflectionAmount")));
 	}
 
 }

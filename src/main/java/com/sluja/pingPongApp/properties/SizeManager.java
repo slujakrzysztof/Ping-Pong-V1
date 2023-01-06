@@ -53,6 +53,7 @@ public class SizeManager {
 			.parseInt(PropertyReader.getInstance().getProperty("roundedBall.speedY"));
 	public final int BUTTON_GAP = Integer.parseInt(PropertyReader.getInstance().getProperty("button.gap"));
 	public final int BUTTON_BORDER = Integer.parseInt(PropertyReader.getInstance().getProperty("button.border"));
+	public final int PADDLE_SPEED = Integer.parseInt(PropertyReader.getInstance().getProperty("paddle.speed"));
 	
 	public static SizeManager getInstance() {
 		return sizeManager;

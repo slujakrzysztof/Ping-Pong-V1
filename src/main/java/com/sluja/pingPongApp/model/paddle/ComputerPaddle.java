@@ -1,15 +1,21 @@
 package com.sluja.pingPongApp.model.paddle;
 
 import com.sluja.pingPongApp.enums.GameLevel;
-import com.sluja.pingPongApp.interfaces.Ball;
 import com.sluja.pingPongApp.model.Player;
 import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.properties.PropertyReader;
 
 public class ComputerPaddle extends Paddle implements Runnable {
 
-	GameLevel gameLevel;
+	// ----- Primitive type variables ----- //
 	private int borderX;
+
+	// ----- Variables ----- //
+	GameLevel gameLevel;
+
+	// ------------------------ //
+	// ----- CONSTRUCTORS ----- //
+	// ------------------------ //
 
 	public ComputerPaddle(Player player, GameLevel gameLevel, GamePanel gamePanel) {
 		super(player, gamePanel);
@@ -19,13 +25,12 @@ public class ComputerPaddle extends Paddle implements Runnable {
 		this.setSpeed();
 	}
 
+	// ------------------- //
+	// ----- GETTERS ----- //
+	// ------------------- //
+
 	public GameLevel getGameLevel() {
 		return this.gameLevel;
-	}
-
-	private void setSpeed() {
-		String actualSpeed = "speed." + this.gameLevel.name().toLowerCase();
-		this.speed = Integer.parseInt(PropertyReader.getInstance().getProperty(actualSpeed));
 	}
 
 	@Override
@@ -33,9 +38,27 @@ public class ComputerPaddle extends Paddle implements Runnable {
 		return this.speed;
 	}
 
+	// ------------------- //
+	// ----- SETTERS ----- //
+	// ------------------- //
+
+	private void setSpeed() {
+		String actualSpeed = "speed." + this.gameLevel.name().toLowerCase();
+		this.speed = Integer.parseInt(PropertyReader.getInstance().getProperty(actualSpeed));
+	}
+
+	// ------------------- //
+	// ----- METHODS ----- //
+	// ------------------- //
+
+	/*
+	 * Enabling movement of the paddle when the ball crosses the border If ball is
+	 * moving up - the paddle is also moving up (the same situation when moving
+	 * down)
+	 */
 	public void computerPaddleMove() {
 
-		if (this.getBall().getPositionX() > this.borderX) {
+		if ((this.getBall().getPositionX() + this.getBall().getSizeX()) > this.borderX) {
 
 			if (this.getPositionY() > this.getBall().getPositionY())
 				this.setMovingUp(true);
