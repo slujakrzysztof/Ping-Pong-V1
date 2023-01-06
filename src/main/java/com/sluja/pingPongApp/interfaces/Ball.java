@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 import com.sluja.pingPongApp.panel.GamePanel;
 
-public interface Ball {
+public interface Ball extends BallMovement, BallPickup{
 
 	public int getPositionX();
 
@@ -38,21 +38,7 @@ public interface Ball {
 
 	public void setStartingPosition(int points);
 
-	public void setFirstDirection(boolean firstDirection);
-
-	public boolean getFirstDirection();
-
 	public void setMovingUp(boolean movingUp);
-
-	public void move();
-
-	public boolean checkBorders();
-
-	public void increaseSpeed();
-
-	public boolean earnPoint(int firstPositionX, int secondPositionX);
-
-	public void restoreSpeed();
 
 	public GamePanel getGamePanel();
 
@@ -60,30 +46,44 @@ public interface Ball {
 
 	public void setMovingStraight(boolean movingStraight);
 
-	public void restoreSpeedY();
-
-	public void restoreSpeedX();
-
 	public boolean isRun();
 
 	public void setRun(boolean run);
 
-	public int changeDirection(int speed);
-
-	void generateReflectionAmount();
-
-	int getReflectionAmount();
-
 	boolean isMovingFaster();
 
 	void setMovingFaster(boolean movingFaster);
-
-	boolean checkPosition();
 
 	void setBorderCrossed(boolean borderCrossed);
 
 	boolean isBorderCrossed();
 
 	void setThread();
+	
+	void setFirstDirection(boolean firstDirection);
+
+	boolean getFirstDirection();
+
+	void move();
+
+	boolean checkBorders();
+
+	void increaseSpeed();
+
+	void restoreSpeed();
+
+	void restoreSpeedY();
+
+	void restoreSpeedX();
+
+	boolean checkPosition();
+	
+	int changeDirection(int speed);
+
+	void generateReflectionAmount();
+
+	int getReflectionAmount();
+
+	boolean earnPoint(int firstPositionX, int secondPositionX);
 
 }

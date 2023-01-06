@@ -6,11 +6,13 @@ import java.awt.Graphics;
 import com.sluja.pingPongApp.enums.GameLevel;
 import com.sluja.pingPongApp.generator.RandomGenerator;
 import com.sluja.pingPongApp.interfaces.Ball;
+import com.sluja.pingPongApp.interfaces.BallMovement;
+import com.sluja.pingPongApp.interfaces.BallPickup;
 import com.sluja.pingPongApp.panel.GamePanel;
 import com.sluja.pingPongApp.properties.PropertyReader;
 import com.sluja.pingPongApp.properties.SizeManager;
 
-public class RoundedBall implements Ball, Runnable {
+public class RoundedBall implements Ball, BallMovement, BallPickup, Runnable {
 
 	private final int SCREEN_HEIGHT = SizeManager.getInstance().SCREEN_HEIGHT;
 	private final int SCREEN_WIDTH = SizeManager.getInstance().SCREEN_WIDTH;
